@@ -64,7 +64,7 @@ header {
 }
 
 .logo img {
-  height: 35px;
+  height: 20px;
   padding-left: 10px;
   padding-bottom: 7px;
 }
@@ -163,78 +163,26 @@ header input {
 
 
 /* Main*/
-.content {
-  background-image: url('imagens/banner\ livrinho.jpeg');
-  background-size: cover;
-  background-position: center;
-  width: 100%; 
-  padding: 60px;
-  color: rgb(255, 255, 255);
+.carousel {
   position: relative;
-  z-index: 1;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  overflow: hidden;
+}
+.slides {
   display: flex;
-  flex-direction: column;
-  align-items: left;
-  text-align: left;
-  text-shadow:-1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+  transition: transform 0.5s ease-in-out;
 }
-
-.bannertudo {
-  margin: 10px 0;
+.slide {
+  min-width: 100%;
+  box-sizing: border-box;
 }
-
-.frete_gratis {
-  font-family: cursive;
-  font-size: 1.2em;
-  padding: 10px;
-  border-radius: 300px;
+img {
+  width: 100%;
+  display: block;
+  height: 100%;
 }
-
-@media (max-width: 768px) {
-  .content {
-    padding: 10px 20px;
-    text-align: left; 
-    text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
-  }
-
-  .content h2 {
-    font-size: 24px;
-  }
-
-  .content h3 {
-    font-size: 20px;
-  }
-
-  .content h4 {
-    font-size: 16px;
-  }
-}
-
-
-
-
-@media (max-width: 480px) {
-  .content {
-    padding: 10px;
-    color: #ffffff;
-    text-shadow:-1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
-    text-align: left;
-   }
-     
-  }
-
-  .content h2 {
-    font-size: 20px;
-  }
-
-  .content h3 {
-    font-size: 18px;
-  }
-
-  .content h4 {
-    font-size: 14px;
-  }
-
 
 
 

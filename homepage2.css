@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+}
+header {
+    background: #0b2245;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: aliceblue;
+    font-size: large;
+    font-family: cursive;
+    font-size: 16px;
+  }
+  
+  .logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  
+  .logo img {
+    height: 35px;
+    padding-left: 10px;
+    padding-bottom: 7px;
+  }
+  
+  .logo span {
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 20px;
+    color: #e0e0e0;
+    font-weight: bold; 
+    text-shadow: 2px 2px 5px #00000080; 
+  }
+  
+
+.menu-toggle, .favorites-toggle, .cart-toggle {
+    font-size: 24px;
+    cursor: pointer;
+}
+.icons a{
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+.menu {
+    position: fixed;
+    left: -250px;
+    top: 12%;
+    width: 250px;
+    height: 100%;
+    background: #0b2245;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.5s;
+    padding-top: 60px;
+    opacity: 0.9;
+    z-index: 1000;
+}
+.menu a {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+    text-align: left;
+}
+.menu a:hover {
+    background: #1a3b6d;
+}
+.menu.show {
+    left: 0;
+}
+.favorites-menu, .cart-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 280px;
+    height: auto;
+    background: #0b2245;
+    border: 1px solid #ccc;
+    box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
+.favorites-menu.show, .cart-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+header input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    width: 250px;
+}
+.icons {
+    display: flex;
+    gap: 10px;
+    position: relative;
+}
+.icons div {
+    font-size: 25px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+}

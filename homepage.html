@@ -4,45 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universo dos Livros</title>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet"  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <link rel="icon" type="image/x-icon" href="imagens/logo 4k.jpeg">
     <link rel="stylesheet" href="homepage.css">
 </head>
 <body>
     <header>
+        <div class="menu-toggle">☰</div>
         <div class="logo">
             <a href="homepage.html">
                 <img src="imagens/logo 4k.jpeg" alt="Logo">
                 <span>Universo dos Livros</span>
             </a>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#">Novidades</a></li>
-                <li class="categorias">
-                    <a href="#categorias">Categorias</a>
-                    <ul class="submenu">
-                        <li><a href="#romance">Romance</a></li>
-                        <li><a href="#infantil">Infantil</a></li>
-                        <li><a href="#ficcao">Ficção</a></li>
-                        <li><a href="#aventura">Aventura</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Contato</a></li>
-            </ul>
-        </nav>
-        <div class="header-right">
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar livros e mais...">
-            </div>
-            <div class="user-info">
-                <button onclick="window.location.href='login.html'">Login</button>
-                <button onclick="window.location.href='login.html'">Carrinho</button>
-            </div>
+        <input type="text" placeholder="Buscar livros...">
+        <div class="icons">
+            <div class="favorites-toggle"><i class="fas fa-heart"></i></div>
+            <nav class="favorites-menu">
+                <h3>Favoritos</h3>
+                <a href="#">Livro 1</a>
+                <a href="#">Livro 2</a>
+                <a href="#">Livro 3</a>
+            </nav>
+            <div class="cart-toggle"><i class="fas fa-shopping-cart"></i></div>
+            <nav class="cart-menu">
+                <h3>Carrinho</h3>
+                <p>Seu carrinho está vazio.</p>
+            </nav>
+            <a href=""><i class="fas fa-user"></i></a>
         </div>
     </header>
-    
-    
-    
+    <nav class="menu">
+        <a href="#">Home</a>
+        <a href="#">Categorias</a>
+        <a href="#">Loja</a>
+        <a href="#">Blog</a>
+        <a href="#">Contato</a>
+    </nav>
     <main>
         <div class="content">
             <h2 class="bannertudo">TUDO O QUE EU <br> NÃO TE DISSE</h2>
@@ -280,5 +280,8 @@
           <a href="homepage.html"><img src="imagens/social-instagram-new-circle-512.webp" alt="Instagram"></a>
         </div>
         <p>&copy; 2025 Universo dos Livros. Todos os direitos reservados.</p>
-      </footer>
+      </footer> 
+      <script src="homepage.js"></script>
+</body>
+</html>
       
