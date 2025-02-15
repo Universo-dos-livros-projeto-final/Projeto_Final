@@ -34,14 +34,26 @@ document.querySelector('.menu-toggle').addEventListener('click', function() {
 
 
         // parte do carrossel
-        const slides = document.querySelector('.slides');
-        const slideCount = document.querySelectorAll('.slide').length;
-        let currentIndex = 0;
- 
-        function showNextSlide() {
-            currentIndex = (currentIndex + 1) % slideCount;
-            const offset = -currentIndex * 100;
-            slides.style.transform = `translateX(${offset}%)`;
+        let index = 0;
+        const images = document.querySelectorAll(".carousel img");
+        const totalImages = images.length;
+       
+        document.getElementById("next").addEventListener("click", () => {
+            index = (index + 1) % totalImages;
+            updateCarousel();
+        });
+     
+        document.getElementById("prev").addEventListener("click", () => {
+            index = (index - 1 + totalImages) % totalImages;
+            updateCarousel();
+        });
+     
+        function updateCarousel() {
+            const carousel = document.querySelector(".carousel");
+            carousel.style.transform = `translateX(${-index * 100}%)`;
         }
- 
-        setInterval(showNextSlide, 3000); // Muda de slide a cada 3 segundos 
+     
+        setInterval(() => {
+            index = (index + 1) % totalImages;
+            updateCarousel();
+        }, 5000); 
