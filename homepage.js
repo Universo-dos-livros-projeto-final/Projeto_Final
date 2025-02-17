@@ -56,4 +56,4 @@ document.querySelector('.menu-toggle').addEventListener('click', function() {
         setInterval(() => {
             index = (index + 1) % totalImages;
             updateCarousel();
-        }, 5000); 
+        }, 10000); 
