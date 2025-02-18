@@ -57,3 +57,5 @@ document.querySelector('.menu-toggle').addEventListener('click', function() {
             index = (index + 1) % totalImages;
             updateCarousel();
         }, 10000); 
+
+// Categoria teste
