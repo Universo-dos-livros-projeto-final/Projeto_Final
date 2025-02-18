@@ -14,7 +14,8 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url(imagensLogin/ceuEstrelado.jpg) no-repeat center center fixed;
+    /*background: url(imagensLogin/ceuEstrelado.jpg) no-repeat center center fixed;*/
+    background-color: white;
 }
 
 
