@@ -11,7 +11,7 @@ bntSignUp.addEventListener("click", ()=>{
 });
 
 
-/* icones de perfil de usuario
+ //icones de perfil de usuario
 
 const profilePic = document.getElementById("profilePic");
 const fileInput = document.getElementById("fileInput");
@@ -27,9 +27,6 @@ fileInput.addEventListener("change", (e) => {
         profilePic.src = e.target.result;
     };
     reader.readAsDataURL(file);
-<<<<<<< Updated upstream
+
 });
-*/
-=======
-});*/
->>>>>>> Stashed changes
+
