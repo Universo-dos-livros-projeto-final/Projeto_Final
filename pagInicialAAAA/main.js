@@ -25,7 +25,14 @@ if(searchClose){
 
 
 /*=============== ADD SHADOW HEADER ===============*/
+const shadowHeader = () => {
+    const header = document.getElementById('header');
+    // When the scroll is greater than 50 viewport height, add class 's-header'
+    this.scrollY >= 50 ? header.classList.add('shadow-header')
+                       : header.classList.remove('shadow-header');
+}
 
+window.addEventListener('scroll', shadowHeader)
 
 /*=============== HOME SWIPER ===============*/
 let swiperHome = new Swiper('.home__swiper', {
@@ -48,16 +55,46 @@ let swiperHome = new Swiper('.home__swiper', {
 })
     
 /*=============== FEATURED SWIPER ===============*/
+let swiperFeatured = new Swiper('.featured__swiper', {
+    loop: true,
+    spaceBetween: 16,
+    grabCursor: true,
+    slidesPerView: 'auto',
+    centeredSlides: 'auto',
 
+    navigation:{
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
 
-/*=============== NEW SWIPER ===============*/
+    breakpoints:{
+        1150:{
+            slidesPerView:4,
+            centeredSlides:false,
+        }
+    }
+})
+   
+
+/*=============== nao lembro pra que serve isso ===============*/
 
 $(".wish-icon i").click(function(){
     $(this).toggleClass("fa-heart fa-heart-o");
 });
 	
+/*=============== NEW SWIPER ===============*/
+let swiperNew = new Swiper('.new__swiper', {
+    loop: true,
+    spaceBetween: 16,
+    slidesPerView: 'auto',
 
-
+    breakpoints:{
+        1150:{
+            slidesPerView:3,
+           
+        }
+    }
+})
 
 /*=============== TESTIMONIAL SWIPER ===============*/
 
@@ -100,3 +137,17 @@ themeButton.addEventListener('click', () => {
 
 
 /*=============== SCROLL REVEAL ANIMATION ===============*/
+const sr = ScrollReveal({
+    origin: 'top',
+    distance: '60px',
+    duration:2500,
+    delay:400,
+})
+
+sr.reveal('.home__data, .featured__container, .new__container, .footer')
+sr.reveal('.home__images', {delay:600})
+sr.reveal('.services__card',{interval:100})
+sr.reveal('.discount__data',{origin: 'left'})
+sr.reveal('.discount__images', {origin: 'right'})
+
+
