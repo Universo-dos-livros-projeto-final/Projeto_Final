@@ -1,0 +1,75 @@
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id           Int             @id @default(autoincrement())
+  googleBookId String          @unique
+  isbn         String?
+  title        String
+  author       String?
+  publisher    String?
+  publishedDate DateTime?
+  description  String?         @db.Text
+  pageCount    Int?
+  thumbnailUrl String?
+  infoLink     String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  
+  inventory    Inventory?
+  salesHistory SalesHistory[]
+  categories   BookCategory[]
+}
+
+model Inventory {
+  id                 Int       @id @default(autoincrement())
+  bookId             Int       @unique
+  quantity           Int       @default(0)
+  price              Decimal   @db.Decimal(10, 2)
+  discountPercentage Decimal?  @db.Decimal(5, 2) @default(0)
+  status             Status    @default(AVAILABLE)
+  lastRestockDate    DateTime?
+  
+  book               Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  description String?       @db.Text
+  
+  books       BookCategory[]
+}
+
+model BookCategory {
+  bookId     Int
+  categoryId Int
+  
+  book       Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  @@id([bookId, categoryId])
+}
+
+model SalesHistory {
+  id        Int      @id @default(autoincrement())
+  bookId    Int
+  quantity  Int
+  salePrice Decimal  @db.Decimal(10, 2)
+  saleDate  DateTime @default(now())
+  
+  book      Book     @relation(fields: [bookId], references: [id])
+}
+
+enum Status {
+  AVAILABLE
+  LOW_STOCK
+  OUT_OF_STOCK
+}
