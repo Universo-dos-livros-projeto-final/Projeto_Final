@@ -115,7 +115,7 @@ const selectedIcon = localStorage.getItem('selected-icon')
 
 // Obtemos o tema atual que a interface tem validando a classe dark-theme
 const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light';
-const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'ri-moon-line' : 'ru-sun-line';
+const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'ri-moon-line' : 'ri-sun-line';
 
 // Validamos se o usuário já escolheu um tema anteriormente
 if (selectedTheme) {
@@ -136,19 +136,6 @@ themeButton.addEventListener('click', () => {
 });
 
 
-/*=============== SCROLL REVEAL ANIMATION ===============*/
-const sr = ScrollReveal({
-    origin: 'top',
-    distance: '60px',
-    duration:2500,
-    delay:400,
-})
-
-sr.reveal('.home__data, .featured__container, .new__container, .footer')
-sr.reveal('.home__images', {delay:600})
-sr.reveal('.services__card',{interval:100})
-sr.reveal('.discount__data',{origin: 'left'})
-sr.reveal('.discount__images', {origin: 'right'})
 
 
 
@@ -156,21 +143,47 @@ sr.reveal('.discount__images', {origin: 'right'})
 
 
 
-function changeImage(img) {
-    document.getElementById("mainImage").src = img.src;
-    document.querySelectorAll(".thumbnail").forEach(el => el.classList.remove("active"));
-    img.classList.add("active");
-}
 
-function changeQuantity(value) {
-    let quantityInput = document.getElementById("quantity");
-    let currentValue = parseInt(quantityInput.value);
-    if (currentValue + value > 0) {
-        quantityInput.value = currentValue + value;
+
+
+
+
+
+
+
+//teste do carrinho e quantidade
+document.addEventListener('DOMContentLoaded', function() {
+    const minusButton = document.querySelector('.quantity-input button:first-child');
+    const plusButton = document.querySelector('.quantity-input button:last-child');
+    const input = document.querySelector('.quantity-input input');
+    
+    // Set minimum value
+    const minValue = parseInt(input.getAttribute('min')) || 0;
+    
+    // Function to update quantity
+    function updateQuantity(newValue) {
+        // Ensure the value is not less than minimum
+        newValue = Math.max(newValue, minValue);
+        
+        // Update input value
+        input.value = newValue;
     }
-}
-
-function addToCart() {
-    let quantity = document.getElementById("quantity").value;
-    alert(`Produto adicionado ao carrinho! Quantidade: ${quantity}`);
-}
+    
+    // Decrease quantity when minus button is clicked
+    minusButton.addEventListener('click', function() {
+        const currentValue = parseInt(input.value) || 0;
+        updateQuantity(currentValue - 1);
+    });
+    
+    // Increase quantity when plus button is clicked
+    plusButton.addEventListener('click', function() {
+        const currentValue = parseInt(input.value) || 0;
+        updateQuantity(currentValue + 1);
+    });
+    
+    // Handle manual input changes
+    input.addEventListener('change', function() {
+        const currentValue = parseInt(input.value) || 0;
+        updateQuantity(currentValue);
+    });
+});
