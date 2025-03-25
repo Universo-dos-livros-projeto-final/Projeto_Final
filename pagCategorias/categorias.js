@@ -192,6 +192,8 @@ function verificarPreco(preco, faixaPreco) {
         return preco > 20 && preco <= 50;
     } else if (faixaPreco === '50+') {
         return preco > 50;
+    } else if (faixaPreco === '0-50+'){
+        return preco >= 0 ;
     }
     return true;
 }

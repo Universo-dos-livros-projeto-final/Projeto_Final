@@ -1,506 +1,272 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categoria: Livros</title>
-     <!--=============== FAVICON ===============-->
-     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-     <!--=============== REMIXICONS ===============-->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
+      <!--=============== FAVICON ===============-->
+      <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
 
-     <!--=============== SWIPER CSS ===============-->
-     <link rel="stylesheet" href="swiper-bundle.min.css"> 
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="categorias.css">
-</head>
-<body>
+      <!--=============== REMIXICONS ===============-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
 
-     <!--==================== HEADER ====================-->
-     <header class="header" id="header">
-        <nav class="nav container">
-           <a href="/Pagina Inicial/index.html" class="nav__logo">
-               <img src="/imagens/logo 4k.jpeg" alt="Logo Universo dos Livros" class="nav__logo-img">
-               <span class="nav__logo-text">Universo dos Livros</span>
-           </a>
+      <!--=============== SWIPER CSS ===============-->
+      <link rel="stylesheet" href="swiper-bundle.min.css">
 
-           <div class="nav__menu">
-              <ul class="nav__list">
-                 <li class="nav__item">
-                    <a href="#header" class="nav__link">
-                       <i class="ri-home-line"></i>
-                       <span>Home</span>
-                    </a>
-                 </li>
+      
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-                 <li class="nav__item">
-                    <a href="#destaques" class="nav__link">
-                       <i class="ri-book-3-line"></i>
-                       <span>Destaques</span>
-                    </a>
-                 </li>
 
-                 <li class="nav__item">
-                    <a href="#promocoes" class="nav__link">
-                       <i class="ri-price-tag-3-line"></i>
-                       <span>Promoções</span>
-                    </a>
-                 </li>
+      <!--=============== CSS ===============-->
+      <link rel="stylesheet" href="categorias.css">
 
-                 <li class="nav__item">
-                    <a href="#new" class="nav__link">
-                       <i class="ri-bookmark-line"></i>
-                       <span>Novos Livros</span>
-                    </a>
-                 </li>
+      <title>Responsive book website -Universo dos livros</title>
+   </head>
+   <body>
+      <!--==================== HEADER ====================-->
+      <header class="header" id="header">
+         <nav class="nav container">
+            <a href="#" class="nav__logo">
+                <img src="/imagens/logo 4k.jpeg" alt="Logo Universo dos Livros" class="nav__logo-img">
+                <span class="nav__logo-text">Universo dos Livros</span>
+            </a>
 
-                 <li class="nav__item">
-                    <a href="#sobrenos" class="nav__link">
-                       <i class="ri-message-3-line"></i>
-                       <span>Sobre Nós</span>
-                    </a>
-                 </li>
-              </ul>
-           </div>
+            <div class="nav__menu">
+               <ul class="nav__list">
+                  <li class="nav__item">
+                     <a href="#home" class="nav__link">
+                        <i class="ri-home-line"></i>
+                        <span>Home</span>
+                     </a>
+                  </li>
 
-           <div class="nav__actions">
-              <i class="ri-search-line search-button" id="search-button"></i>
+                  <li class="nav__item">
+                     <a href="#destaques" class="nav__link">
+                        <i class="ri-book-3-line"></i>
+                        <span>Destaques</span>
+                     </a>
+                  </li>
 
-              <a href="/paginaLogin/paginaLogin.html" class="login"><i class="ri-user-line login-button " id="login-button"></i>
-               </a>
-              <i class="ri-shopping-cart-line"></i>
+                  <li class="nav__item">
+                     <a href="#promocoes" class="nav__link">
+                        <i class="ri-price-tag-3-line"></i>
+                        <span>Promocoes</span>
+                     </a>
+                  </li>
 
-              <i class="ri-moon-line change-theme" id="theme-button"></i>
-           </div>
-        </nav>
-     </header>
+                  <li class="nav__item">
+                     <a href="#new" class="nav__link">
+                        <i class="ri-bookmark-line"></i>
+                        <span>Novos Livros</span>
+                     </a>
+                  </li>
 
-     <!--==================== SEARCH ====================-->
-     <div class="search" id="search-content">
-        <form action="" class="search__form">
-           <i class="ri-search-line search__icon"></i>
-           <input type="search" placeholder="Buscar Livros e a autores..." class="search__input">
-        </form>
+                  <li class="nav__item">
+                     <a href="#sobrenos" class="nav__link">
+                        <i class="ri-message-3-line"></i>
+                        <span>Sobre Nos</span>
+                     </a>
+                  </li>
+               </ul>
+            </div>
 
-        <i class="ri-close-line search__close" id="search-close"></i>
+            <div class="nav__actions">
+               <i class="ri-search-line search-button" id="search-button"></i>
 
-        
+               <a href="/paginaLogin/paginaLogin.html" class="login"><i class="ri-user-line login-button " id="login-button"></i>
+				</a>
+               <i class="ri-shopping-cart-line"></i>
 
-<!--==================== body ====================-->
-<!-- Seção principal de categorias -->
-<div class="categorias-container section">
-   <div class="container">
-       <h1 class="section__title">Categoria: Livros</h1>
+               <i class="ri-moon-line change-theme" id="theme-button"></i>
+            </div>
+         </nav>
+      </header>
 
-       <!-- Breadcrumb -->
-       <div class="breadcrumb-container">
-           <nav aria-label="breadcrumb">
-               <ol class="breadcrumb">
-                   <li class="breadcrumb-item"><a href="/Pagina Inicial/index.html">Home</a></li>
-                   <li class="breadcrumb-item active" aria-current="page">Categorias</li>
-               </ol>
-           </nav>
-       </div>
+      <!--==================== SEARCH ====================-->
+      <div class="search" id="search-content">
+         <form action="" class="search__form">
+            <i class="ri-search-line search__icon"></i>
+            <input type="search" placeholder="Buscar Livros e a autores..." class="search__input">
+         </form>
 
-       <div class="row">
-           <!-- Coluna de filtros -->
-           <div class="col-lg-3 col-md-4">
-               <div class="filtros-sidebar">
-                   <div class="filtros-header">
-                       <h3>Filtros</h3>
-                       <button id="limpar-filtros" class="limpar-btn">Limpar Filtros</button>
-                   </div>
-
-                   <!-- Filtros aplicados -->
-                   <div class="filtros-aplicados" style="display: none;">
-                       <h4>Filtros Aplicados</h4>
-                       <div id="filtros-ativos"></div>
-                   </div>
-                   
-                   <!-- Filtro de ordenação -->
-                   <div class="filtro-grupo">
-                       <h4>Ordenar por</h4>
-                       <select id="ordenar" class="form-control">
-                           <option value="titulo-asc">Título (A-Z)</option>
-                           <option value="titulo-desc">Título (Z-A)</option>
-                           <option value="preco-asc">Preço (Menor-Maior)</option>
-                           <option value="preco-desc">Preço (Maior-Menor)</option>
-                       </select>
-                   </div>
-
-                   <!-- Filtro de preço -->
-                   <div class="filtro-grupo">
-                       <h4>Preço</h4>
-                       <div class="filtro">
-                           <div class="form-check">
-                               <input class="form-check-input" type="radio" name="preco" id="preco1" value="0-20">
-                               <label class="form-check-label" for="preco1">
-                                   € 0 - € 20
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="radio" name="preco" id="preco2" value="20-50">
-                               <label class="form-check-label" for="preco2">
-                                   € 20 - € 50
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="radio" name="preco" id="preco3" value="50+">
-                               <label class="form-check-label" for="preco3">
-                                   € 50+
-                               </label>
-                           </div>
-                       </div>
-                       
-                       <div class="preco-range">
-                           <div class="range-valores">
-                               <span>€ 4,00</span>
-                               <span>€ 76,99</span>
-                           </div>
-                           <input type="range" class="form-range" min="4" max="77" id="preco-slider">
-                           <button class="ok-btn" id="aplicar-preco">OK</button>
-                       </div>
-                   </div>
-
-                   <!-- Filtro de gênero -->
-                   <div class="filtro-grupo">
-                       <h4>Gênero</h4>
-                       <div class="filtro">
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="romance" id="romance">
-                               <label class="form-check-label" for="romance">
-                                   Romance
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="ficcao" id="ficcao">
-                               <label class="form-check-label" for="ficcao">
-                                   Ficção
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="nao-ficcao" id="nao-ficcao">
-                               <label class="form-check-label" for="nao-ficcao">
-                                   Não-Ficção
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="policial" id="policial">
-                               <label class="form-check-label" for="policial">
-                                   Policial
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="fantasia" id="fantasia">
-                               <label class="form-check-label" for="fantasia">
-                                   Fantasia
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="biografia" id="biografia">
-                               <label class="form-check-label" for="biografia">
-                                   Biografia
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="poesia" id="poesia">
-                               <label class="form-check-label" for="poesia">
-                                   Poesia
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="teatro" id="teatro">
-                               <label class="form-check-label" for="teatro">
-                                   Teatro
-                               </label>
-                           </div>
-                       </div>
-                   </div>
-
-                   <!-- Filtro de autor -->
-                   <div class="filtro-grupo">
-                       <h4>Autor</h4>
-                       <select id="autor" class="form-control">
-                           <option value="">Todos os autores</option>
-                           <option value="zadie-smith">Zadie Smith</option>
-                           <option value="john-banville">John Banville</option>
-                           <option value="elena-armas">Elena Armas</option>
-                           <option value="americo-bras-carlos">Américo Brás Carlos</option>
-                           <option value="euripides">Eurípides</option>
-                           <option value="luis-vaz-de-camoes">Luís Vaz de Camões</option>
-                           <option value="lionel-shriver">Lionel Shriver</option>
-                           <option value="pedro-chagas-freitas">Pedro Chagas Freitas</option>
-                           <option value="antonio-fernando-cascais">António Fernando Cascais</option>
-                           <option value="claudia-andrade">Cláudia Andrade</option>
-                           <option value="ivo-andric">Ivo Andrić</option>
-                           <option value="devney-perry">Devney Perry</option>
-                       </select>
-                   </div>
-
-                   <!-- Filtro de editora -->
-                   <div class="filtro-grupo">
-                       <h4>Editora</h4>
-                       <div class="filtro">
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="porto-editora" id="porto-editora">
-                               <label class="form-check-label" for="porto-editora">
-                                   Porto Editora
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="leya" id="leya">
-                               <label class="form-check-label" for="leya">
-                                   Leya
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="bertrand" id="bertrand">
-                               <label class="form-check-label" for="bertrand">
-                                   Bertrand
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="planeta" id="planeta">
-                               <label class="form-check-label" for="planeta">
-                                   Planeta
-                               </label>
-                           </div>
-                           <div class="form-check">
-                               <input class="form-check-input" type="checkbox" value="quetzal" id="quetzal">
-                               <label class="form-check-label" for="quetzal">
-                                   Quetzal
-                               </label>
-                           </div>
-                       </div>
-                   </div>
-               </div>
-           </div>
-           
-           <!-- Coluna de produtos -->
-           <div class="col-lg-9 col-md-8">
-               <div class="produtos">
-                   <!-- Mensagem quando não há resultados -->
-                   <div class="sem-resultados" style="display: none;">
-                       <div class="alert alert-info">
-                           <i class="ri-information-line"></i> Não foram encontrados produtos que correspondam à sua seleção.
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 1 -->
-                   <div class="produto" data-genero="nao-ficcao" data-preco="17.00" data-autor="americo-bras-carlos">
-                       <div class="produto-imagem">
-                           <img src="/imagens/nada-menos-que-a-liberdade.jpg" alt="Nada Menos Que a Liberdade" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>Nada Menos Que a Liberdade</h2>
-                           <p class="autor">Américo Brás Carlos</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€18,89</p>
-                               <p class="preco-atual">€17,00</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 2 -->
-                   <div class="produto" data-genero="romance" data-preco="24.93" data-autor="zadie-smith">
-                       <div class="produto-imagem">
-                           <img src="/imagens/uma-questao-de-beleza.jpg" alt="Uma Questão de Beleza" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>Uma Questão de Beleza</h2>
-                           <p class="autor">Zadie Smith</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€27,70</p>
-                               <p class="preco-atual">€24,93</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 3 -->
-                   <div class="produto" data-genero="fantasia" data-preco="23.31" data-autor="lionel-shriver">
-                       <div class="produto-imagem">
-                           <img src="/imagens/mania.jpg" alt="Mania" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>Mania</h2>
-                           <p class="autor">Lionel Shriver</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€25,90</p>
-                               <p class="preco-atual">€23,31</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 4 -->
-                   <div class="produto" data-genero="romance" data-preco="17.90" data-autor="elena-armas">
-                       <div class="produto-imagem">
-                           <img src="/imagens/o-dilema-da-noiva.jpg" alt="O Dilema da Noiva" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>O Dilema da Noiva</h2>
-                           <p class="autor">Elena Armas</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€19,90</p>
-                               <p class="preco-atual">€17,90</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 5 -->
-                   <div class="produto" data-genero="policial" data-preco="19.71" data-autor="john-banville">
-                       <div class="produto-imagem">
-                           <img src="/imagens/a-garagem.jpg" alt="A Garagem" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>A Garagem</h2>
-                           <p class="autor">John Banville</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€21,90</p>
-                               <p class="preco-atual">€19,71</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 6 -->
-                   <div class="produto" data-genero="teatro" data-preco="19.80" data-autor="luis-vaz-de-camoes">
-                       <div class="produto-imagem">
-                           <img src="/imagens/obras-completas-teatro.jpg" alt="Obras Completas III - Teatro" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>Obras Completas III - Teatro</h2>
-                           <p class="autor">Luís Vaz de Camões, Maria Vitalina Leal de Matos, Vanda Anastácio</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€22,00</p>
-                               <p class="preco-atual">€19,80</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 7 -->
-                   <div class="produto" data-genero="teatro" data-preco="14.31" data-autor="euripides">
-                       <div class="produto-imagem">
-                           <img src="/imagens/as-bacantes.jpg" alt="As Bacantes" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>As Bacantes</h2>
-                           <p class="autor">Eurípides</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€15,90</p>
-                               <p class="preco-atual">€14,31</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 8 -->
-                   <div class="produto" data-genero="romance" data-preco="15.75" data-autor="pedro-chagas-freitas">
-                       <div class="produto-imagem">
-                           <img src="/imagens/hospital-de-alfaces.jpg" alt="Hospital de Alfaces" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>Hospital de Alfaces</h2>
-                           <p class="autor">Pedro Chagas Freitas</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€17,50</p>
-                               <p class="preco-atual">€15,75</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <!-- Produto 9 -->
-                   <div class="produto" data-genero="nao-ficcao" data-preco="17.90" data-autor="antonio-fernando-cascais">
-                       <div class="produto-imagem">
-                           <img src="/imagens/estar-alem.jpg" alt="Estar Além - A Persona Queer de António Variações" onerror="this.src='https://via.placeholder.com/200x300?text=Livro'">
-                       </div>
-                       <div class="produto-info">
-                           <h2>Estar Além - A Persona Queer de António Variações</h2>
-                           <p class="autor">António Fernando Cascais</p>
-                           <p class="estoque">Em Stock</p>
-                           <div class="preco-container">
-                               <p class="desconto">Desconto: 10%</p>
-                               <p class="preco-original">€19,90</p>
-                               <p class="preco-atual">€17,90</p>
-                           </div>
-                           <div class="produto-acoes">
-                               <button class="adicionar-carrinho"><i class="ri-shopping-cart-line"></i> Adicionar ao Carrinho</button>
-                               <button class="detalhe-produto"><i class="ri-eye-line"></i> Ver Detalhes</button>
-                           </div>
-                       </div>
-                   </div>
-               </div>
-           </div>
-       </div>
-   </div>
-</div>
+         <i class="ri-close-line search__close" id="search-close"></i>
+         
+      </div>
 
 
 
 
+      <h1>Livros</h1>
+    
+      <div class="container">
+          <div class="filtros-wrapper">
+              <div class="filtros">
+                  <h2>Filtros</h2>
+                  
+                  <div class="filtros-aplicados">
+                      <h3>Filtros aplicados:</h3>
+                      <div id="filtros-ativos"></div>
+                      <button class="botao-limpar" id="limpar-filtros">Limpar todos os filtros</button>
+                  </div>
+                  
+                  <div class="filtro">
+                      <h3>Gênero</h3>
+                      <label for="genero-adulto"><input type="checkbox" id="genero-adulto" value="adulto"> Adulto</label>
+                      <label for="genero-arte"><input type="checkbox" id="genero-arte" value="arte"> Arte</label>
+                      <label for="genero-aventura"><input type="checkbox" id="genero-aventura" value="aventura"> Aventura</label>
+                      <label for="genero-cientifico"><input type="checkbox" id="genero-cientifico" value="cientifico"> Científico</label>
+                      <label for="genero-drama"><input type="checkbox" id="genero-drama" value="drama"> Drama</label>
+                      <label for="genero-escolar"><input type="checkbox" id="genero-escolar" value="escolar"> Escolar</label>
+                      <label for="genero-ficcao"><input type="checkbox" id="genero-ficcao" value="ficcao"> Ficção</label>
+                      <label for="genero-historia"><input type="checkbox" id="genero-historia" value="historia"> História</label>
+                      <label for="genero-hq"><input type="checkbox" id="genero-hq" value="HQ"> HQ</label>
+                      <label for="genero-infantil"><input type="checkbox" id="genero-infantil" value="infantil"> Infantil</label>
+                      <label for="genero-magico"><input type="checkbox" id="genero-magico" value="magico"> Mágico</label>
+                      <label for="genero-poesia"><input type="checkbox" id="genero-poesia" value="poesia"> Poesia</label>
+                      <label for="genero-religioso"><input type="checkbox" id="genero-religioso" value="religioso"> Religioso</label>
+                      <label for="genero-romance"><input type="checkbox" id="genero-romance" value="romance"> Romance</label>
+                      <label for="genero-saude"><input type="checkbox" id="genero-saude" value="saude"> Saúde</label>
+                      <label for="genero-suspense"><input type="checkbox" id="genero-suspense" value="suspense"> Suspense</label>
+                      <label for="genero-terror"><input type="checkbox" id="genero-terror" value="terror"> Terror</label>
+                  </div>
+                  
+                  <div class="filtro">
+                      <h3>Preço</h3>
+                      <label for="preco-1"><input type="radio" id="preco-1" name="preco" value="0-20"> € 0 - € 20</label>
+                      <label for="preco-2"><input type="radio" id="preco-2" name="preco" value="20-50"> € 20 - € 50</label>
+                      <label for="preco-3"><input type="radio" id="preco-3" name="preco" value="50+"> € 50+</label>
+                      <label for="preco-3"><input type="radio" id="preco-4" name="preco" value="0-50+"> Todos os Valores</label>
+                  </div>
+                  
+                  <div class="filtro">
+                      <h3>Autor</h3>
+                      <select id="autor">
+                          <option value="">Todos os autores</option>
+                          <option value="autor1">Autor 1</option>
+                          <option value="autor2">Autor 2</option>
+                      </select>
+                  </div>
+                  
+                  <div class="filtro">
+                      <h3>Ordenar por:</h3>
+                      <select id="ordenar">
+                          <option value="titulo-asc">Título (A-Z)</option>
+                          <option value="titulo-desc">Título (Z-A)</option>
+                          <option value="preco-asc">Preço (menor para maior)</option>
+                          <option value="preco-desc">Preço (maior para menor)</option>
+                      </select>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="produtos">
+              <div class="sem-resultados">
+                  <h3>Nenhum produto encontrado com os filtros selecionados.</h3>
+                  <p>Tente ajustar seus filtros para ver mais resultados.</p>
+              </div>
+              
+              <div class="produto" data-genero="ficcao" data-preco="25.99" data-autor="autor1">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 1: Livro de Ficção por Autor 1">
+                  <h2>Aventuras Impossíveis</h2>
+                  <p>Uma história de ficção sobre aventuras em mundos paralelos.</p>
+                  <p class="preco">€ 25.99</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="arte" data-preco="39.99" data-autor="autor2">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 2: Livro de Arte por Autor 2">
+                  <h2>História da Arte Moderna</h2>
+                  <p>Um guia completo sobre os movimentos artísticos modernos.</p>
+                  <p class="preco">€ 39.99</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="infantil" data-preco="15.99" data-autor="autor1">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 3: Livro Infantil por Autor 1">
+                  <h2>A Floresta Encantada</h2>
+                  <p>Uma história mágica para crianças sobre amizade e aventura.</p>
+                  <p class="preco">€ 15.99</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="terror" data-preco="55.00" data-autor="autor2">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 4: Livro de Terror por Autor 2">
+                  <h2>Noites Sombrias</h2>
+                  <p>Um thriller psicológico que vai te manter acordado por noites.</p>
+                  <p class="preco">€ 55.00</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="romance" data-preco="29.99" data-autor="autor1">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 5: Romance por Autor 1">
+                  <h2>Amor em Paris</h2>
+                  <p>Uma história romântica ambientada na cidade luz.</p>
+                  <p class="preco">€ 29.99</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="cientifico" data-preco="45.50" data-autor="autor2">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 6: Livro Científico por Autor 2">
+                  <h2>Universo Explicado</h2>
+                  <p>Tudo sobre o cosmos e suas maravilhas em linguagem acessível.</p>
+                  <p class="preco">€ 45.50</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <!-- Produtos adicionais para demonstrar o scroll -->
+              <div class="produto" data-genero="aventura" data-preco="22.50" data-autor="autor1">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 7: Livro de Aventura por Autor 1">
+                  <h2>O Explorador</h2>
+                  <p>Uma aventura incrível pelo mundo desconhecido.</p>
+                  <p class="preco">€ 22.50</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="drama" data-preco="31.75" data-autor="autor2">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 8: Livro de Drama por Autor 2">
+                  <h2>Lágrimas do Passado</h2>
+                  <p>Uma história emocionante sobre superação e recomeço.</p>
+                  <p class="preco">€ 31.75</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="ficcao" data-preco="35.99" data-autor="autor1">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 9: Livro de Ficção por Autor 1">
+                  <h2>Galáxias Distantes</h2>
+                  <p>Ficção científica sobre a colonização de novos mundos.</p>
+                  <p class="preco">€ 35.99</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="suspense" data-preco="42.25" data-autor="autor2">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 10: Livro de Suspense por Autor 2">
+                  <h2>A Testemunha</h2>
+                  <p>Um suspense eletrizante sobre um crime testemunhado.</p>
+                  <p class="preco">€ 42.25</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="historia" data-preco="48.90" data-autor="autor1">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 11: Livro de História por Autor 1">
+                  <h2>Civilizações Perdidas</h2>
+                  <p>Um estudo sobre as grandes civilizações da antiguidade.</p>
+                  <p class="preco">€ 48.90</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="produto" data-genero="poesia" data-preco="19.50" data-autor="autor2">
+                  <img src="https://via.placeholder.com/150x200" alt="Capa do Livro 12: Livro de Poesia por Autor 2">
+                  <h2>Versos do Coração</h2>
+                  <p>Uma coletânea de poemas sobre amor e sentimentos.</p>
+                  <p class="preco">€ 19.50</p>
+                  <button class="adicionar-carrinho">Adicionar ao Carrinho</button>
+              </div>
+          </div>
+      </div>
 
-
-
-
-
-
-
-
-
-
-      <!--==================== FOOTER ====================-->
       <footer>
 		<div class="footer-content">
 		  <div class="column">
@@ -536,8 +302,14 @@
 	  </footer>
 
 
-       <!--=============== SWIPER JS ===============-->
-       <script src="swiper-bundle.min.js"></script>
-    <script src="categorias.js"></script>
-</body>
+
+
+      
+      <!--=============== SWIPER JS ===============-->
+      <script src="swiper-bundle.min.js"></script>
+
+      <!--=============== MAIN JS ===============-->
+      <script src="categorias.js"></script>
+
+   </body>
 </html>
