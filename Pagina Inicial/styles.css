@@ -371,12 +371,21 @@ body.dark-theme{
   
 }
 /*=============== SERVICES ===============*/
-.services__container{
-  row-gap: .3rem;
+.services__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem; /* Ajuste conforme necessário */
+  flex-wrap: wrap; /* Para responsividade */
 }
 
-.services__card{
+
+.services__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  width: 200px; /* Ajuste conforme necessário */
 }
 
 .services__card i{
@@ -739,7 +748,7 @@ footer {
   }
 
   .services__container{
-    column-gap:10rem ;
+    column-gap:15rem ;
   }
 
   .services__card i{
