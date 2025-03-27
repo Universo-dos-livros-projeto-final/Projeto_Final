@@ -1,35 +1,27 @@
 /*=============== SEARCH ===============*/
-
 const searchButton = document.getElementById('search-button'),
       searchClose = document.getElementById('search-close'),
       searchContent = document.getElementById('search-content');
 
 //===== MENU SHOW =====//
-/* Validate if constant exists */
 if(searchButton){
-    searchButton.addEventListener('click', () =>{
+    searchButton.addEventListener('click', () => {
         searchContent.classList.add('show-search');
     });
 }
 
 //===== MENU HIDDEN =====//
-/* Validate if constant exists */
 if(searchClose){
-    searchClose.addEventListener('click', () =>{
+    searchClose.addEventListener('click', () => {
         searchContent.classList.remove('show-search');
     });
 }
 
-
-/*=============== LOGIN ===============*/
-
-
 /*=============== ADD SHADOW HEADER ===============*/
 const shadowHeader = () => {
     const header = document.getElementById('header');
-    // When the scroll is greater than 50 viewport height, add class 's-header'
-    this.scrollY >= 50 ? header.classList.add('shadow-header')
-                       : header.classList.remove('shadow-header');
+    window.scrollY >= 50 ? header.classList.add('shadow-header')
+                          : header.classList.remove('shadow-header');
 }
 
 window.addEventListener('scroll', shadowHeader)
@@ -41,14 +33,12 @@ let swiperHome = new Swiper('.home__swiper', {
     grabCursor: true,
     slidesPerView: 'auto',
     centeredSlides: 'auto',
-
-    autoplay:{
-        delay:3000,
-        disableOnInteraction:false,
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
     },
-
-    breakpoints:{
-        1220:{
+    breakpoints: {
+        1220: {
             spaceBetween: -32,
         }
     }
@@ -61,96 +51,334 @@ let swiperFeatured = new Swiper('.featured__swiper', {
     grabCursor: true,
     slidesPerView: 'auto',
     centeredSlides: 'auto',
-
-    navigation:{
+    navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
     },
-
-    breakpoints:{
-        1150:{
-            slidesPerView:4,
-            centeredSlides:false,
+    breakpoints: {
+        1150: {
+            slidesPerView: 4,
+            centeredSlides: false,
         }
     }
 })
-   
 
-/*=============== nao lembro pra que serve isso ===============*/
-
-$(".wish-icon i").click(function(){
-    $(this).toggleClass("fa-heart fa-heart-o");
-});
-	
 /*=============== NEW SWIPER ===============*/
 let swiperNew = new Swiper('.new__swiper', {
     loop: true,
     spaceBetween: 16,
     slidesPerView: 'auto',
-
-    breakpoints:{
-        1150:{
-            slidesPerView:3,
-           
+    breakpoints: {
+        1150: {
+            slidesPerView: 3,
         }
     }
 })
 
-/*=============== TESTIMONIAL SWIPER ===============*/
-
-
-/*=============== SHOW SCROLL UP ===============*/ 
-
-
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-
-
 /*=============== DARK LIGHT THEME ===============*/ 
 const themeButton = document.getElementById('theme-button')
-const darkTheme ='dark-theme'
+const darkTheme = 'dark-theme'
 const iconTheme = 'ri-sun-line'
 
 const selectedTheme = localStorage.getItem('selected-theme')
 const selectedIcon = localStorage.getItem('selected-icon')
 
-// Obtemos o tema atual que a interface tem validando a classe dark-theme
 const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light';
 const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'ri-moon-line' : 'ri-sun-line';
 
-// Validamos se o usuário já escolheu um tema anteriormente
 if (selectedTheme) {
-    // Se a validação for preenchida, adiciona ou remove o tema baseado na escolha anterior
     document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme);
     themeButton.classList[selectedIcon === 'ri-moon-line' ? 'add' : 'remove'](iconTheme);
 }
 
-// Ativa ou desativa o tema manualmente com o botão
 themeButton.addEventListener('click', () => {
-    // Alterna entre dark/light e os ícones
     document.body.classList.toggle(darkTheme);
     themeButton.classList.toggle(iconTheme);
     
-    // Salvamos o tema e o ícone atual escolhido pelo usuário
     localStorage.setItem('selected-theme', getCurrentTheme());
     localStorage.setItem('selected-icon', getCurrentIcon());
 });
 
+/*=============== SCROLL REVEAL ANIMATION ===============*/
+const sr = ScrollReveal({
+    origin: 'top',
+    distance: '60px',
+    duration: 2500,
+    delay: 400,
+})
 
+sr.reveal('.home__data, .featured__container, .new__container, .footer')
+sr.reveal('.home__images', {delay: 600})
+sr.reveal('.services__card', {interval: 100})
+sr.reveal('.discount__data', {origin: 'left'})
+sr.reveal('.discount__images', {origin: 'right'})
 
+class CartModal {
+    constructor() {
+        this.cart = [];
+        this.cartModal = document.getElementById('cart-modal');
+        this.cartItemsContainer = document.getElementById('cart-items');
+        this.cartTotalElement = document.getElementById('cart-total');
+        
+        this.initEventListeners();
+        this.loadCartFromLocalStorage();
+    }
 
+    initEventListeners() {
+        document.getElementById('carrinho').addEventListener('click', () => this.toggleCart());
+        document.querySelector('.cart-modal-close').addEventListener('click', () => this.toggleCart());
+        
+        document.querySelectorAll('.featured__card .button').forEach(button => {
+            button.addEventListener('click', (e) => this.addToCart(e.target.closest('.featured__card')));
+        });
+    }
 
+    toggleCart() {
+        this.cartModal.classList.toggle('show');
+        this.renderCartItems();
+    }
 
+    addToCart(bookCard) {
+        const book = {
+            id: Date.now(),
+            title: bookCard.querySelector('.featured__title').textContent,
+            price: parseFloat(bookCard.querySelector('.featured__discount').textContent.replace('$', '')),
+            image: bookCard.querySelector('.featured__img').src,
+            quantity: 1
+        };
 
+        const existingItem = this.cart.find(item => item.title === book.title);
+        
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            this.cart.push(book);
+        }
 
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
 
+    renderCartItems() {
+        this.cartItemsContainer.innerHTML = '';
+        let total = 0;
 
+        this.cart.forEach((item, index) => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            const cartItemElement = document.createElement('div');
+            cartItemElement.classList.add('cart-item');
+            cartItemElement.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="cart-item-image" style="width: 80px; height: 120px; object-fit: cover;">
+                <div class="cart-item-details">
+                    <h3>${item.title}</h3>
+                    <div class="cart-item-quantity">
+                        <button onclick="cartModal.decreaseQuantity(${index})">-</button>
+                        <input type="text" value="${item.quantity}" readonly>
+                        <button onclick="cartModal.increaseQuantity(${index})">+</button>
+                    </div>
+                    <span class="cart-item-price">€ ${item.price.toFixed(2)}</span>
+                </div>
+                <button class="cart-item-remove" onclick="cartModal.removeItem(${index})">X</button>
+            `;
+
+            this.cartItemsContainer.appendChild(cartItemElement);
+        });
+
+        this.cartTotalElement.textContent = `€ ${total.toFixed(2)}`;
+    }
+
+    increaseQuantity(index) {
+        this.cart[index].quantity++;
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
+
+    decreaseQuantity(index) {
+        if (this.cart[index].quantity > 1) {
+            this.cart[index].quantity--;
+        } else {
+            this.cart.splice(index, 1);
+        }
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
+
+    removeItem(index) {
+        this.cart.splice(index, 1);
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
+
+    saveCartToLocalStorage() {
+        localStorage.setItem('universoLivrosCart', JSON.stringify(this.cart));
+    }
+
+    loadCartFromLocalStorage() {
+        const savedCart = localStorage.getItem('universoLivrosCart');
+        if (savedCart) {
+            this.cart = JSON.parse(savedCart);
+            this.renderCartItems();
+        }
+    }
+}
+
+const cartModal = new CartModal();
+
+class FavoritesModal {
+    constructor() {
+        this.favorites = [];
+        this.favoritesModal = document.getElementById('favorites-modal');
+        this.favoritesItemsContainer = document.getElementById('favorites-items');
+        
+        this.initEventListeners();
+        this.loadFavoritesFromLocalStorage();
+    }
+
+    initEventListeners() {
+        const favoritosButton = document.getElementById('favoritos');
+        if (favoritosButton) {
+            favoritosButton.addEventListener('click', () => this.toggleFavorites());
+        }
+        
+        const closeButton = document.querySelector('.favorites-modal-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => this.toggleFavorites());
+        }
+        
+        this.addFavoriteButtonListeners();
+    }
+
+    addFavoriteButtonListeners() {
+        const favoriteButtons = document.querySelectorAll('.featured__actions button:nth-child(2)');
+
+        favoriteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const bookCard = e.target.closest('.featured__card');
+                
+                if (bookCard) {
+                    this.addToFavorites(bookCard);
+                }
+            });
+        });
+    }
+
+    addToFavorites(bookCard) {
+        const imgEl = bookCard.querySelector('.featured__img');
+        const titleEl = bookCard.querySelector('.featured__title');
+        const priceEl = bookCard.querySelector('.featured__discount');
+
+        if (!imgEl || !titleEl || !priceEl) return;
+
+        const book = {
+            id: imgEl.src,
+            title: titleEl.textContent.trim(),
+            price: priceEl.textContent,
+            bookCardId: bookCard.id  // Store book card identifier instead of whole card
+        };
+
+        const existingItem = this.favorites.find(item => item.id === book.id);
+        
+        if (!existingItem) {
+            this.favorites.push(book);
+            this.saveFavoritesToLocalStorage();
+            this.renderFavoriteItems();
+            
+            const heartIcon = bookCard.querySelector('.featured__actions button:nth-child(2) i');
+            if (heartIcon) {
+                heartIcon.classList.add('ri-heart-fill');
+                heartIcon.classList.remove('ri-heart-line');
+            }
+        }
+    }
+
+    toggleFavorites() {
+        this.favoritesModal.classList.toggle('show');
+        this.renderFavoriteItems();
+    }
+
+    renderFavoriteItems() {
+        this.favoritesItemsContainer.innerHTML = '';
+
+        if (this.favorites.length === 0) {
+            const emptyMessage = document.createElement('div');
+            emptyMessage.classList.add('favorites-empty-message');
+            emptyMessage.textContent = 'Nenhum livro nos favoritos';
+            this.favoritesItemsContainer.appendChild(emptyMessage);
+            return;
+        }
+
+        this.favorites.forEach((item, index) => {
+            const favoriteItemElement = document.createElement('div');
+            favoriteItemElement.classList.add('favorites-item');
+            favoriteItemElement.innerHTML = `
+                <img src="${item.id}" alt="${item.title}" style="width: 80px; height: 120px; object-fit: cover;">
+                <div class="favorites-item-details">
+                    <h3>${item.title}</h3>
+                    <p>${item.price}</p>
+                </div>
+                <div class="favorites-item-actions">
+                    <button class="favorites-item-cart" onclick="favoritesModal.addToCart(${index})">Carrinho</button>
+                    <button class="favorites-item-remove" onclick="favoritesModal.removeItem(${index})">X</button>
+                </div>
+            `;
+
+            this.favoritesItemsContainer.appendChild(favoriteItemElement);
+        });
+    }
+
+    addToCart(index) {
+        const item = this.favorites[index];
+        
+        const cartButton = document.getElementById(item.bookCardId)?.querySelector('.button');
+        if (cartButton) {
+            cartButton.click();
+        }
+    }
+
+    removeItem(index) {
+        const removedItem = this.favorites[index];
+        this.favorites.splice(index, 1);
+        this.saveFavoritesToLocalStorage();
+        this.renderFavoriteItems();
+
+        const bookCards = document.querySelectorAll('.featured__card');
+        bookCards.forEach(card => {
+            const img = card.querySelector('.featured__img');
+            if (img && img.src === removedItem.id) {
+                const heartIcon = card.querySelector('.featured__actions button:nth-child(2) i');
+                if (heartIcon) {
+                    heartIcon.classList.remove('ri-heart-fill');
+                    heartIcon.classList.add('ri-heart-line');
+                }
+            }
+        });
+    }
+
+    saveFavoritesToLocalStorage() {
+        localStorage.setItem('universoLivrosFavorites', JSON.stringify(this.favorites));
+    }
+
+    loadFavoritesFromLocalStorage() {
+        const savedFavorites = localStorage.getItem('universoLivrosFavorites');
+        if (savedFavorites) {
+            this.favorites = JSON.parse(savedFavorites);
+            this.renderFavoriteItems();
+        }
+    }
+}
+
+const favoritesModal = new FavoritesModal();
+
+// Filtros e Categorias
 const filtros = {
     genero: [],
     preco: null,
     autor: null,
 };
 
-// Função para filtrar produtos
 function filtrarProdutos() {
     const produtos = document.querySelectorAll('.produto');
     let produtosVisiveis = 0;
@@ -172,7 +400,6 @@ function filtrarProdutos() {
         }
     });
 
-    // Mostrar mensagem se não houver resultados
     const semResultados = document.querySelector('.sem-resultados');
     if (produtosVisiveis === 0) {
         semResultados.style.display = 'block';
@@ -180,70 +407,51 @@ function filtrarProdutos() {
         semResultados.style.display = 'none';
     }
 
-    // Atualizar resumo de filtros
     atualizarFiltrosAplicados();
 }
 
-// Função para verificar faixa de preço
 function verificarPreco(preco, faixaPreco) {
-    if (faixaPreco === '0-20') {
-        return preco >= 0 && preco <= 20;
-    } else if (faixaPreco === '20-50') {
-        return preco > 20 && preco <= 50;
-    } else if (faixaPreco === '50+') {
-        return preco > 50;
-    } else if (faixaPreco === '0-50+'){
-        return preco >= 0 ;
-    }
+    if (faixaPreco === '0-20') return preco >= 0 && preco <= 20;
+    if (faixaPreco === '20-50') return preco > 20 && preco <= 50;
+    if (faixaPreco === '50+') return preco > 50;
     return true;
 }
 
-// Função para atualizar resumo de filtros aplicados
 function atualizarFiltrosAplicados() {
     const filtrosAtivos = document.getElementById('filtros-ativos');
     const filtrosAplicados = document.querySelector('.filtros-aplicados');
     
-    // Limpar filtros atuais
     filtrosAtivos.innerHTML = '';
     
-    // Adicionar gêneros selecionados
     if (filtros.genero.length > 0) {
         const generosList = document.createElement('p');
         generosList.innerHTML = `<strong>Gêneros:</strong> ${filtros.genero.join(', ')}`;
         filtrosAtivos.appendChild(generosList);
     }
     
-    // Adicionar preço selecionado
     if (filtros.preco) {
         const precoInfo = document.createElement('p');
         let textoPreco = '';
-        if (filtros.preco === '0-20') {
-            textoPreco = '€ 0 - € 20';
-        } else if (filtros.preco === '20-50') {
-            textoPreco = '€ 20 - € 50';
-        } else if (filtros.preco === '50+') {
-            textoPreco = '€ 50+';
-        }
+        if (filtros.preco === '0-20') textoPreco = '€ 0 - € 20';
+        else if (filtros.preco === '20-50') textoPreco = '€ 20 - € 50';
+        else if (filtros.preco === '50+') textoPreco = '€ 50+';
+        
         precoInfo.innerHTML = `<strong>Preço:</strong> ${textoPreco}`;
         filtrosAtivos.appendChild(precoInfo);
     }
     
-    // Adicionar autor selecionado
     if (filtros.autor) {
         const autorInfo = document.createElement('p');
         autorInfo.innerHTML = `<strong>Autor:</strong> ${filtros.autor}`;
         filtrosAtivos.appendChild(autorInfo);
     }
     
-    // Mostrar ou esconder resumo de filtros
-    if (filtros.genero.length > 0 || filtros.preco || filtros.autor) {
-        filtrosAplicados.style.display = 'block';
-    } else {
-        filtrosAplicados.style.display = 'none';
-    }
+    filtrosAplicados.style.display = 
+        (filtros.genero.length > 0 || filtros.preco || filtros.autor) 
+        ? 'block' 
+        : 'none';
 }
 
-// Event listeners para filtros de gênero
 document.querySelectorAll('.filtro input[type="checkbox"]').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => {
         const genero = e.target.value;
@@ -251,15 +459,12 @@ document.querySelectorAll('.filtro input[type="checkbox"]').forEach((checkbox) =
             filtros.genero.push(genero);
         } else {
             const index = filtros.genero.indexOf(genero);
-            if (index > -1) {
-                filtros.genero.splice(index, 1);
-            }
+            if (index > -1) filtros.genero.splice(index, 1);
         }
         filtrarProdutos();
     });
 });
 
-// Event listeners para filtros de preço
 document.querySelectorAll('.filtro input[type="radio"]').forEach((radio) => {
     radio.addEventListener('change', (e) => {
         filtros.preco = e.target.value;
@@ -267,18 +472,15 @@ document.querySelectorAll('.filtro input[type="radio"]').forEach((radio) => {
     });
 });
 
-// Event listener para filtro de autor
 document.getElementById('autor').addEventListener('change', (e) => {
     filtros.autor = e.target.value;
     filtrarProdutos();
 });
 
-// Event listener para ordenação
 document.getElementById('ordenar').addEventListener('change', (e) => {
     ordenarProdutos(e.target.value);
 });
 
-// Função para ordenar produtos
 function ordenarProdutos(ordem) {
     const produtos = Array.from(document.querySelectorAll('.produto'));
     const produtosContainer = document.querySelector('.produtos');
@@ -301,53 +503,29 @@ function ordenarProdutos(ordem) {
         }
     });
     
-    // Reordenar produtos no DOM
     const semResultados = document.querySelector('.sem-resultados');
     produtosContainer.appendChild(semResultados);
     produtos.forEach((produto) => produtosContainer.appendChild(produto));
 }
 
-// Limpar todos os filtros
 document.getElementById('limpar-filtros').addEventListener('click', () => {
-    // Limpar checkboxes
     document.querySelectorAll('.filtro input[type="checkbox"]').forEach(checkbox => {
         checkbox.checked = false;
     });
     
-    // Limpar radios
     document.querySelectorAll('.filtro input[type="radio"]').forEach(radio => {
         radio.checked = false;
     });
     
-    // Resetar selects
     document.getElementById('autor').value = '';
     document.getElementById('ordenar').value = 'titulo-asc';
     
-    // Limpar objeto de filtros
     filtros.genero = [];
     filtros.preco = null;
     filtros.autor = null;
     
-    // Reordenar e filtrar
     ordenarProdutos('titulo-asc');
     filtrarProdutos();
-});
-
-// Adicionar funcionalidade aos botões de carrinho
-document.querySelectorAll('.adicionar-carrinho').forEach(button => {
-    button.addEventListener('click', function() {
-        const produto = this.closest('.produto');
-        const titulo = produto.querySelector('h2').textContent;
-        alert(`"${titulo}" adicionado ao carrinho!`);
-        this.textContent = "Adicionado ✓";
-        this.style.backgroundColor = "#27ae60";
-        
-        // Resetar botão após 2 segundos
-        setTimeout(() => {
-            this.textContent = "Adicionar ao Carrinho";
-            this.style.backgroundColor = "";
-        }, 2000);
-    });
 });
 
 // Inicializar ordenação
