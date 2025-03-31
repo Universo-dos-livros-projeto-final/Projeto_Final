@@ -1,88 +1,97 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="paginaLogin.css">
-    
-      <!--=============== FAVICON ===============-->
-      <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="paginaLogin.css" />
 
-      <!--=============== REMIXICONS ===============-->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
-    <link rel="stylesheet" href="swiper-bundle.min.css"> 
-</head>
-<body>
-    <div class="container"> 
-        <div class="container-form">
-            <form onsubmit="handleSubmitLogin(event)" class="sign-in"> 
-                <h2>Iniciar Sessão</h2>
-                <div class="container-input">
-                    
-                    <input type="text" placeholder="Email">
-                </div>
-                <div class="container-input">
-                
-                    <input type="password" placeholder="Senha">
-                </div>
-                <a href="#"> Esqueceu a sua senha?</a>
-                <button>Iniciar Sessão</button><br>
-                <div class="nav__actions">
-                    <i class="ri-moon-line change-theme theme-button"></i>
-                </div>
-            </form>
+    <!--=============== FAVICON ===============-->
+    <link
+      rel="shortcut icon"
+      href="assets/img/favicon.png"
+      type="image/x-icon"
+    />
+
+    <!--=============== REMIXICONS ===============-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
+    />
+    <link rel="stylesheet" href="swiper-bundle.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="container-form">
+        <form onsubmit="handleSubmitLogin(event)" class="sign-in">
+          <h2>Iniciar Sessão</h2>
+          <div class="container-input">
+            <input type="text" placeholder="Email" />
+          </div>
+          <div class="container-input">
+            <input type="password" placeholder="Senha" />
+          </div>
+          <a href="#"> Esqueceu a sua senha?</a>
+          <button>Iniciar Sessão</button><br />
+          <div class="nav__actions">
+            <i class="ri-moon-line change-theme theme-button"></i>
+          </div>
+        </form>
+      </div>
+      <div class="container-form">
+        <form onsubmit="handleSubmitSignUp(event)" class="sign-up">
+          <h2>Criar Conta</h2>
+          <div class="container-input">
+            <input type="text" placeholder="Nome" />
+          </div>
+          <div class="container-input">
+            <input type="text" placeholder="Sobrenome" />
+          </div>
+          <div class="container-input">
+            <input type="text" placeholder="Email" />
+          </div>
+          <div class="container-input">
+            <input type="password" placeholder="Senha" />
+          </div>
+          <div class="container-input">
+            <input type="password" placeholder="Repita sua Senha" />
+          </div>
+          <button>Criar Conta</button><br />
+          <div class="nav__actions">
+            <i class="ri-moon-line change-theme theme-button"></i>
+          </div>
+        </form>
+      </div>
+      <div class="container-welcome">
+        <div class="welcome-sign-up welcome">
+          <div class="logo">
+            <img src="..//imagens/logo 4k.jpeg" alt="Logo" />
+          </div>
+          <h3>Bem Vindo!</h3>
+          <p>Insira seus dados pessoais para usar todos os recursos do site</p>
+          <br />
+          <button class="button" id="bnt-sign-up">Criar Conta</button>
+          <a href="/Pagina Inicial/index.html"
+            ><button>Voltar ao Menu Inicial</button></a
+          >
         </div>
-        <div class="container-form">
-            <form onsubmit="handleSubmitSignUp(event)" class="sign-up">
-                <h2> Criar Conta</h2>
-                <div class="container-input">
-                    <input type="text" placeholder="Nome">
-                </div>
-                <div class="container-input">
-                    
-                    <input type="text" placeholder="Sobrenome">
-                </div>
-                <div class="container-input">
-                    
-                    <input type="text" placeholder="Email">
-                </div>
-                <div class="container-input">
-                    
-                    <input type="password" placeholder="Senha">
-                </div>
-                <div class="container-input">
-                    
-                    <input type="password" placeholder="Repita sua Senha">
-                </div>
-                <button>Criar Conta</button><br>
-                <div class="nav__actions">
-                    <i class="ri-moon-line change-theme theme-button"></i>
-                </div>
-            </form>
+        <div class="welcome-sign-in welcome">
+          <div class="logo">
+            <img src="..//imagens/logo 4k.jpeg" alt="Logo" />
+          </div>
+          <h3>Olá!</h3>
+          <p>
+            Registre com seus dados pessoais para usar todas as funcoes do site
+          </p>
+          <br />
+          <button class="button" id="bnt-sign-in">Iniciar Sessão</button>
+          <a href="/Pagina Inicial/index.html"
+            ><button>Voltar ao Menu Inicial</button></a
+          >
         </div>
-        <div class="container-welcome">
-            <div class="welcome-sign-up welcome">
-                <div class="logo">
-                    <img src="/imagens/logo 4k.jpeg" alt="Logo"> 
-                </div>
-                <h3> Bem Vindo!</h3>
-                <p> Insira seus dados pessoais para usar todos os recursos do site </p><br>
-                <button class="button" id="bnt-sign-up"> Criar Conta </button>
-                <a href="/Pagina Inicial/index.html"><button>Voltar ao Menu Inicial</button></a>
-            </div> 
-            <div class="welcome-sign-in welcome">
-                <div class="logo">
-                    <img src="/imagens/logo 4k.jpeg" alt="Logo"> 
-                </div>
-                <h3> Olá!</h3>
-                <p> Registre com seus dados pessoais para usar todas as funcoes do site</p><br>
-                <button class="button" id="bnt-sign-in"> Iniciar Sessão </button>
-                <a href="/Pagina Inicial/index.html"><button>Voltar ao Menu Inicial</button></a>
-            </div>
-        </div>
+      </div>
     </div>
     <script src="paginaLogin.js"></script>
-    <script src="swiper-bundle.min.js"></script>  
-</body>
+    <script src="swiper-bundle.min.js"></script>
+  </body>
 </html>

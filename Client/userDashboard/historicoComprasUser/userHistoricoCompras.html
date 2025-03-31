@@ -1,76 +1,86 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="userHistoricoCompras.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="userHistoricoCompras.css" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
     <title>Pagina Utilizador</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="logo-name">
-            <div class="logo-image">
-                <img src="/userDashboard/userDashboardImagens/logo 4k.jpeg" alt="logo">
+      <div class="logo-name">
+        <div class="logo-image">
+          <img src="..//userDashboardImagens/logo 4k.jpeg" alt="logo" />
+        </div>
+        <span class="logo_name">Universo dos Livros</span>
+      </div>
+
+      <div class="menu-itens">
+        <ul class="nav-links">
+          <li>
+            <a href="..//userDashboardInfo/userDashboard.html">
+              <i class="uil uil-user-circle"></i>
+              <span class="link-name">Informações da Conta</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="uil uil-shopping-bag"></i>
+              <span class="link-name">Histórico de Compras</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="logout-mode">
+          <li>
+            <a href="#">
+              <i class="uil uil-signout"></i>
+              <span class="link-name">Logout</span>
+            </a>
+          </li>
+
+          <li class="mode">
+            <a href="#">
+              <i class="uil uil-moon"></i>
+              <span class="link-name">Dark Mode</span>
+            </a>
+
+            <div class="mode-toggle">
+              <span class="switch"></span>
             </div>
-            <span class="logo_name">Universo dos Livros</span>
-        </div>
-
-        <div class="menu-itens">
-            <ul class="nav-links">
-                <li><a href="/userDashboard/userDashboardInfo/userDashboard.html">
-                    <i class="uil uil-user-circle"></i>
-                    <span class="link-name">Informações da Conta</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-shopping-bag"></i>
-                    <span class="link-name">Histórico de Compras</span>
-                </a></li>
-                
-            </ul>
-         
-            <ul class="logout-mode">
-                <li><a href="#">
-                    <i class="uil uil-signout"></i>
-                    <span class="link-name">Logout</span>
-                </a></li>
-            
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                        <span class="link-name">Dark Mode</span>
-                    </a>
-
-                    <div class="mode-toggle">
-                    <span class="switch"></span>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
+          </li>
+        </ul>
+      </div>
     </nav>
 
     <section class="principal">
-        <div class="top">
-            <i class="uil uil-bars sidebar-toggle"></i>
+      <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
 
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <input type="text" placeholder="Pesquise aqui...">
-            </div>
-            <img src="/userDashboard/userDashboardImagens/perfilUsuario.jpeg" alt="gatinho estiloso perfil">
+        <div class="search-box">
+          <i class="uil uil-search"></i>
+          <input type="text" placeholder="Pesquise aqui..." />
         </div>
+        <img
+          src="..//userDashboardImagens/perfilUsuario.jpeg"
+          alt="gatinho estiloso perfil"
+        />
+      </div>
 
-        <div class="dash-content">
-            <div class="overview">
-                <div class="title">
-                    <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text">Histórico de Compras</span>
-                </div>               
-            </div>
+      <div class="dash-content">
+        <div class="overview">
+          <div class="title">
+            <i class="uil uil-tachometer-fast-alt"></i>
+            <span class="text">Histórico de Compras</span>
+          </div>
         </div>
+      </div>
     </section>
     <script src="userHistoricoCompras.js"></script>
-</body>
+  </body>
 </html>
