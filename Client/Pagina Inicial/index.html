@@ -54,7 +54,7 @@
                   <li class="nav__item">
                      <a href="#promocoes" class="nav__link">
                         <i class="ri-price-tag-3-line"></i>
-                        <span>Promocoes</span>
+                        <span>Promoções</span>
                      </a>
                   </li>
 
@@ -68,7 +68,7 @@
                   <li class="nav__item">
                      <a href="#sobrenos" class="nav__link">
                         <i class="ri-message-3-line"></i>
-                        <span>Sobre Nos</span>
+                        <span>Sobre Nós</span>
                      </a>
                   </li>
                </ul>
@@ -79,7 +79,41 @@
 
                <a href="/paginaLogin/paginaLogin.html" class="login"><i class="ri-user-line login-button " id="login-button"></i>
 				</a>
-               <i class="ri-shopping-cart-line"></i>
+               <i class="ri-shopping-cart-line" id="carrinho" ></i>
+			   <div id="cart-modal" class="cart-modal">
+				<div class="cart-modal-content">
+					<div class="cart-modal-header">
+						<h2>Carrinho</h2>
+						<button class="cart-modal-close">&times;</button>
+					</div>
+					
+					<div class="cart-items-container" id="cart-items">
+					
+					</div>
+					
+					<div class="cart-summary">
+						<div class="cart-total-row">
+							<span>Total</span>
+							<span id="cart-total">R$ 0,00</span>
+						</div>
+						<button class="cart-finalize-button">Finalizar</button>
+					</div>
+				</div>
+			</div>
+
+			   <i class="ri-heart-line" id="favoritos"></i>
+			   <div id="favorites-modal" class="favorites-modal">
+				<div class="favorites-modal-content">
+					<div class="favorites-modal-header">
+						<h2>Favoritos</h2>
+						<button class="favorites-modal-close">&times;</button>
+					</div>
+					
+					<div class="favorites-items-container" id="favorites-items">
+						
+					</div>
+				</div>
+			</div>
 
                <i class="ri-moon-line change-theme" id="theme-button"></i>
             </div>
@@ -143,7 +177,7 @@
          
 
          <!--==================== Destaques ====================-->
-		 <section class="featured section" id="featured">
+		 <section class="featured section" id="destaques">
 			<h2 class="section__title"> Destaques</h2>
 
 			<div class="featured__container container">
@@ -152,121 +186,121 @@
 						<article class="featured__card swiper-slide">
 							<img src="imagens/a arte sutil de ligar o fodase.jpg" alt="image" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> A Sutil Arte de Ligar o Fod@-se</h3>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">24,38€</span>
+								
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
 							<img src="imagens/a elite.jpg" alt="image" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> A Elite </h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">10,60€</span>
+								<span class="featured__price"> 11,16€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
 							<img src="imagens/a escolha.jpg" alt="image" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> A Escolha</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount"> 7,70€</span>
+								<span class="featured__price">8,10</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
 							<img src="imagens/a esperança.jpg" alt="image" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> A Esperança</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">48,54€</span>
+								<span class="featured__price">79,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
 							<img src="imagens/a seleção.jpg" alt="image" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> A Seleção</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">39,69€</span>
+								<span class="featured__price">59,90 €</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/harry potter 2.jpg" alt="image" class="featured__img">
+							<img src="imagens/harry potter 2.jpg" alt="Harry Potter e a Câmara Secreta" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> Harry Potter e a Câmara Secreta</h3>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">42,18€</span>
+								<span class="featured__price">64,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/harry potter 3.jpg" alt="image" class="featured__img">
+							<img src="imagens/harry potter 3.jpg" alt="Harry Potter e o Prisioneiro de Azkaban" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> Harry Potter e o Prisioneiro de Azkaban</h3>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">41,55€</span>
+								<span class="featured__price">54,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/uma breve historia no tempo.jpg" alt="image" class="featured__img">
+							<img src="imagens/senhor dos aneis.jpg" alt="image" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title">O Senhor dos Anéis: A Sociedade do Anel </h3>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">44,91€</span>
+								<span class="featured__price">69,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 					</div>
@@ -303,130 +337,130 @@
 		 </section>
 
 		 <!--==================== PROMOÇÕES ====================-->
-		 <section class="featured section" id="featured">
+		 <section class="featured section" id="promocoes">
 			<h2 class="section__title"> Livros em Promoções </h2>
 
 			<div class="featured__container container">
 				<div class="featured__swiper swiper">
 					<div class="swiper-wrapper">
 						<article class="featured__card swiper-slide">
-							<img src="imagens/a arte sutil de ligar o fodase.jpg" alt="image" class="featured__img">
+							<img src="imagens/A Pedra e o Dragão.jpg" alt="A Pedra e o Dragão" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> A Pedra e o Dragão</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">52,90€</span>
+								<span class="featured__price">79,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/a elite.jpg" alt="image" class="featured__img">
+							<img src="imagens/A Volta ao Mundo em 80 dias.jpg" alt="A volta ao mundo em 80 dias " class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title">A volta ao mundo em 80 dias </h3>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">19,00€</span>
+								<span class="featured__price">29,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/a escolha.jpg" alt="image" class="featured__img">
+							<img src="imagens/Bluey.jpg" alt="Bluey" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> Bluey</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">23,60€</span>
+								<span class="featured__price">29,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/a esperança.jpg" alt="image" class="featured__img">
+							<img src="imagens/em chamas.jpg" alt="Em chamas " class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> Em chamas </h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">49,36€</span>
+								<span class="featured__price">79,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/a seleção.jpg" alt="image" class="featured__img">
+							<img src="imagens/o alienista.jpg" alt="O Alienista" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> O Alienista</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">14,13€</span>
+								<span class="featured__price">19,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/harry potter 2.jpg" alt="image" class="featured__img">
+							<img src="imagens/harry potter 4.jpg" alt="Harry Potter e o Cálice de Fogo" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title">Harry Potter e o Cálice de Fogo</h3>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">76,00€</span>
+								<span class="featured__price">99,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/harry potter 3.jpg" alt="image" class="featured__img">
+							<img src="imagens/O Livro das Portas.jpg" alt="O livro das portas" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title"> O livro das portas</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">63,22€</span>
+								<span class="featured__price">79,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 						<article class="featured__card swiper-slide">
-							<img src="imagens/uma breve historia no tempo.jpg" alt="image" class="featured__img">
+							<img src="imagens/romeu e julieta.jpg" alt="Romeu e Julieta" class="featured__img">
 
-							<h3 class="featured__title"> Livro em promocao</h3>
+							<h3 class="featured__title">Romeu e Julieta</h3><BR>
 							<div class="featured__prices">
-								<span class="featured__discount">$11.99</span>
-								<span class="featured__price">$19.99</span>
+								<span class="featured__discount">16,12€</span>
+								<span class="featured__price">19,90€</span>
 							</div>
 							<button class="button">Adicionar ao Carrinho</button>
 							<div class="featured__actions">
 								<button><i class="ri-search-line"></i></button>
 								<button><i class="ri-heart-line"></i></button>
-								<button><i class="ri-eye-line"></i></button>
+								
 							</div>
 						</article>
 					</div>
@@ -449,359 +483,143 @@
 				Novos Livros
 			</h2>
 
-			<div class="new__container container">
-				<div class="new__swiper swiper">
+			<div class="featured__container container">
+				<div class="featured__swiper swiper">
 					<div class="swiper-wrapper">
-						<a href="#" class=" new__card swiper-slide ">
-						<img src="imagens/Noites Brancas.jpg" alt="image" class="new__img">
+						<article class="featured__card swiper-slide">
+							<img src="imagens/a arte sutil de ligar o fodase.jpg" alt="image" class="featured__img">
 
-						<div><h2 class="new__title">Novo Livro</h2>
-							<div class="new__prices">
-								<span class="new__discount">$7.99</span>
-								<span class="new__price">14.99</span>
+							<h3 class="featured__title"> A Sutil Arte de Ligar o Fod@-se</h3>
+							<div class="featured__prices">
+								<span class="featured__discount">24,38€</span>
+								
 							</div>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
 
-							<div class="new__stars"></div>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-half-fill"></i>
-						</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-							<img src="imagens/a elite.jpg" alt="image" class="new__img">
-	
-						<div><h2 class="new__title">Novo Livro</h2>
-							<div class="new__prices">
-								<span class="new__discount">$7.99</span>
-								<span class="new__price">14.99</span>
 							</div>
-	
-							<div class="new__stars"></div>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-half-fill"></i>
-						</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-							<img src="imagens/a escolha.jpg" alt="image" class="new__img">
-	
-							<div><h2 class="new__title">Novo Livro</h2>
-								<div class="new__prices">
-									<span class="new__discount">$7.99</span>
-									<span class="new__price">14.99</span>
-								</div>
-	
-								<div class="new__stars"></div>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-half-fill"></i>
+						</article>
+						<article class="featured__card swiper-slide">
+							<img src="imagens/a elite.jpg" alt="image" class="featured__img">
+
+							<h3 class="featured__title"> A Elite </h3><BR>
+							<div class="featured__prices">
+								<span class="featured__discount">10,60€</span>
+								<span class="featured__price"> 11,16€</span>
 							</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-								<img src="imagens/a esperança.jpg" alt="image" class="new__img">
-		
-							<div><h2 class="new__title">Novo Livro</h2>
-								<div class="new__prices">
-									<span class="new__discount">$7.99</span>
-									<span class="new__price">14.99</span>
-								</div>
-		
-								<div class="new__stars"></div>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-half-fill"></i>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
+								
 							</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-								<img src="imagens/a seleção.jpg" alt="image" class="new__img">
-		
-								<div><h2 class="new__title">Novo Livro</h2>
-									<div class="new__prices">
-										<span class="new__discount">$7.99</span>
-										<span class="new__price">14.99</span>
-									</div>
-		
-									<div class="new__stars"></div>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-half-fill"></i>
-								</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-									<img src="imagens/A Pedra e o Dragão.jpg" alt="image" class="new__img">
-			
-								<div><h2 class="new__title">Novo Livro</h2>
-									<div class="new__prices">
-										<span class="new__discount">$7.99</span>
-										<span class="new__price">14.99</span>
-									</div>
-			
-									<div class="new__stars"></div>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-half-fill"></i>
-								</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-									<img src="imagens/A Volta ao Mundo em 80 dias.jpg" alt="image" class="new__img">
-			
-									<div><h2 class="new__title">Novo Livro</h2>
-										<div class="new__prices">
-											<span class="new__discount">$7.99</span>
-											<span class="new__price">14.99</span>
-										</div>
-			
-										<div class="new__stars"></div>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-half-fill"></i>
-									</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-										<img src="imagens/o alienista.jpg" alt="image" class="new__img">
-				
-									<div><h2 class="new__title">Novo Livro</h2>
-										<div class="new__prices">
-											<span class="new__discount">$7.99</span>
-											<span class="new__price">14.99</span>
-										</div>
-				
-										<div class="new__stars"></div>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-half-fill"></i>
-									</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-										<img src="imagens/Tudo O Que Eu Não Te  Disse.jpg" alt="image" class="new__img">
-				
-										<div><h2 class="new__title">Novo Livro</h2>
-											<div class="new__prices">
-												<span class="new__discount">$7.99</span>
-												<span class="new__price">14.99</span>
-											</div>
-				
-											<div class="new__stars"></div>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-half-fill"></i>
-										</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-											<img src="imagens/pegasus.jpg" alt="image" class="new__img">
-					
-										<div><h2 class="new__title">Novo Livro</h2>
-											<div class="new__prices">
-												<span class="new__discount">$7.99</span>
-												<span class="new__price">14.99</span>
-											</div>
-					
-											<div class="new__stars"></div>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-half-fill"></i>
-										</div>
-						</a>					
+						</article>
+						<article class="featured__card swiper-slide">
+							<img src="imagens/a escolha.jpg" alt="image" class="featured__img">
+
+							<h3 class="featured__title"> A Escolha</h3><BR>
+							<div class="featured__prices">
+								<span class="featured__discount"> 7,70€</span>
+								<span class="featured__price">8,10</span>
+							</div>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
+								
+							</div>
+						</article>
+						<article class="featured__card swiper-slide">
+							<img src="imagens/a esperança.jpg" alt="image" class="featured__img">
+
+							<h3 class="featured__title"> A Esperança</h3><BR>
+							<div class="featured__prices">
+								<span class="featured__discount">48,54€</span>
+								<span class="featured__price">79,90€</span>
+							</div>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
+								
+							</div>
+						</article>
+						<article class="featured__card swiper-slide">
+							<img src="imagens/a seleção.jpg" alt="image" class="featured__img">
+
+							<h3 class="featured__title"> A Seleção</h3><BR>
+							<div class="featured__prices">
+								<span class="featured__discount">39,69€</span>
+								<span class="featured__price">59,90 €</span>
+							</div>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
+								
+							</div>
+						</article>
+						<article class="featured__card swiper-slide">
+							<img src="imagens/harry potter 2.jpg" alt="Harry Potter e a Câmara Secreta" class="featured__img">
+
+							<h3 class="featured__title"> Harry Potter e a Câmara Secreta</h3>
+							<div class="featured__prices">
+								<span class="featured__discount">42,18€</span>
+								<span class="featured__price">64,90€</span>
+							</div>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
+								
+							</div>
+						</article>
+						<article class="featured__card swiper-slide">
+							<img src="imagens/harry potter 3.jpg" alt="Harry Potter e o Prisioneiro de Azkaban" class="featured__img">
+
+							<h3 class="featured__title"> Harry Potter e o Prisioneiro de Azkaban</h3>
+							<div class="featured__prices">
+								<span class="featured__discount">41,55€</span>
+								<span class="featured__price">54,90€</span>
+							</div>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
+								
+							</div>
+						</article>
+						<article class="featured__card swiper-slide">
+							<img src="imagens/senhor dos aneis.jpg" alt="image" class="featured__img">
+
+							<h3 class="featured__title">O Senhor dos Anéis: A Sociedade do Anel </h3>
+							<div class="featured__prices">
+								<span class="featured__discount">44,91€</span>
+								<span class="featured__price">69,90€</span>
+							</div>
+							<button class="button">Adicionar ao Carrinho</button>
+							<div class="featured__actions">
+								<button><i class="ri-search-line"></i></button>
+								<button><i class="ri-heart-line"></i></button>
+								
+							</div>
+						</article>
 					</div>
+
+					<div class="swiper-button-prev">
+						<i class="ri-arrow-left-s-line"></i>
+					</div>
+
+					<div class="swiper-button-next">
+						<i class="ri-arrow-right-s-line"></i>
+					</div>
+
 				</div>
 			</div>
 
-			<div class="new__container container">
-				<div class="new__swiper swiper">
-					<div class="swiper-wrapper">
-						<a href="#" class=" new__card swiper-slide ">
-						<img src="imagens/Noites Brancas.jpg" alt="image" class="new__img">
-
-						<div><h2 class="new__title">Novo Livro</h2>
-							<div class="new__prices">
-								<span class="new__discount">$7.99</span>
-								<span class="new__price">14.99</span>
-							</div>
-
-							<div class="new__stars"></div>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-half-fill"></i>
-						</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-							<img src="imagens/a elite.jpg" alt="image" class="new__img">
-	
-						<div><h2 class="new__title">Novo Livro</h2>
-							<div class="new__prices">
-								<span class="new__discount">$7.99</span>
-								<span class="new__price">14.99</span>
-							</div>
-	
-							<div class="new__stars"></div>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-fill"></i>
-							<i class="ri-star-half-fill"></i>
-						</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-							<img src="imagens/a escolha.jpg" alt="image" class="new__img">
-	
-							<div><h2 class="new__title">Novo Livro</h2>
-								<div class="new__prices">
-									<span class="new__discount">$7.99</span>
-									<span class="new__price">14.99</span>
-								</div>
-	
-								<div class="new__stars"></div>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-half-fill"></i>
-							</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-								<img src="imagens/a esperança.jpg" alt="image" class="new__img">
-		
-							<div><h2 class="new__title">Novo Livro</h2>
-								<div class="new__prices">
-									<span class="new__discount">$7.99</span>
-									<span class="new__price">14.99</span>
-								</div>
-		
-								<div class="new__stars"></div>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-fill"></i>
-								<i class="ri-star-half-fill"></i>
-							</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-								<img src="imagens/a seleção.jpg" alt="image" class="new__img">
-		
-								<div><h2 class="new__title">Novo Livro</h2>
-									<div class="new__prices">
-										<span class="new__discount">$7.99</span>
-										<span class="new__price">14.99</span>
-									</div>
-		
-									<div class="new__stars"></div>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-half-fill"></i>
-								</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-									<img src="imagens/A Pedra e o Dragão.jpg" alt="image" class="new__img">
 			
-								<div><h2 class="new__title">Novo Livro</h2>
-									<div class="new__prices">
-										<span class="new__discount">$7.99</span>
-										<span class="new__price">14.99</span>
-									</div>
-			
-									<div class="new__stars"></div>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-fill"></i>
-									<i class="ri-star-half-fill"></i>
-								</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-									<img src="imagens/A Volta ao Mundo em 80 dias.jpg" alt="image" class="new__img">
-			
-									<div><h2 class="new__title">Novo Livro</h2>
-										<div class="new__prices">
-											<span class="new__discount">$7.99</span>
-											<span class="new__price">14.99</span>
-										</div>
-			
-										<div class="new__stars"></div>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-half-fill"></i>
-									</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-										<img src="imagens/o alienista.jpg" alt="image" class="new__img">
-				
-									<div><h2 class="new__title">Novo Livro</h2>
-										<div class="new__prices">
-											<span class="new__discount">$7.99</span>
-											<span class="new__price">14.99</span>
-										</div>
-				
-										<div class="new__stars"></div>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-fill"></i>
-										<i class="ri-star-half-fill"></i>
-									</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-										<img src="imagens/Tudo O Que Eu Não Te  Disse.jpg" alt="image" class="new__img">
-				
-										<div><h2 class="new__title">Novo Livro</h2>
-											<div class="new__prices">
-												<span class="new__discount">$7.99</span>
-												<span class="new__price">14.99</span>
-											</div>
-				
-											<div class="new__stars"></div>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-half-fill"></i>
-										</div>
-						</a>
-						<a href="#" class=" new__card swiper-slide">
-											<img src="imagens/pegasus.jpg" alt="image" class="new__img">
-					
-										<div><h2 class="new__title">Novo Livro</h2>
-											<div class="new__prices">
-												<span class="new__discount">$7.99</span>
-												<span class="new__price">14.99</span>
-											</div>
-					
-											<div class="new__stars"></div>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-fill"></i>
-											<i class="ri-star-half-fill"></i>
-										</div>
-						</a>					
-					</div>
-				</div>
-			</div>
          </section>
 
          <!--==================== JOIN ====================-->
@@ -828,13 +646,15 @@
 				</article>
 
 				
+
+				
 				
 			</div>
 		 </section>
 		 
       <!--==================== FOOTER ====================-->
       <footer>
-		<div class="footer-content">
+		<div class="footer-content" id="sobrenos">
 		  <div class="column">
 			<h3>Sobre Nós</h3>
 			<ul>
