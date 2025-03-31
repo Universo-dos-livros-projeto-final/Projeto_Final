@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -23,9 +20,8 @@ model User {
   profilephoto String?
   isBlocked    Boolean
   createdAt    DateTime
-
-  adresses Adress[]
-  reviews  Review[]
+  adresses     Adress[]
+  reviews      Review[]
 
   @@map("user")
 }
@@ -37,24 +33,22 @@ model Adress {
   state   String
   zipcode String
   userId  String
-
-  user User @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 
   @@map("adress")
 }
 
 model Book {
-  id              String @id @default(uuid())
+  id              String    @id @default(uuid())
   title           String
   author          String
   publicationYear Int
   genre           String
-  isbn            String @unique
+  isbn            String    @unique
   price           Int
-
-  reviews    Review[]
-  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
-  supplierId String?
+  supplierId      String?
+  Supplier        Supplier? @relation(fields: [supplierId], references: [id])
+  reviews         Review[]
 
   @@map("book")
 }
@@ -65,9 +59,8 @@ model Review {
   rating  Int
   userId  String
   bookId  String
-
-  user User @relation(fields: [userId], references: [id])
-  book Book @relation(fields: [bookId], references: [id])
+  book    Book   @relation(fields: [bookId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 
   @@unique([bookId, userId])
   @@map("review")
@@ -78,8 +71,7 @@ model Supplier {
   name    String
   address String
   phone   String
-
-  books Book[]
+  books   Book[]
 
   @@map("supplier")
 }
