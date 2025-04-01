@@ -21,7 +21,6 @@ model User {
   isBlocked    Boolean
   createdAt    DateTime
   adresses     Adress[]
-  reviews      Review[]
 
   @@map("user")
 }
@@ -48,22 +47,8 @@ model Book {
   price           Int
   supplierId      String?
   Supplier        Supplier? @relation(fields: [supplierId], references: [id])
-  reviews         Review[]
 
   @@map("book")
-}
-
-model Review {
-  id      String @id @default(uuid())
-  content String
-  rating  Int
-  userId  String
-  bookId  String
-  book    Book   @relation(fields: [bookId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
-
-  @@unique([bookId, userId])
-  @@map("review")
 }
 
 model Supplier {
