@@ -578,10 +578,10 @@ body.dark-theme{
 
 /*=============== FOOTER ===============*/
 footer {
-  background-color: var(--body-color); /* Cor de fundo */
+  background-color: var(--body-color); 
   padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(155, 161, 181, 0.5); /* Sombra mais escura */
+  box-shadow: 0 4px 10px rgba(117, 125, 151, 0.5); 
   
 }
 
@@ -598,7 +598,7 @@ footer {
 }
 
 .column ul {
-  list-style: none;
+  list-style: none; 
   padding: 0;
   color: var(--text-color);
 }

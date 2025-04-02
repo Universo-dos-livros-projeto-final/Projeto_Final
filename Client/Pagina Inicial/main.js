@@ -152,6 +152,8 @@ sr.reveal('.discount__images', {origin: 'right'})
  
 
 
+
+
 /*   parte carrinho e favoritos */
 
 class CartModal {
