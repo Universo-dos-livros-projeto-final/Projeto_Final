@@ -28,7 +28,7 @@
       <!--==================== HEADER ====================-->
       <header class="header" id="header">
          <nav class="nav container">
-            <a href="/Pagina Inicial/index.html" class="nav__logo">
+            <a href="/Client/Pagina Inicial/index.html" class="nav__logo">
                 <img src="imagens/logo 4k.jpeg" alt="Logo Universo dos Livros" class="nav__logo-img">
                 <span class="nav__logo-text">Universo dos Livros</span>
             </a>
@@ -50,9 +50,9 @@
                   </li>
 
                   <li class="nav__item">
-                     <a href="#promocoes" class="nav__link">
+                     <a href="/Client/pagCategorias/categorias.html" class="nav__link">
                         <i class="ri-price-tag-3-line"></i>
-                        <span>Promoções</span>
+                        <span>Categorias</span>
                      </a>
                   </li>
 
@@ -75,9 +75,47 @@
             <div class="nav__actions">
                <i class="ri-search-line search-button" id="search-button"></i>
 
-               <a href="/paginaLogin/paginaLogin.html" class="login"><i class="ri-user-line login-button " id="login-button"></i>
+               <a href="/Client/paginaLogin/paginaLogin.html" class="login"><i class="ri-user-line login-button " id="login-button"></i>
 				</a>
-               <i class="ri-shopping-cart-line"></i>
+               <!-- Carrinho -->
+               <i class="ri-shopping-cart-line" id="carrinho" ></i>
+			   <div id="cart-modal" class="cart-modal">
+				<div class="cart-modal-content">
+					<div class="cart-modal-header">
+						<h2>Carrinho</h2>
+						<button class="cart-modal-close">&times;</button>
+					</div>
+					
+					<div class="cart-items-container" id="cart-items">
+					
+					</div>
+					
+					<div class="cart-summary">
+						<div class="cart-total-row">
+							<span>Total</span>
+							<span id="cart-total">R$ 0,00</span>
+						</div>
+						<button class="cart-finalize-button">Finalizar</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Favoritos -->
+			   <i class="ri-heart-line" id="favoritos"></i>
+			   <div id="favorites-modal" class="favorites-modal">
+				<div class="favorites-modal-content">
+					<div class="favorites-modal-header">
+						<h2>Favoritos</h2>
+						<button class="favorites-modal-close">&times;</button>
+					</div>
+					
+					<div class="favorites-items-container" id="favorites-items">
+						
+					</div>
+				</div>
+			</div>
+   
+
 
                <i class="ri-moon-line change-theme" id="theme-button"></i>
             </div>

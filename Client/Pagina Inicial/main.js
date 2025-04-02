@@ -96,13 +96,7 @@ let swiperNew = new Swiper('.new__swiper', {
     }
 })
 
-/*=============== TESTIMONIAL SWIPER ===============*/
 
-
-/*=============== SHOW SCROLL UP ===============*/ 
-
-
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
 
 
 /*=============== DARK LIGHT THEME ===============*/ 

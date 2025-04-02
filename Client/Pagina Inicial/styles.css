@@ -634,15 +634,6 @@ footer {
 
 
 
-/*=============== SCROLL BAR ===============*/
-
-
-
-
-/*=============== SCROLL UP ===============*/
-
-
-/* Show Scroll Up */
 
 
 /*=============== BREAKPOINTS ===============*/
@@ -855,7 +846,7 @@ footer {
 
 
 /* carrinho e favoritos*/
-/* Cart Modal Styles */
+
 .cart-modal {
   position: fixed;
   top: 0;

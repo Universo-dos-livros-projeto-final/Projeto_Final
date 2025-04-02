@@ -96,15 +96,6 @@ let swiperNew = new Swiper('.new__swiper', {
     }
 })
 
-/*=============== TESTIMONIAL SWIPER ===============*/
-
-
-/*=============== SHOW SCROLL UP ===============*/ 
-
-
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-
-
 /*=============== DARK LIGHT THEME ===============*/ 
 const themeButton = document.getElementById('theme-button')
 const darkTheme ='dark-theme'
@@ -137,53 +128,311 @@ themeButton.addEventListener('click', () => {
 
 
 
+/*   parte carrinho e favoritos */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//teste do carrinho e quantidade
-document.addEventListener('DOMContentLoaded', function() {
-    const minusButton = document.querySelector('.quantity-input button:first-child');
-    const plusButton = document.querySelector('.quantity-input button:last-child');
-    const input = document.querySelector('.quantity-input input');
-    
-    // Set minimum value
-    const minValue = parseInt(input.getAttribute('min')) || 0;
-    
-    // Function to update quantity
-    function updateQuantity(newValue) {
-        // Ensure the value is not less than minimum
-        newValue = Math.max(newValue, minValue);
+class CartModal {
+    constructor() {
+        this.cart = [];
+        this.cartModal = document.getElementById('cart-modal');
+        this.cartItemsContainer = document.getElementById('cart-items');
+        this.cartTotalElement = document.getElementById('cart-total');
         
-        // Update input value
-        input.value = newValue;
+        this.initEventListeners();
+        this.loadCartFromLocalStorage();
     }
-    
-    // Decrease quantity when minus button is clicked
-    minusButton.addEventListener('click', function() {
-        const currentValue = parseInt(input.value) || 0;
-        updateQuantity(currentValue - 1);
-    });
-    
-    // Increase quantity when plus button is clicked
-    plusButton.addEventListener('click', function() {
-        const currentValue = parseInt(input.value) || 0;
-        updateQuantity(currentValue + 1);
-    });
-    
-    // Handle manual input changes
-    input.addEventListener('change', function() {
-        const currentValue = parseInt(input.value) || 0;
-        updateQuantity(currentValue);
-    });
-});
+
+    initEventListeners() {
+        // Open cart
+        document.getElementById('carrinho').addEventListener('click', () => this.toggleCart());
+        
+        // Close cart
+        document.querySelector('.cart-modal-close').addEventListener('click', () => this.toggleCart());
+        
+        // Add to cart buttons on book cards
+        document.querySelectorAll('.featured__card .button').forEach(button => {
+            button.addEventListener('click', (e) => this.addToCart(e.target.closest('.featured__card')));
+        });
+    }
+
+    toggleCart() {
+        this.cartModal.classList.toggle('show');
+        this.renderCartItems();
+    }
+
+    addToCart(bookCard) {
+        // Log para debugar o caminho da imagem
+        const imagePath = bookCard.querySelector('.featured__img').src;
+        console.log('Caminho da imagem:', imagePath);
+
+        const book = {
+            id: Date.now(), // Gerar um ID único
+            title: bookCard.querySelector('.featured__title').textContent,
+            price: parseFloat(bookCard.querySelector('.featured__discount').textContent.replace('$', '')),
+            image: imagePath, // Usar o caminho completo da imagem
+            quantity: 1
+        };
+
+        const existingItem = this.cart.find(item => item.title === book.title);
+        
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            this.cart.push(book);
+        }
+
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
+
+    renderCartItems() {
+        this.cartItemsContainer.innerHTML = '';
+        let total = 0;
+
+        this.cart.forEach((item, index) => {
+            // Log adicional para verificar detalhes do item
+            console.log('Detalhes do item:', item);
+
+            // Verificação de segurança para imagem
+            if (!item.image) {
+                console.warn(`Imagem não encontrada para o livro: ${item.title}`);
+                item.image = 'caminho/para/imagem/padrao.jpg'; // Imagem de fallback
+            }
+
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            const cartItemElement = document.createElement('div');
+            cartItemElement.classList.add('cart-item');
+            cartItemElement.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="cart-item-image" style="width: 80px; height: 120px; object-fit: cover;">
+                <div class="cart-item-details">
+                    <h3>${item.title}</h3>
+                    <div class="cart-item-quantity">
+                        <button onclick="cartModal.decreaseQuantity(${index})">-</button>
+                        <input type="text" value="${item.quantity}" readonly>
+                        <button onclick="cartModal.increaseQuantity(${index})">+</button>
+                    </div>
+                    <span class="cart-item-price">€ ${item.price.toFixed(2)}</span>
+                </div>
+                <button class="cart-item-remove" onclick="cartModal.removeItem(${index})">X</button>
+            `;
+
+            this.cartItemsContainer.appendChild(cartItemElement);
+        });
+
+        this.cartTotalElement.textContent = `R$ ${total.toFixed(2)}`;
+    }
+
+    increaseQuantity(index) {
+        this.cart[index].quantity++;
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
+
+    decreaseQuantity(index) {
+        if (this.cart[index].quantity > 1) {
+            this.cart[index].quantity--;
+        } else {
+            this.cart.splice(index, 1);
+        }
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
+
+    removeItem(index) {
+        this.cart.splice(index, 1);
+        this.saveCartToLocalStorage();
+        this.renderCartItems();
+    }
+
+    saveCartToLocalStorage() {
+        localStorage.setItem('universoLivrosCart', JSON.stringify(this.cart));
+    }
+
+    loadCartFromLocalStorage() {
+        const savedCart = localStorage.getItem('universoLivrosCart');
+        if (savedCart) {
+            this.cart = JSON.parse(savedCart);
+            this.renderCartItems();
+        }
+    }
+}
+
+
+const cartModal = new CartModal();
+
+
+
+
+// favoritos
+class FavoritesModal {
+    constructor() {
+        this.favorites = [];
+        this.favoritesModal = document.getElementById('favorites-modal');
+        this.favoritesItemsContainer = document.getElementById('favorites-items');
+        
+        this.initEventListeners();
+        this.loadFavoritesFromLocalStorage();
+    }
+
+    initEventListeners() {
+        // Open favorites
+        const favoritosButton = document.getElementById('favoritos');
+        if (favoritosButton) {
+            favoritosButton.addEventListener('click', () => this.toggleFavorites());
+        } else {
+            console.error('Favorites button not found');
+        }
+        
+        // Close favorites
+        const closeButton = document.querySelector('.favorites-modal-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => this.toggleFavorites());
+        } else {
+            console.error('Favorites close button not found');
+        }
+        
+        // Add event listeners to favorite buttons
+        this.addFavoriteButtonListeners();
+    }
+
+    addFavoriteButtonListeners() {
+        const favoriteButtons = document.querySelectorAll('.featured__actions button:nth-child(2)');
+        
+        if (favoriteButtons.length === 0) {
+            console.warn('No favorite buttons found');
+        }
+
+        favoriteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const bookCard = e.target.closest('.featured__card');
+                
+                if (bookCard) {
+                    this.addToFavorites(bookCard);
+                } else {
+                    console.error('No book card found for favorite button');
+                }
+            });
+        });
+    }
+
+    addToFavorites(bookCard) {
+        const imgEl = bookCard.querySelector('.featured__img');
+        const titleEl = bookCard.querySelector('.featured__title');
+        const priceEl = bookCard.querySelector('.featured__discount');
+
+        if (!imgEl || !titleEl || !priceEl) {
+            console.error('Missing elements in book card', {
+                img: !!imgEl,
+                title: !!titleEl,
+                price: !!priceEl
+            });
+            return;
+        }
+
+        const book = {
+            id: imgEl.src,
+            title: titleEl.textContent.trim(),
+            price: priceEl.textContent,
+            bookCard: bookCard  // Store reference to the original book card
+        };
+
+        const existingItem = this.favorites.find(item => item.id === book.id);
+        
+        if (!existingItem) {
+            this.favorites.push(book);
+            this.saveFavoritesToLocalStorage();
+            this.renderFavoriteItems();
+            
+            // Visual feedback for favorite button
+            const heartIcon = bookCard.querySelector('.featured__actions button:nth-child(2) i');
+            if (heartIcon) {
+                heartIcon.classList.add('ri-heart-fill');
+                heartIcon.classList.remove('ri-heart-line');
+            }
+        }
+    }
+
+    toggleFavorites() {
+        this.favoritesModal.classList.toggle('show');
+        this.renderFavoriteItems();
+    }
+
+    renderFavoriteItems() {
+        this.favoritesItemsContainer.innerHTML = '';
+
+        if (this.favorites.length === 0) {
+            const emptyMessage = document.createElement('div');
+            emptyMessage.classList.add('favorites-empty-message');
+            emptyMessage.textContent = 'Nenhum livro nos favoritos';
+            this.favoritesItemsContainer.appendChild(emptyMessage);
+            return;
+        }
+
+        this.favorites.forEach((item, index) => {
+            const favoriteItemElement = document.createElement('div');
+            favoriteItemElement.classList.add('favorites-item');
+            favoriteItemElement.innerHTML = `
+                <img src="${item.id}" alt="${item.title}" style="width: 80px; height: 120px; object-fit: cover;">
+                <div class="favorites-item-details">
+                    <h3>${item.title}</h3>
+                    <p>${item.price}</p>
+                </div>
+                <div class="favorites-item-actions">
+                    <button class="favorites-item-cart" onclick="favoritesModal.addToCart(${index})">Carrinho</button>
+                    <button class="favorites-item-remove" onclick="favoritesModal.removeItem(${index})">X</button>
+                </div>
+            `;
+
+            this.favoritesItemsContainer.appendChild(favoriteItemElement);
+        });
+    }
+
+    addToCart(index) {
+        const item = this.favorites[index];
+        
+        // Create a button simulation for the cart modal
+        const cartButton = item.bookCard.querySelector('.button');
+        if (cartButton) {
+            cartButton.click();
+        }
+    }
+
+    removeItem(index) {
+        const removedItem = this.favorites[index];
+        this.favorites.splice(index, 1);
+        this.saveFavoritesToLocalStorage();
+        this.renderFavoriteItems();
+
+        // Revert heart icon in original book card
+        const bookCards = document.querySelectorAll('.featured__card');
+        bookCards.forEach(card => {
+            const img = card.querySelector('.featured__img');
+            if (img && img.src === removedItem.id) {
+                const heartIcon = card.querySelector('.featured__actions button:nth-child(2) i');
+                if (heartIcon) {
+                    heartIcon.classList.remove('ri-heart-fill');
+                    heartIcon.classList.add('ri-heart-line');
+                }
+            }
+        });
+    }
+
+    saveFavoritesToLocalStorage() {
+        localStorage.setItem('universoLivrosFavorites', JSON.stringify(this.favorites));
+    }
+
+    loadFavoritesFromLocalStorage() {
+        const savedFavorites = localStorage.getItem('universoLivrosFavorites');
+        if (savedFavorites) {
+            this.favorites = JSON.parse(savedFavorites);
+            this.renderFavoriteItems();
+        }
+    }
+}
+
+// Initialize the favorites modal
+const favoritesModal = new FavoritesModal();
+
+
