@@ -19,15 +19,15 @@
 
         <div class="menu-itens">
             <ul class="nav-links">
-                <li><a href="#">
+                <li><a href="/Client/adminDashboard/adminDashboard.html">
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Principal</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="/Client/adminDashboard/usuariosDashboard/usuariosDashboard.html">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Usuários</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="/Client/adminDashboard/bloqueadosDashboard/bloqueadosDashboard.html">
                     <i class="uil uil-user-times"></i>
                     <span class="link-name">Bloqueados</span>
                 </a></li>
@@ -93,10 +93,8 @@
          <!-- Tabela de Usuários -->
          <div class="table-container">
             <div class="table-header">
-                <h5>Lista de Usuários</h5>
-                <button class="add-btn"><i class="uil uil-plus"></i> Adicionar Usuário</button>
-            </div>
-            
+                <h5>Lista de Usuários</h5>               
+            </div>            
             <table class="table">
                 <thead>
                     <tr>
@@ -133,121 +131,9 @@
                         <td>
                             <button class="action-btn btn-block">Bloquear</button>
                         </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>3</td>
-                        <td>5684236528</td>
-                        <td>Zain Calzoni</td>
-                        <td>zain.calzoni@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>4</td>
-                        <td>5684236529</td>
-                        <td>Leo Stanton</td>
-                        <td>leo.stanton@email.com</td>
-                        <td><span class="status-badge status-blocked">Bloqueado</span></td>
-                        <td>
-                            <button class="action-btn btn-unblock">Desbloquear</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>5</td>
-                        <td>5684236530</td>
-                        <td>Kaiya Vetrovs</td>
-                        <td>kaiya.vetrovs@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>6</td>
-                        <td>5684236531</td>
-                        <td>Ryan Westervelt</td>
-                        <td>ryan.westervelt@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>7</td>
-                        <td>5684236532</td>
-                        <td>Corey Stanton</td>
-                        <td>corey.stanton@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>8</td>
-                        <td>5684236533</td>
-                        <td>Adison Aminoff</td>
-                        <td>adison.aminoff@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>9</td>
-                        <td>5684236534</td>
-                        <td>Alfredo Aminoff</td>
-                        <td>alfredo.aminoff@email.com</td>
-                        <td><span class="status-badge status-blocked">Bloqueado</span></td>
-                        <td>
-                            <button class="action-btn btn-unblock">Desbloquear</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>10</td>
-                        <td>5684236535</td>
-                        <td>Marcos Silva</td>
-                        <td>marcos.silva@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>
+                    </tr>                   
                 </tbody>
-            </table>
-            
-            <div class="pagination-container">
-                <div>
-                    <span>1-10 de 97</span>
-                </div>
-                <div class="d-flex align-items-center">
-                    <span class="me-2">Linhas por página:</span>
-                    <select class="form-select form-select-sm" style="width: auto">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                    <div class="ms-3">
-                        <button class="btn btn-sm btn-outline-secondary" disabled>
-                            <i class="uil uil-angle-left"></i>
-                        </button>
-                        <span class="mx-2">1/10</span>
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="uil uil-angle-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            </table>            
         </div>
     </div>
 </section>

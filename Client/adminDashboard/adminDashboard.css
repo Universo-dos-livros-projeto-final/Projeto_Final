@@ -19,6 +19,7 @@
     --box2-color: #FFE6AC;
     --box3-color: #F7D1FC;
     --title-icon-color: #fff;
+    --div-color: #ebeeff;
     
     /* ===== Transition ===== */
     --tran-05: all 0.5s ease;
@@ -46,6 +47,7 @@ body.dark{
     --box2-color: #FFE6AC;
     --box3-color: #F7D1FC;
     --title-icon-color: #fff;
+    --div-color: #ebeeff;
 
 }
 

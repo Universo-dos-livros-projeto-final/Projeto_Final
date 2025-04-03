@@ -19,6 +19,7 @@
     --box2-color: #FFE6AC;
     --box3-color: #F7D1FC;
     --title-icon-color: #fff;
+    --div-color: #dee1f1;
     
     /* ===== Transition ===== */
     --tran-05: all 0.5s ease;
@@ -46,6 +47,7 @@ body.dark{
     --box2-color: #FFE6AC;
     --box3-color: #F7D1FC;
     --title-icon-color: #fff;
+    --div-color: #7695b9;
 
 }
 
@@ -525,14 +527,7 @@ nav.close ~ .principal .top{
 
 
 
-.add-btn {
-    background-color: #0d6efd;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-weight: 500;
-}
+
 
 .status-badge {
     padding: 5px 10px;
@@ -568,15 +563,9 @@ nav.close ~ .principal .top{
     color: white;
 }
 
-.pagination-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-}
 
 .table-container {
-    background-color: #fafdfb;
+    background-color:var(--div-color);
     border-radius: 10px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     padding: 30px;  

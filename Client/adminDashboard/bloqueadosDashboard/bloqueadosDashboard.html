@@ -19,7 +19,7 @@
 
         <div class="menu-itens">
             <ul class="nav-links">
-                <li><a href="#">
+                <li><a href="/Client/adminDashboard/adminDashboard.html">
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Principal</span>
                 </a></li>
@@ -87,10 +87,43 @@
                     <i class="uil uil-tachometer-fast-alt"></i>
                     <span class="text"> Bloqueados</span>
                 </div>
-            </div>
-        </div>
 
-
-        <script src="bloqueadosDashboard.js"></script>
+                 <!-- Tabela de Usuários -->
+         <div class="table-container">
+            <div class="table-header">
+                <h5>Lista de Bloqueados</h5>               
+            </div>            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" class="form-check-input" id="selectAll">
+                        </th>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>1</td>
+                        <td>5684236526</td>
+                        <td>Ana Cunha</td>
+                        <td>ana.cunha@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>            
+                </tbody>
+            </table>            
+        </div>       
+    </div>
+</div>
+    <script src="bloqueadosDashboard.js"></script>
     </body>
     </html>
