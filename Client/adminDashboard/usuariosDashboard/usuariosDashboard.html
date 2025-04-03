@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="usuariosDashboard.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <title>Pagina Administrador</title>
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="/Client/adminDashboard/adminDashboardImagens/logo 4k.jpeg" alt="logo">
+            </div>
+            <span class="logo_name">Universo dos Livros</span>
+        </div>
+
+        <div class="menu-itens">
+            <ul class="nav-links">
+                <li><a href="#">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Principal</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-user"></i>
+                    <span class="link-name">Usuários</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-user-times"></i>
+                    <span class="link-name">Bloqueados</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-archive-alt"></i>
+                    <span class="link-name">Vendas</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-books"></i>
+                    <span class="link-name">Produtos</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Relatórios</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-box"></i>
+                    <span class="link-name">Fornecedores</span>
+                </a></li>
+            </ul>
+
+            
+            <ul class="logout-mode">
+                <li><a href="/Client/Pagina Inicial/index.html">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+            
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                    </a>
+
+                    <div class="mode-toggle">
+                    <span class="switch"></span>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="principal">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Pesquise aqui...">
+            </div>
+            <img src="/Client/adminDashboard/adminDashboardImagens/gatinhoEstiloso.jpeg" alt="gatinho estiloso perfil">
+        </div>
+        <div class="dash-content">
+            <div class="overview">
+                <div class="title">
+                    <i class="uil uil-tachometer-fast-alt"></i>
+                    <span class="text"> Usuários</span>
+                </div>
+            </div>
+        </div>
+
+         <!-- Tabela de Usuários -->
+         <div class="table-container">
+            <div class="table-header">
+                <h5>Lista de Usuários</h5>
+                <button class="add-btn"><i class="uil uil-plus"></i> Adicionar Usuário</button>
+            </div>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" class="form-check-input" id="selectAll">
+                        </th>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>1</td>
+                        <td>5684236526</td>
+                        <td>Ana Culhane</td>
+                        <td>ana.culhane@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>2</td>
+                        <td>5684236527</td>
+                        <td>Ahmad Rosser</td>
+                        <td>ahmad.rosser@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>3</td>
+                        <td>5684236528</td>
+                        <td>Zain Calzoni</td>
+                        <td>zain.calzoni@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>4</td>
+                        <td>5684236529</td>
+                        <td>Leo Stanton</td>
+                        <td>leo.stanton@email.com</td>
+                        <td><span class="status-badge status-blocked">Bloqueado</span></td>
+                        <td>
+                            <button class="action-btn btn-unblock">Desbloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>5</td>
+                        <td>5684236530</td>
+                        <td>Kaiya Vetrovs</td>
+                        <td>kaiya.vetrovs@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>6</td>
+                        <td>5684236531</td>
+                        <td>Ryan Westervelt</td>
+                        <td>ryan.westervelt@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>7</td>
+                        <td>5684236532</td>
+                        <td>Corey Stanton</td>
+                        <td>corey.stanton@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>8</td>
+                        <td>5684236533</td>
+                        <td>Adison Aminoff</td>
+                        <td>adison.aminoff@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>9</td>
+                        <td>5684236534</td>
+                        <td>Alfredo Aminoff</td>
+                        <td>alfredo.aminoff@email.com</td>
+                        <td><span class="status-badge status-blocked">Bloqueado</span></td>
+                        <td>
+                            <button class="action-btn btn-unblock">Desbloquear</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="form-check-input"></td>
+                        <td>10</td>
+                        <td>5684236535</td>
+                        <td>Marcos Silva</td>
+                        <td>marcos.silva@email.com</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td>
+                            <button class="action-btn btn-block">Bloquear</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="pagination-container">
+                <div>
+                    <span>1-10 de 97</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="me-2">Linhas por página:</span>
+                    <select class="form-select form-select-sm" style="width: auto">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="ms-3">
+                        <button class="btn btn-sm btn-outline-secondary" disabled>
+                            <i class="uil uil-angle-left"></i>
+                        </button>
+                        <span class="mx-2">1/10</span>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="uil uil-angle-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="usuariosDashboard.js"></script>
+    </body>
+    </html>
