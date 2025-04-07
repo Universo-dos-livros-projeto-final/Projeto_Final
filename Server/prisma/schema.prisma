@@ -11,6 +11,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  id        String   @id @default(uuid())
+  firstname String
+  lastname  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("admin")
+}
+
 model User {
   id           String   @id @default(uuid())
   firstname    String
@@ -20,7 +31,9 @@ model User {
   profilephoto String?
   isBlocked    Boolean
   createdAt    DateTime
-  adresses     Adress[]
+
+  adresses       Adress[]
+  booksPurchased Book[]
 
   @@map("user")
 }
@@ -31,22 +44,28 @@ model Adress {
   city    String
   state   String
   zipcode String
+  
   userId  String
-  user    User   @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 
   @@map("adress")
 }
 
 model Book {
-  id              String    @id @default(uuid())
+  id              String  @id @default(uuid())
   title           String
   author          String
   publicationYear Int
   genre           String
-  isbn            String    @unique
+  isbn            String  @unique
   price           Int
+
   supplierId      String?
-  Supplier        Supplier? @relation(fields: [supplierId], references: [id])
+  userId          String?
+
+  supplier Supplier? @relation(fields: [supplierId], references: [id])
+  user     User?     @relation(fields: [userId], references: [id])
 
   @@map("book")
 }
@@ -56,7 +75,8 @@ model Supplier {
   name    String
   address String
   phone   String
-  books   Book[]
+
+  books Book[]
 
   @@map("supplier")
 }
