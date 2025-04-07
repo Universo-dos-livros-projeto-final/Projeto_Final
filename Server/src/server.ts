@@ -1,9 +1,12 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
-import { registerRoutes } from "./lib/routes";
+import prismaPlugin from './lib/plugins/prisma';
 
+import { registerRoutes } from "./lib/routes/register";
 
 const app = fastify();
+
+app.register(prismaPlugin);
 
 app.register(cors)
 app.register(registerRoutes)
