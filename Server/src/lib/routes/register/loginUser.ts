@@ -1,6 +1,5 @@
 import { FastifyInstance } from "fastify";
 import jwt, { SignOptions } from "jsonwebtoken";
-import { prisma } from "../../prisma";
 
 type UserData = {
   email: string;
@@ -23,7 +22,7 @@ export function loginUser(app: FastifyInstance) {
   
       const { email, password } = userData;
   
-      const user = await prisma.user.findUnique({
+      const user = await app.prisma.user.findUnique({
         where: {
           email,
         },

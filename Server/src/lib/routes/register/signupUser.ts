@@ -1,6 +1,5 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { prisma } from "../../prisma";
 
 export function signupUser(app: FastifyInstance) {
   app.post("/signup", async (request, reply) => {
@@ -34,7 +33,7 @@ export function signupUser(app: FastifyInstance) {
   
       console.log(firstname, lastname, email, password);
   
-      await prisma.user.create({
+      await app.prisma.user.create({
         data: {
           firstname,
           lastname,

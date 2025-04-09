@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { prisma } from "../../prisma";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 
@@ -19,7 +18,7 @@ export async function loginAdmin(app: FastifyInstance) {
 
     const { email, password } = credentials;
 
-    const admin = await prisma.admin.findUnique({ where: { email } });
+    const admin = await app.prisma.admin.findUnique({ where: { email } });
 
     if (!admin) {
       return reply.status(401).send({ message: "Invalid credentials" });
