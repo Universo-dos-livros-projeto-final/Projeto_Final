@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyReply } from "fastify";
 import { authenticate } from "../register/authentication"; 
 
-export async function getProfileRoute(app: FastifyInstance) {
+export async function getProfile(app: FastifyInstance) {
   app.get("/user", { preHandler: [authenticate] }, async (request, reply: FastifyReply) => {
     try {
       
