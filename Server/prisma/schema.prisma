@@ -30,10 +30,11 @@ model User {
   password     String
   profilephoto String?
   isBlocked    Boolean
+  isAdmin      Boolean  
   createdAt    DateTime
 
   adresses       Adress[]
-  booksPurchased Book[]
+  purchases      Purchase[]
 
   @@map("user")
 }
@@ -44,8 +45,8 @@ model Adress {
   city    String
   state   String
   zipcode String
-  
-  userId  String
+
+  userId String
 
   user User @relation(fields: [userId], references: [id])
 
@@ -53,21 +54,34 @@ model Adress {
 }
 
 model Book {
-  id              String  @id @default(uuid())
+  id              String @id @default(uuid())
   title           String
   author          String
   publicationYear Int
   genre           String
-  isbn            String  @unique
+  isbn            String @unique
   price           Int
 
-  supplierId      String?
-  userId          String?
+  supplierId String?
+  userId     String?
 
   supplier Supplier? @relation(fields: [supplierId], references: [id])
-  user     User?     @relation(fields: [userId], references: [id])
+  purchase Purchase[]
 
   @@map("book")
+}
+
+model Purchase {
+  id       String   @id @default(uuid())
+  userId   String
+  bookId   String
+  quantity Int      @default(1)
+  date     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("purchase")
 }
 
 model Supplier {
