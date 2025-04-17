@@ -6,7 +6,7 @@ export async function loginAdmin(app: FastifyInstance) {
   app.post("/admin/login", async (request: FastifyRequest, reply: FastifyReply) => {
     const loginSchema = z.object({
       email: z.string().email(),
-      password: z.string().min(1),
+      password: z.string().min(6, "Password should be at least 6 characters long"),
     });
 
     let credentials;
@@ -31,9 +31,9 @@ export async function loginAdmin(app: FastifyInstance) {
     }
 
     const token = jwt.sign(
-      { userId: admin.id, role: "admin" },
-      process.env.JWT_SECRET || "default-secret",
-      { expiresIn: "24h" }
+      { userId: admin.id },  
+      process.env.JWT_SECRET as string,  
+      { expiresIn: '1h' }  
     );
 
     return reply.send({ message: "Admin logged in", token });
