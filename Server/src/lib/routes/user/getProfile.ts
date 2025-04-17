@@ -4,7 +4,6 @@ import { authenticate } from "../register/authentication";
 export async function getProfile(app: FastifyInstance) {
   app.get("/user", { preHandler: [authenticate] }, async (request, reply: FastifyReply) => {
     try {
-      
       const userId = request.user?.userId;
 
       if (!userId) {
@@ -14,8 +13,8 @@ export async function getProfile(app: FastifyInstance) {
       const user = await app.prisma.user.findUnique({
         where: { id: userId },
         include: {
-          adresses: true,
-          booksPurchased: true,
+          adresses: true,  
+          purchases: true, 
         },
       });
 
