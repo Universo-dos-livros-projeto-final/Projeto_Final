@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 
-import { getAllBooks } from "./getAllbooks";
+import { getAllBooks } from "./getAllBooks";
 import { getBookDetails } from "./getBookDetails";
 
 export async function booksRoute(app: FastifyInstance) {

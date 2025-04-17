@@ -6,7 +6,8 @@ import { deleteUser } from "./deleteUser";
 import { addAdress } from "./addAdress";
 import { getAdresses } from "./getAdresses";
 import { deleteAdress } from "./deleteAdress";
-import { getPurchasedBooks } from "./getPurchasedBooks";
+import { listUserPurchases } from "./listUserPurchases";
+import { deletePurchase } from "./deletePurchase";
 
 export async function userRoutes(app: FastifyInstance) {
   await getProfile(app);
@@ -15,6 +16,7 @@ export async function userRoutes(app: FastifyInstance) {
   await addAdress(app);
   await getAdresses(app);
   await deleteAdress(app);
-  await getPurchasedBooks(app);
+  await listUserPurchases(app);
+  await deletePurchase(app);
 
 }
