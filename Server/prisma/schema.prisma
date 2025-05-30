@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  firstname String
+  lastname  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("admin")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  firstname    String
+  lastname     String
+  email        String   @unique
+  password     String
+  profilephoto String?
+  isBlocked    Boolean
+  isAdmin      Boolean  
+  createdAt    DateTime
+
+  adresses       Adress[]
+  purchases      Purchase[]
+
+  @@map("user")
+}
+
+model Adress {
+  id      String @id @default(uuid())
+  street  String
+  city    String
+  state   String
+  zipcode String
+
+  userId String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("adress")
+}
+
+model Book {
+  id              String @id @default(uuid())
+  title           String
+  author          String
+  publicationYear Int
+  genre           String
+  isbn            String @unique
+  price           Int
+
+  supplierId String?
+  userId     String?
+
+  supplier Supplier? @relation(fields: [supplierId], references: [id])
+  purchase Purchase[]
+
+  @@map("book")
+}
+
+model Purchase {
+  id       String   @id @default(uuid())
+  userId   String
+  bookId   String
+  quantity Int      @default(1)
+  date     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("purchase")
+}
+
+model Supplier {
+  id      String @id @default(uuid())
+  name    String
+  address String
+  phone   String
+
+  books Book[]
+
+  @@map("supplier")
+}
