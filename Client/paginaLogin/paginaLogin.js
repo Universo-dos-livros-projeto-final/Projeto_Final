@@ -11,7 +11,7 @@ bntSignUp.addEventListener("click", ()=>{
 });
 
 
-// sign up code by: Namorado da Nayra
+// sign up code
 function handleSubmitSignUp(e) {
     e.preventDefault();
 
@@ -42,7 +42,7 @@ function handleSubmitSignUp(e) {
     setIsDisabled(true);
 }
 
-// Sign In code by: Namorado da Nayra
+// Sign In code 
 function handleSubmitLogin(e) {
     e.preventDefault();
 
