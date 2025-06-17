@@ -2,106 +2,119 @@ const container = document.querySelector(".container");
 const bntSignIn = document.getElementById("bnt-sign-in");
 const bntSignUp = document.getElementById("bnt-sign-up");
 
-bntSignIn.addEventListener("click", ()=>{
-    container.classList.remove("toggle");
-}); 
-
-bntSignUp.addEventListener("click", ()=>{
-    container.classList.add("toggle");
+bntSignIn.addEventListener("click", () => {
+  container.classList.remove("toggle");
 });
 
+bntSignUp.addEventListener("click", () => {
+  container.classList.add("toggle");
+});
 
 // sign up code
 function handleSubmitSignUp(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    fetch('http://localhost:3000/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstname, lastname, email, username, password })
-    })
+  const firstname = document.getElementById("firstname").value.trim();
+  const lastname = document.getElementById("lastname").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirm-password").value;
+
+  if (password !== confirmPassword) {
+    alert("As senhas não coincidem.");
+    return;
+  }
+
+  fetch("http://localhost:3000/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ firstname, lastname, email, password }),
+  })
     .then((response) => {
-        console.log(response);
-        return response.json();
+      console.log(response);
+      return response.json();
     })
     .then((data) => {
-        console.log(data);
-        if (data.message === 'User created sucessfully') {
-            navigate('/login');
-        }
+      console.log(data);
+      if (data.message === "User created successfully") {
+        navigate("/login");
+      }
     })
     .catch((error) => {
-        console.error(error);
+      console.error(error);
     });
 
-    setfirstname('');
-    setlastname('');
-    setEmail('');
-    setUsername('');
-    setPassword('');
-    setIsDisabled(true);
+  document.getElementById("firstname").value = "";
+  document.getElementById("lastname").value = "";   
+  document.getElementById("email").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("confirm-password").value = "";
 }
 
-// Sign In code 
+// Sign In code
 function handleSubmitLogin(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    fetch('http://localhost:3000/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password })
-    })
+  fetch("http://localhost:3000/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  })
     .then((response) => response.json())
     .then((data) => {
-        console.log(data);
-        if (data.message === 'User logged in successfully') {
-            const token = data.token;
-            const cookies = new Cookies();
-            // Store token in cookies
-            cookies.set('token', token, { path: '/' });
-            navigate('/home');
-        }
+      console.log(data);
+      if (data.message === "User logged in successfully") {
+        const token = data.token;
+        const cookies = new Cookies();
+        // Store token in cookies
+        cookies.set("token", token, { path: "/" });
+        navigate("/home");
+      }
     })
     .catch((error) => console.error(error));
 
-    setUsername('');
-    setPassword('');
-    setIsDisabled(true);
+  setUsername("");
+  setPassword("");
+  setIsDisabled(true);
 }
 
 /*=============== DARK LIGHT THEME ===============*/
-const themeButtons = document.querySelectorAll('.theme-button');
-const darkTheme = 'dark-theme';
-const iconTheme = 'ri-sun-line';
+const themeButtons = document.querySelectorAll(".theme-button");
+const darkTheme = "dark-theme";
+const iconTheme = "ri-sun-line";
 
 // Obter o tema e ícone previamente selecionados
-const selectedTheme = localStorage.getItem('selected-theme');
-const selectedIcon = localStorage.getItem('selected-icon');
+const selectedTheme = localStorage.getItem("selected-theme");
+const selectedIcon = localStorage.getItem("selected-icon");
 
 // Validar o tema atual
-const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light';
-const getCurrentIcon = () => themeButtons[0].classList.contains(iconTheme) ? 'ri-moon-line' : 'ri-sun-line';
+const getCurrentTheme = () =>
+  document.body.classList.contains(darkTheme) ? "dark" : "light";
+const getCurrentIcon = () =>
+  themeButtons[0].classList.contains(iconTheme)
+    ? "ri-moon-line"
+    : "ri-sun-line";
 
 // Aplicar o tema anteriormente selecionado (se existir)
 if (selectedTheme) {
-    document.body.classList.toggle(darkTheme, selectedTheme === 'dark');
-    themeButtons.forEach(button => {
-        button.classList.toggle(iconTheme, selectedIcon === 'ri-sun-line');
-    });
+  document.body.classList.toggle(darkTheme, selectedTheme === "dark");
+  themeButtons.forEach((button) => {
+    button.classList.toggle(iconTheme, selectedIcon === "ri-sun-line");
+  });
 }
 
 // Alternar tema ao clicar no botão
-themeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        document.body.classList.toggle(darkTheme);
-        themeButtons.forEach(button => {
-            button.classList.toggle(iconTheme);
-        });
-
-        // Salvar o tema e ícone escolhidos no localStorage
-        localStorage.setItem('selected-theme', getCurrentTheme());
-        localStorage.setItem('selected-icon', getCurrentIcon());
+themeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    document.body.classList.toggle(darkTheme);
+    themeButtons.forEach((button) => {
+      button.classList.toggle(iconTheme);
     });
+
+    // Salvar o tema e ícone escolhidos no localStorage
+    localStorage.setItem("selected-theme", getCurrentTheme());
+    localStorage.setItem("selected-icon", getCurrentIcon());
+  });
 });

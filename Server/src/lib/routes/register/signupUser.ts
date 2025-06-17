@@ -53,3 +53,6 @@ export function signupUser(app: FastifyInstance) {
     }
   });
 }
+
+
+

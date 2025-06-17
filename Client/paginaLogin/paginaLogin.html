@@ -42,19 +42,23 @@
         <form onsubmit="handleSubmitSignUp(event)" class="sign-up">
           <h2>Criar Conta</h2>
           <div class="container-input">
-            <input type="text" placeholder="Nome" />
+            <input type="text" id="firstname" placeholder="Nome" />
           </div>
           <div class="container-input">
-            <input type="text" placeholder="Sobrenome" />
+            <input type="text" id="lastname" placeholder="Sobrenome" />
           </div>
           <div class="container-input">
-            <input type="text" placeholder="Email" />
+            <input type="text" id="email" placeholder="Email" />
           </div>
           <div class="container-input">
-            <input type="password" placeholder="Senha" />
+            <input type="password" id="password" placeholder="Senha" />
           </div>
           <div class="container-input">
-            <input type="password" placeholder="Repita sua Senha" />
+            <input
+              type="password"
+              id="confirm-password"
+              placeholder="Repita sua Senha"
+            />
           </div>
           <button>Criar Conta</button><br />
           <div class="nav__actions">
