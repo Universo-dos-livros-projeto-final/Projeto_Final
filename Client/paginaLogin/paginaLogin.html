@@ -26,10 +26,10 @@
         <form onsubmit="handleSubmitLogin(event)" class="sign-in">
           <h2>Iniciar Sessão</h2>
           <div class="container-input">
-            <input type="text" placeholder="Email" />
+            <input type="text" id="user-email" placeholder="Email" />
           </div>
           <div class="container-input">
-            <input type="password" placeholder="Senha" />
+            <input type="password" id="user-password" placeholder="Senha" />
           </div>
           <a href="#"> Esqueceu a sua senha?</a>
           <button>Iniciar Sessão</button><br />
@@ -95,6 +95,7 @@
         </div>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="paginaLogin.js"></script>
     <script src="swiper-bundle.min.js"></script>
   </body>

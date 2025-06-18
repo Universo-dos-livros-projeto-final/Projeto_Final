@@ -10,7 +10,7 @@ bntSignUp.addEventListener("click", () => {
   container.classList.add("toggle");
 });
 
-// sign up code
+// sign up code -> REGISTRO
 function handleSubmitSignUp(e) {
   e.preventDefault();
 
@@ -45,39 +45,45 @@ function handleSubmitSignUp(e) {
     });
 
   document.getElementById("firstname").value = "";
-  document.getElementById("lastname").value = "";   
+  document.getElementById("lastname").value = "";
   document.getElementById("email").value = "";
   document.getElementById("password").value = "";
   document.getElementById("confirm-password").value = "";
 }
 
-// Sign In code
+// Sign In code -> LOGIN
 function handleSubmitLogin(e) {
   e.preventDefault();
+
+  const email = document.getElementById("user-email").value.trim();
+  const password = document.getElementById("user-password").value;
 
   fetch("http://localhost:3000/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      if (data.message === "User logged in successfully") {
-        const token = data.token;
-        const cookies = new Cookies();
-        // Store token in cookies
-        cookies.set("token", token, { path: "/" });
-        navigate("/home");
+    .then(async (res) => {
+      const data = await res.json();
+
+      if (res.ok && data.token && data.user && data.user.categoria) {
+        Cookies.set("token", data.token, { path: "/" });
+
+        if (data.user.categoria === "admin") {
+          window.location.href = "/admin/dashboard.html";
+        } else {
+          window.location.href = "/home.html";
+        }
+      } else {
+        alert(data.message || "Email ou senha inválidos.");
       }
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.error("Erro no login:", error));
 
-  setUsername("");
-  setPassword("");
-  setIsDisabled(true);
+  document.getElementById("user-email").value = "";
+  document.getElementById("user-password").value = "";
 }
 
 /*=============== DARK LIGHT THEME ===============*/
