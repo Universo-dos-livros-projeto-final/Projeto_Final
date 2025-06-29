@@ -5,20 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="paginaLogin.css" />
-
-    <!--=============== FAVICON ===============-->
     <link
       rel="shortcut icon"
       href="assets/img/favicon.png"
       type="image/x-icon"
     />
-
-    <!--=============== REMIXICONS ===============-->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
     />
-    <link rel="stylesheet" href="swiper-bundle.min.css" />
   </head>
   <body>
     <div class="container">
@@ -31,6 +26,13 @@
           <div class="container-input">
             <input type="password" id="user-password" placeholder="Senha" />
           </div>
+          <div class="container-input checkbox-container">
+            <label>
+              <input type="checkbox" id="admin-check" />
+              Sou administrador
+            </label>
+          </div>
+          <div id="login-feedback" class="feedback"></div>
           <a href="#"> Esqueceu a sua senha?</a>
           <button>Iniciar Sessão</button><br />
           <div class="nav__actions">
@@ -38,6 +40,7 @@
           </div>
         </form>
       </div>
+
       <div class="container-form">
         <form onsubmit="handleSubmitSignUp(event)" class="sign-up">
           <h2>Criar Conta</h2>
@@ -60,12 +63,14 @@
               placeholder="Repita sua Senha"
             />
           </div>
+          <div id="signup-feedback" class="feedback"></div>
           <button>Criar Conta</button><br />
           <div class="nav__actions">
             <i class="ri-moon-line change-theme theme-button"></i>
           </div>
         </form>
       </div>
+
       <div class="container-welcome">
         <div class="welcome-sign-up welcome">
           <div class="logo">
@@ -89,12 +94,13 @@
           </p>
           <br />
           <button class="button" id="bnt-sign-in">Iniciar Sessão</button>
-          <a href="/Client/Pagina Inicial/index.htm"
+          <a href="/Client/Pagina Inicial/index.html"
             ><button>Voltar ao Menu Inicial</button></a
           >
         </div>
       </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="paginaLogin.js"></script>
     <script src="swiper-bundle.min.js"></script>
