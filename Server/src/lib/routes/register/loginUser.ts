@@ -40,10 +40,12 @@ export function loginUser(app: FastifyInstance) {
       };
   
       const token = jwt.sign(
-        { email: user.email },
-        process.env.JWT_SECRET || "default-secret",
-        jwtOptions
-      );
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET || "default-secret",
+      jwtOptions
+    );
+
+
       reply.send({ message: "User logged in successfully", token });
     });
 }

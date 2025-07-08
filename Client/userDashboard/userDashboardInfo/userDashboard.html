@@ -83,11 +83,9 @@
             <div class="profile">
               <input type="file" id="upload" accept="image/*" hidden />
               <label for="upload" id="imageLabel">
-                <img id="profileImage" src="user.jpg" alt="" />
+                <img id="profileImage" src="user.jpg" alt="Foto de perfil" />
               </label>
-              <h2 id="nameDisplay">Idilly Camily</h2>
-              <input type="text" id="nameInput" class="hidden" />
-              <button id="editNameBtn">Editar Nome</button>
+              <h2 id="nameDisplay">Carregando...</h2>
             </div>
 
             <div class="title">
@@ -96,43 +94,51 @@
             </div>
             <div class="dados-pessoais">
               <div class="form-group">
-                <label class="labels">Nome:</label
-                ><input
+                <label class="labels" for="firstnameInput">Nome:</label>
+                <input
                   type="text"
+                  id="firstnameInput"
                   class="form-control"
                   placeholder="Nome"
                   value=""
                 />
               </div>
               <div class="form-group">
-                <label class="labels">Sobrenome:</label
-                ><input
+                <label class="labels" for="lastnameInput">Sobrenome:</label>
+                <input
                   type="text"
+                  id="lastnameInput"
                   class="form-control"
-                  value=""
                   placeholder="Sobrenome"
+                  value=""
                 />
               </div>
               <div class="form-group">
-                <label class="labels">Email:</label
-                ><input
-                  type="text"
+                <label class="labels" for="emailInput">Email:</label>
+                <input
+                  type="email"
+                  id="emailInput"
                   class="form-control"
                   placeholder="Email"
                   value=""
                 />
               </div>
               <div class="form-group">
-                <label class="labels">Telefone:</label
-                ><input
-                  type="text"
+                <label class="labels" for="passwordInput">Senha:</label>
+                <input
+                  type="password"
+                  id="passwordInput"
                   class="form-control"
-                  placeholder="Telefone"
+                  placeholder="Senha"
                   value=""
                 />
               </div>
               <div class="form-group col-md-12 mt-5 text-center">
-                <button class="btn btn-primary profile-button" type="button">
+                <button
+                  id="saveProfileBtn"
+                  class="btn btn-primary profile-button"
+                  type="button"
+                >
                   Salvar
                 </button>
               </div>
@@ -202,8 +208,8 @@
                 ><input
                   type="text"
                   class="form-control"
-                  value=""
                   placeholder="País"
+                  value=""
                 />
               </div>
               <div class="form-group col-md-12 mt-5 text-center">
@@ -216,6 +222,9 @@
         </div>
       </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="userDashboard.js"></script>
   </body>
 </html>
+  

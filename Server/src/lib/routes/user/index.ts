@@ -8,6 +8,7 @@ import { getAdresses } from "./getAdresses";
 import { deleteAdress } from "./deleteAdress";
 import { listUserPurchases } from "./listUserPurchases";
 import { deletePurchase } from "./deletePurchase";
+import { updateUserPhoto } from "./updateProfilePhoto";
 
 export async function userRoutes(app: FastifyInstance) {
   await getProfile(app);
@@ -18,5 +19,5 @@ export async function userRoutes(app: FastifyInstance) {
   await deleteAdress(app);
   await listUserPurchases(app);
   await deletePurchase(app);
-
+  await updateUserPhoto(app); 
 }
