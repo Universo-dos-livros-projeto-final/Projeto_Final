@@ -15,7 +15,7 @@ function handleSubmitSignUp(e) {
   e.preventDefault();
 
   const firstname = document.getElementById("firstname").value.trim();
-  const lastname = document.getElementById("lastname").value.trim();  
+  const lastname = document.getElementById("lastname").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirm-password").value;
@@ -77,9 +77,9 @@ function handleSubmitLogin(e) {
         Cookies.set("token", data.token, { path: "/", sameSite: "Lax" });
 
         if (isAdmin) {
-          window.location.href = "/admin/dashboard.html";
+          window.location.href = "/adminDashboard/adminDashboard.html";
         } else {
-          window.location.href = "/home.html";
+          window.location.href = "/Client/paginaInicial/index.html";
         }
       } else {
         feedback.textContent = data.message || "Email ou senha inválidos.";
