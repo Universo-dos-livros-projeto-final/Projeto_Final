@@ -99,14 +99,17 @@ async function fetchBooks() {
 function createBookCard(book) {
   const bookPrice = book.price ? parseFloat(book.price) : 0;
   const bookTitle = book.title || "Título não disponível";
-  const bookImage = book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
+  const bookImage =
+    book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
 
   return `
     <article class="featured__card swiper-slide" data-book-id="${book.id}">
       <img src="${bookImage}" alt="${bookTitle}" class="featured__img" />
       <h3 class="featured__title">${bookTitle}</h3>
       <div class="featured__prices">
-        <span class="featured__discount">${bookPrice.toFixed(2).replace(".", ",")}€</span>
+        <span class="featured__discount">${bookPrice
+          .toFixed(2)
+          .replace(".", ",")}€</span>
       </div>
       <button class="button">Adicionar ao Carrinho</button>
       <div class="featured__actions">
@@ -141,7 +144,8 @@ async function loadFeaturedBooks() {
     console.error("Erro ao carregar livros em destaques:", error);
     const container = document.getElementById("featured-swiper-wrapper");
     if (container) {
-      container.innerHTML = "<p>Erro ao carregar livros. Tente novamente mais tarde.</p>";
+      container.innerHTML =
+        "<p>Erro ao carregar livros. Tente novamente mais tarde.</p>";
     }
   }
 }
@@ -176,29 +180,39 @@ async function loadNewBooks() {
   }
 }
 
-/*=============== CARREGAR LIVROS - HOME ===============*/
+/*=============== CARREGAR LIVROS - HOME  ===============*/
+
 async function loadHomeBooks() {
   try {
-    const booksArray = await fetchBooks();
+    const books = await fetchBooks();
     const container = document.querySelector(".home__swiper .swiper-wrapper");
     if (!container) {
-      console.error("Container para livros do home não encontrado");
+      console.error("Container da Home não encontrado");
       return;
     }
+
+    // Limpar conteúdo atual
     container.innerHTML = "";
-    booksArray.forEach((book) => {
-      const bookTitle = book.title || "Título não disponível";
-      const bookImage = book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
-      const bookCardHTML = `
-        <article class="home__article swiper-slide">
-          <img src="${bookImage}" alt="${bookTitle}" class="home__img" />
-        </article>
-      `;
-      container.insertAdjacentHTML("beforeend", bookCardHTML);
+
+    // Pegar no máximo 3 livros
+    const homeBooks = books.slice(0, 3);
+
+    homeBooks.forEach((book) => {
+      const bookImage =
+        book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
+      const bookTitle = book.title || "Livro sem título";
+
+      const bookHTML = `
+    <article class="home__article swiper-slide">
+      <img src="${bookImage}" alt="${bookTitle}" class="home__img" />
+    </article>
+  `;
+      container.insertAdjacentHTML("beforeend", bookHTML);
     });
-    if (swiperHome) swiperHome.update();
+
+    initializeHomeSwiper();
   } catch (error) {
-    console.error("Erro ao carregar livros do home:", error);
+    console.error("Erro ao carregar livros na Home:", error);
   }
 }
 
@@ -223,6 +237,31 @@ function initializeFeaturedSwiper() {
       breakpoints: {
         1150: {
           slidesPerView: Math.min(4, slides.length),
+          centeredSlides: false,
+        },
+      },
+    });
+  }
+}
+
+/*=============== INICIALIZAR SWIPER HOME ===============*/
+
+function initializeHomeSwiper() {
+  if (swiperHome) {
+    swiperHome.destroy(true, true);
+  }
+
+  const slides = document.querySelectorAll(".home__article");
+  if (slides.length > 0) {
+    swiperHome = new Swiper(".home__swiper", {
+      loop: slides.length > 1,
+      grabCursor: true,
+      spaceBetween: 16,
+      slidesPerView: "auto",
+      centeredSlides: true,
+      breakpoints: {
+        768: {
+          slidesPerView: Math.min(3, slides.length),
           centeredSlides: false,
         },
       },
