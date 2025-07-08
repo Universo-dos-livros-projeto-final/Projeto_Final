@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx src/server.ts"
+    "dev": "tsx src/server.ts",
+    "seed": "ts-node --transpile-only prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,11 +27,12 @@
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^11.4.2",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.16.0",
     "prisma": "^6.4.0",
     "prisma-erd-generator": "^2.0.4",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.3",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [

@@ -30,11 +30,13 @@ model User {
   password     String
   profilephoto String?
   isBlocked    Boolean
-  isAdmin      Boolean  
+  isAdmin      Boolean
   createdAt    DateTime
 
-  adresses       Adress[]
-  purchases      Purchase[]
+  adresses  Adress[]
+  purchases Purchase[]
+  cartItems CartItem[]
+  favorites Favorite[]
 
   @@map("user")
 }
@@ -54,19 +56,23 @@ model Adress {
 }
 
 model Book {
-  id              String @id @default(uuid())
+  id              String  @id @default(uuid())
   title           String
+  bookphoto       String?
+  description     String
   author          String
   publicationYear Int
   genre           String
-  isbn            String @unique
+  isbn            String  @unique
   price           Int
 
   supplierId String?
   userId     String?
 
-  supplier Supplier? @relation(fields: [supplierId], references: [id])
+  supplier Supplier?  @relation(fields: [supplierId], references: [id])
   purchase Purchase[]
+  CartItem CartItem[]
+  Favorite Favorite[]
 
   @@map("book")
 }
@@ -93,4 +99,30 @@ model Supplier {
   books Book[]
 
   @@map("supplier")
+}
+
+model CartItem {
+  id       String   @id @default(uuid())
+  userId   String
+  bookId   String
+  quantity Int      @default(1)
+  addedAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("cart_item")
+}
+
+model Favorite {
+  id      String   @id @default(uuid())
+  userId  String
+  bookId  String
+  addedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@unique([userId, bookId])
+  @@map("favorite")
 }
