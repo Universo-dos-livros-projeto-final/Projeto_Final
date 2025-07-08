@@ -13,6 +13,8 @@ import { adminBookRoutes } from "./lib/routes/admin/books";
 import { adminSupplierRoutes } from "./lib/routes/admin/suppliers";
 import { adminUserRoutes } from "./lib/routes/admin/users";
 import { logout } from "./lib/routes/logout/logout";
+import { cartRoutes } from './lib/routes/cart';
+import { favoritesRoutes } from './lib/routes/favorites';
 
 dotenv.config();
 
@@ -31,6 +33,8 @@ app.register(adminBookRoutes)
 app.register(adminSupplierRoutes)
 app.register(adminUserRoutes)
 app.register(logout)
+app.register(cartRoutes);
+app.register(favoritesRoutes);
 
 app.listen({
     port: 3000,
