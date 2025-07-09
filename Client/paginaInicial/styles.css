@@ -120,9 +120,9 @@ body.dark-theme {
 }
 
 /*========== 
-	Color changes in some parts of 
-	the website, in dark theme
-==========*/
+    Color changes in some parts of 
+    the website, in dark theme
+  ==========*/
 .dark-theme .search {
   background-color: hsla(230, 12%, 8%, 0.6);
 }
