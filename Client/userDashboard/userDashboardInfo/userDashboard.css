@@ -112,8 +112,6 @@ nav .menu-itens{
     justify-content: space-between;
 }
 
-
-
 .menu-itens li{
     list-style: none;
 }
@@ -135,16 +133,12 @@ nav .menu-itens{
     justify-content: center;
 }
 
-
 .menu-itens li a .link-name{
     font-size: 18px;
     font-weight: 400;
     color:var(--black-light-color);
     transition: var(--tran-05) ;
 }
-
-
-
 
 .nav-links li a:hover:before{
     position: absolute;
@@ -154,15 +148,11 @@ nav .menu-itens{
     width: 5px;
     border-radius:50%;
     background-color: var(--primary-color);
-
 }
 
 body.dark li a:hover:before{
     background-color: var(--text-color);
 }
-
-
-
 
 .nav-itens li a:hover i,
 .nav-links li a:hover .link-name{
@@ -186,7 +176,6 @@ body.dark .nav-links li a:hover .link-name{
     white-space: nowrap;
     
 }
-
 
 .menu-itens .mode-toggle{
     position: absolute;
@@ -242,8 +231,6 @@ nav.close ~ .principal{
 
 }
 
-
-
 .principal .top{
     position: fixed;
     top: 0;
@@ -255,169 +242,13 @@ nav.close ~ .principal{
     padding:10px 14px ;
     background-color: var(--panel-color);
     transition: var(--tran-05);
-    z-index: 100;
+   
 }
 
 nav.close ~ .principal .top{
     left:73px;
     width: calc(100% - 73px);
 
-}
-
-.principal .top .sidebar-toggle{
-    font-size: 26px;
-    color: var(--text-color);
-    cursor: pointer;
-}
-
-.principal .top .search-box{
-    position: relative;
-    height: 45px;
-    max-width: 600px;
-    width: 100%;
-    margin: 0 30px;
-    
-}
-
-.top .search-box input{
-    position: absolute;
-    border: 1px solid var(--border-color);
-    background-color: var(--panel-color);
-    padding: 0 25px 0 50px;
-    border-radius:5px ;
-    height: 100%;
-    width: 100%;
-    color:var(--text-color);
-    font-size:15px ;
-    font-weight:400 ;
-    outline: none;
-}
-
-.top .search-box i{
-    position: absolute;
-    left: 15px;
-    font-size: 22px;
-    z-index: 10;
-    top:18%;
-    transform: translate(-50%) ;
-    color: var(--black-light-color) ;
-}
-
-.top img{
-    width: 40px;
-    border-radius:50%;
-}
-
-.principal .dash-content{
-    padding-top: 50px;
-}
-
-.dash-content .title{
-    display: flex;
-    align-items: center;
-    margin: 70px 0 30px 0; 
-}
-
-.dash-content .title i{
-    position: relative;
-    height:35px;
-    width: 35px;
-    background-color: var(--primary-color);
-    border-radius: 6px;
-    color: var(--title-icon-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    
-
-}
-
-.dash-content .title .text{
-    font-size: 24px;
-    font-weight: 500;
-    color: var(--text-color);
-    margin-left: 10px;
-
-}
-
-.dash-content .boxes{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.dash-content .boxes .box{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: calc(100% / 3 - 15px);
-    border-radius: 12px;
-    padding: 15px 20px;
-    background-color: var(--box1-color);
-    transition: var(--tran-05);
-    
-}
-
-.boxes .box i{
-    font-size: 35px;
-    color: var(--text-color);
-    
-}
-
-.boxes .box .text{
-    white-space: nowrap;
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--text-color);
-}
-
-.boxes .box .number{
-    font-size: 40px;
-    font-weight: 500;
-    color: var(--text-color);
-}
-
-.boxes .box.box2{
-    background-color:var(--box2-color) ;
-}
-
-.boxes .box.box3{
-    background-color:var(--box3-color) ;
-}
-
-.dash-content .activity .activity-data{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    
-}
-
-.activity .activity-data{
-    display: flex;
-    padding: 30px;
-}
-
-.activity-data .data{
-    display: flex;
-    flex-direction: column;
-    margin: 0 15px;
-}
-
-.activity-data .data-title{
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--text-color);
-}
-
-.activity-data .data .data-list{
-    font-size: 18px;
-    font-weight: 400;
-    margin-top: 20px;
-    white-space: nowrap;
-    color: var(--text-color);
 }
 
 @media (max-width:1000) {
@@ -533,209 +364,10 @@ nav.close ~ .principal .top{
 
 
 
-/* Card de perfil */
-.profile {
-    text-align: center;
-    padding: 20px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 400px; 
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    gap: 30px; 
-    
-    
-    margin: auto; 
-}
-
-/* Seção de imagem e nome lado a lado */
-.profile .top-section {
-    display: flex;
-    align-items: center;
-    gap: 20px; 
-    flex-wrap: wrap; 
-}
-
-/* Foto de perfil */
-.profile label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
-    background: var(--primary-color);
-}
-
-
-#profileImage {
-    width: 120%;
-    height: 120%;
-    object-fit: cover;
-    display: block;
-    
-}
-
-/* Nome do usuário */
-#nameDisplay {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0;
-    text-align: left; 
-}
-
-/* Botão de edição do nome */
-#editNameBtn {
-    padding: 10px 20px;
-    background-color: var(--box1-color);
-    color: var(--panel-color);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#editNameBtn:hover {
-    background-color: var(--second-color-bottom);
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .profile .top-section {
-        flex-direction: column; 
-        align-items: center;
-    }
-
-    #nameDisplay {
-        text-align: center;
-    }
-
-    #editNameBtn {
-        width: 100%; 
-    }
-}
 
 
 
 
-/* Botões */
-button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 5px;
-    transition: 0.3s;
-}
-
-
-/* Nome visível */
-#nameDisplay {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 10px;
-    color: var(--text-color);
-}
-
-/* Campo de input oculto por padrão */
-.hidden {
-    display: none;
-}
 
 
 
-/* Botão Editar Nome */
-#editNameBtn {
-    background: var(--box1-color);
-    color: var(--title-icon-color);
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
-#editNameBtn:hover {
-    background: var(--second-color-bottom);
-}
-
-
-
-
-.form-container {
-    max-width: 800px;
-    margin: 50px auto;
-
-    padding: 20px;
-    border-radius: 12px;
-    
-}
-
-.title {
-    display: flex;
-    align-items: center;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: var(--border-color);
-}
-
-.title i {
-    margin-right: 10px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.labels {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: var(--title-icon-color);
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid var(--toggle-color);
-}
-
-.profile-button {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    background-color:var(--box1-color);
-    color: var(--title-icon-color);
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.profile-button:hover {
-    background-color: var(--second-color-bottom);
-}
-
-@media (max-width: 768px) {
-    .form-container {
-        padding: 15px;
-    }
-
-    .title {
-        font-size: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 10px;
-    }
-
-    .profile-button {
-        padding: 8px;
-        font-size: 14px;
-    }
-}

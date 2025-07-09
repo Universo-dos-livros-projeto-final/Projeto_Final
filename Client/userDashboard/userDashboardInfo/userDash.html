@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="userDashboard.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"/>
+    <title>Pagina Utilizador</title>
+  </head>
+  <body>
+    <nav>
+      <div class="logo-name">
+        <div class="logo-image">
+          <img src="../userDashboardImagens/logo 4k.jpeg" alt="logo" />
+        </div>
+        <span class="logo_name">Universo dos Livros</span>
+      </div>
+
+      <div class="menu-itens">
+        <ul class="nav-links">
+          <li>
+            <a href="#">
+              <i class="uil uil-user-circle"></i>
+              <span class="link-name">Informações da Conta</span>
+            </a>
+          </li>
+          <li>
+            <a href="..//historicoComprasUser/userHistoricoCompras.html">
+              <i class="uil uil-shopping-bag"></i>
+              <span class="link-name">Histórico de Compras</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="logout-mode">
+          <li>
+            <a href="/Client/Pagina Inicial/index.html">
+              <i class="uil uil-signout"></i>
+              <span class="link-name">Sair da Conta</span>
+            </a>
+          </li>
+
+          <li class="mode">
+            <a href="#">
+              <i class="uil uil-moon"></i>
+              <span class="link-name">Dark Mode</span>
+            </a>
+
+            <div class="mode-toggle">
+              <span class="switch"></span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+<!-- PRINCIPAL -->
+<section class="principal pt-16 min-h-screen">
+  <!-- Topo fixo -->
+  <div class="top fixed top-0 left-0 w-full flex justify-between items-center px-2 py-6 bg-white border-b border-gray-200 shadow-sm transition-all duration-300 z-50">
+    <i class="uil uil-bars sidebar-toggle text-2xl cursor-pointer text-gray-600 hover:text-blue-600 transition-colors duration-200"></i>
+    <img
+      id="profileImageHeader"
+      src=""
+      alt="Foto de perfil topo"
+      class="w-10 h-10 rounded-full object-cover border-2 border-blue-500 cursor-pointer hover:border-blue-600 transition-colors duration-200"
+    />
+  </div>
+
+  <!-- Título -->
+  <div class="title flex items-center gap-2 text-2xl font-bold mb-8 px-6 pt-4">
+    <i class="uil uil-user-circle text-gray-300"></i>
+    <span class="text-gray-600">Informações da Conta</span>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="dash-content px-6 pb-12">
+    <div class="overview max-w-4xl mx-auto">
+      <div class="form-container space-y-1">
+
+        <!-- Foto perfil -->
+        <div class="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+          <div class="relative group">
+            <img
+              id="profileImageMain"
+              src=""
+              alt=""
+              class="w-36 h-36 rounded-full object-cover border-4 border-blue-500 shadow-lg cursor-pointer transition-all duration-300 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-black bg-opacity-30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <i class="uil uil-camera text-white text-2xl"></i>
+            </div>
+          </div>
+          <button
+            id="btnUsarUrl"
+            class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transform hover:scale-105 transition duration-200 shadow-md"
+          >
+            <i class="uil uil-edit mr-2"></i>
+            Alterar Foto
+          </button>
+        </div>
+
+        <!-- Modal Foto -->
+        <div
+          id="modalUrlOverlay"
+          class="fixed inset-0  bg-opacity-40 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"
+        >
+          <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md transform transition duration-300 scale-95">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="uil uil-image-edit text-blue-600"></i>
+                Alterar Foto de Perfil
+              </h2>
+              <button id="closeModalUrlBtn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
+            </div>
+            <input
+              id="inputUrlImage"
+              type="text"
+              placeholder="Cole o link da imagem aqui..."
+              class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg mb-6"
+            />
+            <button
+              id="btnSalvarUrl"
+              class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transform hover:scale-105 transition duration-200 shadow-md"
+            >
+              <i class="uil uil-check mr-2"></i> Atualizar Foto
+            </button>
+          </div>
+        </div>
+
+        <!-- Dados Pessoais -->
+        <div class="p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+          <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+            <i class="uil uil-user text-blue-600"></i>
+            Dados Pessoais
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="space-y-2">
+              <label class="text-sm font-medium text-gray-600">Nome</label>
+              <p class="text-lg font-medium text-gray-800 bg-gray-50 px-4 py-3 rounded-lg"><span id="displayNome">-</span></p>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium text-gray-600">Sobrenome</label>
+              <p class="text-lg font-medium text-gray-800 bg-gray-50 px-4 py-3 rounded-lg"><span id="displaySobrenome">-</span></p>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium text-gray-600">Email</label>
+              <p class="text-lg font-medium text-gray-800 bg-gray-50 px-4 py-3 rounded-lg"><span id="displayEmail">-</span></p>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium text-gray-600">Telefone</label>
+              <p class="text-lg font-medium text-gray-800 bg-gray-50 px-4 py-3 rounded-lg"><span id="displayTelefone">-</span></p>
+            </div>
+          </div>
+          <button id="openModalBtn" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transform hover:scale-105 transition duration-200 shadow-md">
+            <i class="uil uil-edit mr-2"></i> Editar Dados
+          </button>
+        </div>
+
+        <!-- Modal Dados -->
+        <div
+          id="modalOverlay"
+          class="fixed inset-0  bg-opacity-60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md transform transition duration-300 scale-95">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="uil uil-user-edit text-blue-600"></i> Editar Dados Pessoais
+              </h2>
+              <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
+            </div>
+            <form id="formEditar" class="space-y-5">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Nome</label>
+                <input id="inputNome" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" />
+              </div>
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Sobrenome</label>
+                <input id="inputSobrenome" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" />
+              </div>
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Email</label>
+                <input id="inputEmail" type="email" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" />
+              </div>
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Telefone</label>
+                <input id="inputTelefone" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" />
+              </div>
+              <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transform hover:scale-105 transition duration-200 shadow-md mt-4">
+                <i class="uil uil-check mr-2"></i> Salvar Alterações
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!--  Endereços -->
+        <div class="p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+          <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+            <i class="uil uil-map-marker text-blue-600"></i> Endereços
+          </h2>
+          <div id="enderecosContainer" class="space-y-4 mb-6"></div>
+          <button id="btnNovoEndereco" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transform hover:scale-105 transition duration-200 shadow-md">
+            <i class="uil uil-plus mr-2"></i> Novo Endereço
+          </button>
+        </div>
+
+        <!-- Modal Endereço -->
+        <div id="modalEnderecoOverlay" class="fixed inset-0  bg-opacity-60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-lg transform transition duration-300 scale-95 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+              <h2 id="modalEnderecoTitulo" class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="uil uil-map-pin text-blue-600"></i> Novo Endereço
+              </h2>
+              <button id="closeModalEnderecoBtn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
+            </div>
+            <form id="formEndereco" class="space-y-5">
+              <input type="hidden" id="enderecoId" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2 space-y-2">
+                  <label class="block text-sm font-medium text-gray-700">Endereço</label>
+                  <input id="inputEndereco1" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" />
+                </div>
+                <div class="space-y-2"><label class="block text-sm font-medium text-gray-700">Número</label><input id="inputNumero" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" /></div>
+                <div class="space-y-2"><label class="block text-sm font-medium text-gray-700">Código Postal</label><input id="inputCodigoPostal" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" /></div>
+                <div class="space-y-2"><label class="block text-sm font-medium text-gray-700">Freguesia</label><input id="inputFreguesia" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" /></div>
+                <div class="space-y-2"><label class="block text-sm font-medium text-gray-700">Concelho</label><input id="inputConcelho" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" /></div>
+                <div class="space-y-2"><label class="block text-sm font-medium text-gray-700">Estado</label><input id="inputEstado" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" /></div>
+                <div class="space-y-2"><label class="block text-sm font-medium text-gray-700">País</label><input id="inputPais" type="text" class="w-full border-2 border-gray-300 focus:border-blue-500 px-4 py-3 rounded-lg" /></div>
+              </div>
+              <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transform hover:scale-105 transition duration-200 shadow-md mt-4">
+                <i class="uil uil-check mr-2"></i> Salvar Endereço
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="userDash.js"></script>
+
+  </body>
+</html>
+ 
