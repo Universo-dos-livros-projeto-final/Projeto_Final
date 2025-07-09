@@ -30,7 +30,7 @@ sidebarToggle.addEventListener("click", () => {
 })
 
 
-
+//codigo que salva e ve se tem alguma imagem salva
 document.addEventListener('DOMContentLoaded', () => {
   const btnUsarUrl = document.getElementById('btnUsarUrl');
   const modalOverlay = document.getElementById('modalUrlOverlay');
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const profileImageHeader = document.getElementById('profileImageHeader');
   const profileImageMain = document.getElementById('profileImageMain');
 
-  // Ao carregar a página, verifica se há imagem salva
+  // verifica se tyem a imagem salva
   const savedUrl = localStorage.getItem('fotoPerfilUsuario');
   if (savedUrl) {
     if (profileImageHeader) profileImageHeader.src = savedUrl;
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputUrl.value = '';
   });
 
-  // Fechar modal clicando fora
+  // Fechar modal 
   modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) {
       modalOverlay.classList.add('hidden');
@@ -75,10 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (profileImageHeader) profileImageHeader.src = url;
       if (profileImageMain) profileImageMain.src = url;
 
-      // Salva localmente
+      // Salva no local
       localStorage.setItem('fotoPerfilUsuario', url);
 
-      // Fechar modal
+      // Fecha o modall
       modalOverlay.classList.add('hidden');
       inputUrl.value = '';
     } else {
