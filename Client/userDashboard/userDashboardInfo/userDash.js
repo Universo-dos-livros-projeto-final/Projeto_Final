@@ -204,9 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-// Codigo que faz alterar a foto de perfil e atualiza no canto superior direito
-
 document.addEventListener('DOMContentLoaded', () => {
   const btnUsarUrl = document.getElementById('btnUsarUrl');
   const modalOverlay = document.getElementById('modalUrlOverlay');
@@ -216,6 +213,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const profileImageHeader = document.getElementById('profileImageHeader');
   const profileImageMain = document.getElementById('profileImageMain');
+
+  // Ao carregar a página, verifica se há imagem salva
+  const savedUrl = localStorage.getItem('fotoPerfilUsuario');
+  if (savedUrl) {
+    if (profileImageHeader) profileImageHeader.src = savedUrl;
+    if (profileImageMain) profileImageMain.src = savedUrl;
+  }
 
   // Abrir modal
   btnUsarUrl.addEventListener('click', () => {
@@ -240,9 +244,14 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSalvarUrl.addEventListener('click', () => {
     const url = inputUrl.value.trim();
     if (url) {
-      profileImageHeader.src = url;
-      profileImageMain.src = url;
+      // Atualiza imagens
+      if (profileImageHeader) profileImageHeader.src = url;
+      if (profileImageMain) profileImageMain.src = url;
 
+      // Salva localmente
+      localStorage.setItem('fotoPerfilUsuario', url);
+
+      // Fechar modal
       modalOverlay.classList.add('hidden');
       inputUrl.value = '';
     } else {

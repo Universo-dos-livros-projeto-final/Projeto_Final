@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="userHistoricoCompras.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
@@ -59,18 +60,16 @@
     </nav>
 
     <section class="principal">
-      <div class="top">
-        <i class="uil uil-bars sidebar-toggle"></i>
+      <div class="top fixed top-0 left-0 w-full flex justify-between items-center px-2 py-6 bg-white border-b border-gray-200 shadow-sm transition-all duration-300 z-50">
+    <i class="uil uil-bars sidebar-toggle text-2xl cursor-pointer text-gray-600 hover:text-blue-600 transition-colors duration-200"></i>
+    <img
+      id="profileImageHeader"
+      src=""
+      alt="Foto de perfil topo"
+      class="w-10 h-10 rounded-full object-cover border-2 border-blue-500 cursor-pointer hover:border-blue-600 transition-colors duration-200"
+    />
+  </div>
 
-        <div class="search-box">
-          <i class="uil uil-search"></i>
-          <input type="text" placeholder="Pesquise aqui..." />
-        </div>
-        <img
-          src="..//userDashboardImagens/perfilUsuario.jpeg"
-          alt="gatinho estiloso perfil"
-        />
-      </div>
 
       <div class="dash-content">
         <div class="overview">
