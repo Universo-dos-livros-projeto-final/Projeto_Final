@@ -1,30 +1,54 @@
 import { FastifyInstance } from "fastify";
+import { z } from "zod";
 import { authenticate } from "../register/authentication";
 
 export async function addToCart(app: FastifyInstance) {
   app.post("/cart", { preHandler: [authenticate] }, async (request, reply) => {
-    const { bookId, quantity } = request.body as { bookId: string, quantity: number };
-    const userId = request.user?.userId;
-
-    if (!userId) return reply.status(401).send({ message: "Unauthorized" });
-
-    const book = await app.prisma.book.findUnique({ where: { id: bookId } });
-    if (!book) return reply.status(404).send({ message: "Book not found" });
-
-    const existing = await app.prisma.cartItem.findFirst({
-      where: { userId, bookId },
+    const schema = z.object({
+      bookId: z.string().uuid(),
+      quantity: z.number().min(1).optional().default(1),
     });
 
-    const cartItem = existing
-      ? await app.prisma.cartItem.update({
-          where: { id: existing.id },
-          data: { quantity: existing.quantity + quantity },
-        })
-      : await app.prisma.cartItem.create({
-          data: { userId, bookId, quantity },
-        });
+    const { bookId, quantity } = schema.parse(request.body);
+    const userId = request.user!.userId;
 
-    return reply.send({ message: "Item added to cart", cartItem });
+    try {
+      // Verificar se o livro existe
+      const book = await app.prisma.book.findUnique({
+        where: { id: bookId },
+      });
+
+      if (!book) {
+        return reply.status(404).send({ message: "Livro não encontrado" });
+      }
+
+      // Verificar se o item já existe no carrinho
+      const existingItem = await app.prisma.cartItem.findFirst({
+        where: { userId, bookId },
+      });
+
+      if (existingItem) {
+        // Atualizar quantidade
+        await app.prisma.cartItem.update({
+          where: { id: existingItem.id },
+          data: { quantity: quantity },
+        });
+      } else {
+        // Criar novo item
+        await app.prisma.cartItem.create({
+          data: {
+            userId,
+            bookId,
+            quantity,
+          },
+        });
+      }
+
+      return reply.send({ message: "Livro adicionado ao carrinho" });
+
+    } catch (error) {
+      console.error("Erro ao adicionar ao carrinho:", error);
+      return reply.status(500).send({ message: "Erro interno do servidor" });
+    }
   });
 }
-

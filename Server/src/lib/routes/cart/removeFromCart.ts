@@ -1,19 +1,20 @@
 import { FastifyInstance } from "fastify";
+import { z } from "zod";
 import { authenticate } from "../register/authentication";
 
 export async function removeFromCart(app: FastifyInstance) {
   app.delete("/cart/:bookId", { preHandler: [authenticate] }, async (request, reply) => {
-    const userId = request.user?.userId;
-    const { bookId } = request.params as { bookId: string };
+    const schema = z.object({
+      bookId: z.string().uuid(),
+    });
 
-    const cartItem = await app.prisma.cartItem.findFirst({
+    const { bookId } = schema.parse(request.params);
+    const userId = request.user!.userId;
+
+    await app.prisma.cartItem.deleteMany({
       where: { userId, bookId },
     });
 
-    if (!cartItem) return reply.status(404).send({ message: "Item not found in cart" });
-
-    await app.prisma.cartItem.delete({ where: { id: cartItem.id } });
-
-    return reply.send({ message: "Item removed from cart" });
+    return reply.send({ message: "Livro removido do carrinho" });
   });
 }

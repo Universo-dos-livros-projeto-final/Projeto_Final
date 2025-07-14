@@ -1,17 +1,20 @@
 import { FastifyInstance } from "fastify";
+import { z } from "zod";
 import { authenticate } from "../register/authentication";
 
 export async function removeFromFavorites(app: FastifyInstance) {
   app.delete("/favorites/:bookId", { preHandler: [authenticate] }, async (request, reply) => {
-    const userId = request.user?.userId;
-    const { bookId } = request.params as { bookId: string };
+    const schema = z.object({
+      bookId: z.string().uuid(),
+    });
 
-    const favorite = await app.prisma.favorite.findFirst({ where: { userId, bookId } });
+    const { bookId } = schema.parse(request.params);
+    const userId = request.user!.userId;
 
-    if (!favorite) return reply.status(404).send({ message: "Favorite not found" });
+    await app.prisma.favorite.deleteMany({
+      where: { userId, bookId },
+    });
 
-    await app.prisma.favorite.delete({ where: { id: favorite.id } });
-
-    return reply.send({ message: "Book removed from favorites" });
+    return reply.send({ message: "Livro removido dos favoritos" });
   });
 }
