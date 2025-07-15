@@ -33,7 +33,7 @@ model User {
   isAdmin      Boolean
   createdAt    DateTime
 
-  adresses  Adress[]
+  addresses Address[] // corrigido aqui: de adresses para addresses
   purchases Purchase[]
   cartItems CartItem[]
   favorites Favorite[]
@@ -41,18 +41,20 @@ model User {
   @@map("user")
 }
 
-model Adress {
+model Address {
   id      String @id @default(uuid())
-  street  String
-  city    String
-  state   String
-  zipcode String
+  street  String // Endereço
+  number  String // Número
+  zipcode String // Código Postal
+  parish  String // Freguesia
+  county  String // Concelho
+  state   String // Estado
+  country String // País
 
   userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  user User @relation(fields: [userId], references: [id])
-
-  @@map("adress")
+  @@map("address") // corrigido também o nome da tabela para "address"
 }
 
 model Book {
@@ -69,10 +71,10 @@ model Book {
   supplierId String?
   userId     String?
 
-  supplier Supplier?  @relation(fields: [supplierId], references: [id])
-  purchase Purchase[]
-  CartItem CartItem[]
-  Favorite Favorite[]
+  supplier  Supplier?  @relation(fields: [supplierId], references: [id])
+  purchase  Purchase[]
+  cartItems CartItem[] // corrigido para minúsculo para seguir padrão
+  favorites Favorite[] // corrigido para minúsculo para seguir padrão
 
   @@map("book")
 }

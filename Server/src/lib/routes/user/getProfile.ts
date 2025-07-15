@@ -13,7 +13,7 @@ export async function getProfile(app: FastifyInstance) {
       const user = await app.prisma.user.findUnique({
         where: { id: userId },
         include: {
-          adresses: true,  
+          addresses: true,  
           purchases: true, 
         },
       });

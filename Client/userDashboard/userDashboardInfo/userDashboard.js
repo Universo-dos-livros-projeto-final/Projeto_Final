@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       displayNome.innerText = user.firstname || "";
       displaySobrenome.innerText = user.lastname || "";
       displayEmail.innerText = user.email || "";
-      displaySenha.innerText = "••••••••"; // Não exibe a senha real
+      displaySenha.innerText = "••••••••";
     } catch (error) {
       console.error(error);
       alert("Erro ao carregar perfil");
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("enderecosContainer");
   const modalTitulo = document.getElementById("modalEnderecoTitulo");
 
-  // Carrega endereços do backend
+  // Carrega os endereços do backend
   await loadEnderecos();
 
   async function loadEnderecos() {
@@ -172,17 +172,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (!res.ok) throw new Error("Erro ao carregar endereços");
 
-      enderecos = await res.json();
+      const data = await res.json();
+      // O backend retorna { addresses: [...] }
+      enderecos = data.addresses || [];
       renderizarEnderecos();
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao carregar endereços:", error);
       alert("Erro ao carregar endereços");
     }
   }
 
   async function salvarEndereco(endereco) {
     try {
-      const res = await fetch("http://localhost:3000/user/addresses", {
+      const res = await fetch("http://localhost:3000/user/address", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -195,14 +197,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       return await res.json();
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao salvar endereço:", error);
       throw error;
     }
   }
 
   async function atualizarEndereco(id, endereco) {
     try {
-      const res = await fetch(`http://localhost:3000/user/addresses/${id}`, {
+      const res = await fetch(`http://localhost:3000/user/address/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -215,14 +217,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       return await res.json();
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao atualizar endereço:", error);
       throw error;
     }
   }
 
   async function excluirEndereco(id) {
     try {
-      const res = await fetch(`http://localhost:3000/user/addresses/${id}`, {
+      const res = await fetch(`http://localhost:3000/user/address/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -233,7 +235,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       return true;
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao excluir endereço:", error);
       throw error;
     }
   }
@@ -261,19 +263,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderizarEnderecos() {
     container.innerHTML = "";
-    enderecos.forEach((end, index) => {
+    enderecos.forEach((end) => {
       const div = document.createElement("div");
       div.className =
         "border p-2 rounded shadow flex justify-between items-start";
       div.innerHTML = `
         <div>
-          <p><strong>Endereço:</strong> ${end.street}</p>
-          <p><strong>Número:</strong> ${end.number}</p>
-          <p><strong>Código Postal:</strong> ${end.postalCode}</p>
-          <p><strong>Freguesia:</strong> ${end.parish}</p>
-          <p><strong>Concelho:</strong> ${end.municipality}</p>
-          <p><strong>Estado:</strong> ${end.state}</p>
-          <p><strong>País:</strong> ${end.country}</p>
+          <p><strong>Endereço:</strong> ${end.street || ""}</p>
+          <p><strong>Número:</strong> ${end.number || ""}</p>
+          <p><strong>Código Postal:</strong> ${end.zipcode || ""}</p>
+          <p><strong>Freguesia:</strong> ${end.parish || ""}</p>
+          <p><strong>Concelho:</strong> ${end.county || ""}</p>
+          <p><strong>Estado:</strong> ${end.state || ""}</p>
+          <p><strong>País:</strong> ${end.country || ""}</p>
         </div>
         <div class="space-y-2">
           <button class="btnEditar px-3 py-1 bg-yellow-500 text-white rounded">Editar</button>
@@ -284,13 +286,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       div.querySelector(".btnEditar").addEventListener("click", () => {
         modalTitulo.textContent = "Editar Endereço";
         editandoId = end.id;
-        document.getElementById("inputEndereco1").value = end.street;
-        document.getElementById("inputNumero").value = end.number;
-        document.getElementById("inputCodigoPostal").value = end.postalCode;
-        document.getElementById("inputFreguesia").value = end.parish;
-        document.getElementById("inputConcelho").value = end.municipality;
-        document.getElementById("inputEstado").value = end.state;
-        document.getElementById("inputPais").value = end.country;
+        document.getElementById("inputEndereco1").value = end.street || "";
+        document.getElementById("inputNumero").value = end.number || "";
+        document.getElementById("inputCodigoPostal").value = end.zipcode || "";
+        document.getElementById("inputFreguesia").value = end.parish || "";
+        document.getElementById("inputConcelho").value = end.county || "";
+        document.getElementById("inputEstado").value = end.state || "";
+        document.getElementById("inputPais").value = end.country || "";
         abrirModal();
       });
 
@@ -298,7 +300,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (confirm("Deseja excluir este endereço?")) {
           try {
             await excluirEndereco(end.id);
-            await loadEnderecos(); // Recarrega a lista
+            await loadEnderecos();
             alert("Endereço excluído com sucesso!");
           } catch (error) {
             alert("Erro ao excluir endereço");
@@ -314,13 +316,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
 
     const novoEndereco = {
-      street: document.getElementById("inputEndereco1").value,
-      number: document.getElementById("inputNumero").value,
-      postalCode: document.getElementById("inputCodigoPostal").value,
-      parish: document.getElementById("inputFreguesia").value,
-      municipality: document.getElementById("inputConcelho").value,
-      state: document.getElementById("inputEstado").value,
-      country: document.getElementById("inputPais").value,
+      street: document.getElementById("inputEndereco1").value.trim(),
+      number: document.getElementById("inputNumero").value.trim(),
+      zipcode: document.getElementById("inputCodigoPostal").value.trim(),
+      parish: document.getElementById("inputFreguesia").value.trim(),
+      county: document.getElementById("inputConcelho").value.trim(),
+      state: document.getElementById("inputEstado").value.trim(),
+      country: document.getElementById("inputPais").value.trim(),
     };
 
     try {
@@ -332,7 +334,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("Endereço salvo com sucesso!");
       }
 
-      await loadEnderecos(); // Recarrega a lista
+      await loadEnderecos();
       fecharModal();
     } catch (error) {
       alert("Erro ao salvar endereço");
