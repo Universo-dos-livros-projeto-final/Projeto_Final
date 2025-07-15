@@ -37,7 +37,7 @@ if (userLink) {
         // Token válido
         window.location.href =
           "/Client/userDashboard/userDashboardInfo/userDashboard.html";
-      } else {  
+      } else {
         // Token inválido ou expirado
         Cookies.remove("token");
         window.location.href = "/Client/PaginaLogin/paginaLogin.html";
@@ -281,48 +281,6 @@ async function loadHomeBooks() {
     console.error("Erro ao carregar livros na Home:", error);
   }
 }
-
-function initializeHomeSwiper() {
-  if (swiperHome) {
-    swiperHome.destroy(true, true);
-  }
-
-  const slides = document.querySelectorAll(".home__article");
-  if (slides.length > 0) {
-    swiperHome = new Swiper(".home__swiper", {
-      loop: slides.length > 1,
-      grabCursor: true,
-      spaceBetween: 16,
-      slidesPerView: "auto",
-      centeredSlides: true,
-      breakpoints: {
-        768: {
-          slidesPerView: Math.min(3, slides.length),
-          centeredSlides: false,
-        },
-      },
-    });
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM carregado, iniciando carregamento dos livros...");
-
-  setTimeout(() => {
-    Promise.all([
-      loadFeaturedBooks(),
-      loadPopularBooks(),
-      loadNewBooks(),
-      loadHomeBooks(),
-    ])
-      .then(() => {
-        console.log("Todos os livros foram carregados com sucesso!");
-      })
-      .catch((error) => {
-        console.error("Erro ao carregar alguns livros:", error);
-      });
-  }, 100);
-});
 
 /*=============== INICIALIZAR SWIPER DESTAQUES ===============*/
 function initializeFeaturedSwiper() {
@@ -1079,4 +1037,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Verificar status de login periodicamente
   setInterval(checkLoginStatus, 30000); // A cada 30 segundos
 });
-
