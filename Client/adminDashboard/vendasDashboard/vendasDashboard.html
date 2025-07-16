@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bloqueadosDashboard.css">
+    <link rel="stylesheet" href="vendasDashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <title>Pagina Administrador</title>
 </head>
@@ -31,7 +34,7 @@
                     <i class="uil uil-user-times"></i>
                     <span class="link-name">Bloqueados</span>
                 </a></li>
-                 <li><a href="/Client/adminDashboard/vendasDashboard/vendasDashboard.html">
+                <li><a href="#">
                     <i class="uil uil-archive-alt"></i>
                     <span class="link-name">Vendas</span>
                 </a></li>
@@ -44,8 +47,7 @@
                     <span class="link-name">Fornecedores</span>
                 </a></li>
             </ul>
-
-            
+         
             <ul class="logout-mode">
                 <li><a href="/Client/Pagina Inicial/index.html">
                     <i class="uil uil-signout"></i>
@@ -71,55 +73,60 @@
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
 
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <input type="text" placeholder="Pesquise aqui...">
-            </div>
-            <img src="/Client/adminDashboard/adminDashboardImagens/gatinhoEstiloso.jpeg" alt="gatinho estiloso perfil">
+           
         </div>
-        <div class="dash-content">
-            <div class="overview">
-                <div class="title">
-                    <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text"> Bloqueados</span>
-                </div>
 
-                 <!-- Tabela de Usuários -->
-         <div class="table-container">
-            <div class="table-header">
-                <h5>Lista de Bloqueados</h5>               
-            </div>            
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            <input type="checkbox" class="form-check-input" id="selectAll">
-                        </th>
-                        <th>#</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>1</td>
-                        <td>5684236526</td>
-                        <td>Ana Cunha</td>
-                        <td>ana.cunha@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>            
-                </tbody>
-            </table>            
-        </div>       
+       <div class="dash-content">
+  <div class="overview">
+    <div class="title">
+      <i class="uil uil-tachometer-fast-alt"></i> <strong>Resumo de Vendas</strong>
     </div>
+    <div class="charts-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <div class="chart-box" style="flex: 1; min-width: 300px;">
+        <canvas id="salesChart" width="600" height="300"></canvas>
+      </div>
+      <div class="chart-box" style="flex: 1; min-width: 300px;">
+        <h3 style="text-align: center; margin-bottom: 10px;">Gráfico Mensal</h3>
+        <canvas id="monthlySalesChart" width="600" height="300"></canvas>
+      </div>
+    </div>
+
+    <h3 class="title" style="margin-top: 30px;">Produtos Vendidos</h3>
+    <div class="table-container">
+      <table class="sales-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Livro</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Data</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="salesTableBody">
+          <!-- JS insere aqui -->
+        </tbody>
+      </table>
+        <div style="text-align: center; margin-top: 10px;">
+            <button id="loadMoreBtn">Ver mais</button>
+            <button id="loadLessBtn" style="display: none;">Ver menos</button>
+        </div>
+
+
+    </div>
+  </div>
 </div>
-    <script src="bloqueadosDashboard.js"></script>
-    </body>
-    </html>
+<footer class="footer">
+  <div class="footer-content">
+    <span>Universo dos Livros &copy; 2025</span>
+  </div>
+</footer>
+
+
+
+    </section>
+    <script src="vendasDashboard.js"></script>
+</body>
+</html>
