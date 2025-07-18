@@ -15,8 +15,50 @@ if (searchClose) {
   });
 }
 
+/*=============== User Page ===============*/
+document.addEventListener("DOMContentLoaded", () => {
+  const userLink = document.getElementById("user-link");
+
+  if (userLink) {
+    userLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const token = Cookies.get("token");
+      console.log("Token atual:", token);
+
+      if (!token) {
+        console.warn("Sem token — redirecionando para login");
+        window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/validate-token", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
+          console.log("Token válido — redirecionando para o dashboard");
+          window.location.href =
+            "/Client/userDashboard/userDashboardInfo/userDashboard.html";
+        } else {
+          console.warn("Token inválido — redirecionando para login");
+          Cookies.remove("token");
+          window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+        }
+      } catch (error) {
+        console.error("Erro ao validar token:", error);
+        Cookies.remove("token");
+        window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+      }
+    });
+  } else {
+    console.error("#user-link não encontrado no DOM");
+  }
+});
+
 /*=============== VARIÁVEIS GLOBAIS ===============*/
-let swiperFeatured = null; // Declarar a variável globalmente
+let swiperFeatured = null;
 
 /*=============== PAGINA PRINCIPAL ===============*/
 
@@ -156,14 +198,9 @@ async function loadFeaturedBooks() {
       const cardHTML = createBookCard(book);
       container.insertAdjacentHTML("beforeend", cardHTML);
     });
-
-    // Aguardar um pouco para o DOM ser atualizado
-    setTimeout(() => {
-      initializeFeaturedSwiper();
-      bindCardButtons(".featured__card");
-      bindBookCardClicks();
-      bindFeaturedCardButtons(); // Adicionar esta linha
-    }, 100);
+    initializeFeaturedSwiper();
+    bindCardButtons(".featured__card");
+    bindBookCardClicks();
   } catch (error) {
     console.error("Erro ao carregar livros em destaques:", error);
     const container = document.getElementById("featured-swiper-wrapper");
@@ -173,7 +210,6 @@ async function loadFeaturedBooks() {
     }
   }
 }
-
 /*=============== INICIALIZAR SWIPER DESTAQUES ===============*/
 function initializeFeaturedSwiper() {
   if (swiperFeatured && typeof swiperFeatured.destroy === "function") {
@@ -240,6 +276,21 @@ function bindCardButtons(cardSelector) {
       });
     });
 }
+
+/*=============== INICIALIZAÇÃO PRINCIPAL ===============*/
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM carregado, iniciando carregamento dos livros...");
+
+  setTimeout(() => {
+    Promise.all([loadFeaturedBooks()])
+      .then(() => {
+        console.log("Todos os livros foram carregados com sucesso!");
+      })
+      .catch((error) => {
+        console.error("Erro ao carregar alguns livros:", error);
+      });
+  }, 100);
+});
 
 /*=============== DARK LIGHT THEME ===============*/
 const themeButton = document.getElementById("theme-button");
