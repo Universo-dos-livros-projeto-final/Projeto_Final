@@ -139,7 +139,7 @@
             <div class="quantity">
               <span>Quantidade:</span>
               <div class="quantity-input">
-                <button class="qty-btn" id="qty-decrease">-</button>
+                <button class="qty-btn" id="quantityDecrease">-</button>
                 <input
                   type="number"
                   value="1"
@@ -147,14 +147,16 @@
                   readonly
                   id="qty-input"
                 />
-                <button class="qty-btn" id="qty-increase">+</button>
+                <button class="qty-btn" type="button" id="quantityIncrease">
+                  +
+                </button>
               </div>
             </div>
 
-            <button class="buy-button" id="buy-button">
+            <button class="buy-button" id="addToCartButton">
               Adicionar ao Carrinho
             </button>
-            <button class="wishlist-button" id="wishlist-button">
+            <button class="wishlist-button" id="favoriteButton">
               Lista de Desejos
             </button>
           </div>

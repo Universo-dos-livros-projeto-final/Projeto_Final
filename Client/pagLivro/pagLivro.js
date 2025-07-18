@@ -62,6 +62,12 @@ let swiperFeatured = null;
 
 /*=============== PAGINA PRINCIPAL ===============*/
 
+// Variáveis de quantidade
+
+const quantityInput = document.querySelector("#qty-input");
+const quantityDecrease = document.querySelector("#quantityDecrease");
+const quantityIncrease = document.querySelector("#quantityIncrease");
+
 // Pega o bookId da URL
 const urlParams = new URLSearchParams(window.location.search);
 const bookId = urlParams.get("id");
@@ -74,11 +80,13 @@ async function loadBookDetails() {
   }
 
   try {
+    // Carregar detalhes do livro
     const response = await fetch(`http://localhost:3000/books/${bookId}`);
     if (!response.ok) throw new Error("Livro não encontrado");
 
     const { book } = await response.json();
 
+    // Atualizar os detalhes do livro na página
     document
       .querySelector(".product-container")
       .setAttribute("data-book-id", book.id);
@@ -96,10 +104,62 @@ async function loadBookDetails() {
     document.getElementById("book-year").textContent =
       book.publicationYear || "-";
     document.getElementById("book-genres").textContent = book.genre || "-";
+
+    // Verificar se o livro está no carrinho e atualizar a quantidade
+    const token = Cookies.get("token");
+    if (token) {
+      const cartResponse = await fetch("http://localhost:3000/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (cartResponse.ok) {
+        const cartItems = await cartResponse.json();
+        const cartItem = cartItems.find((item) => item.bookId === bookId);
+
+        if (cartItem && cartItem.quantity) {
+          // Atualizar o input de quantidade se o livro estiver no carrinho
+          const quantityInput = document.querySelector("#qty-input");
+          if (quantityInput) {
+            quantityInput.value = cartItem.quantity;
+          }
+        }
+      }
+    }
   } catch (error) {
     alert("Erro ao carregar dados do livro.");
     console.error(error);
   }
+}
+
+// Atualizar também os controladores de quantidade para sincronizar com o backend
+if (quantityDecrease && quantityInput) {
+  quantityDecrease.addEventListener("click", async () => {
+    let value = parseInt(quantityInput.value);
+    if (value > 1) {
+      value--;
+      quantityInput.value = value;
+      // Atualizar no carrinho se estiver logado
+      const token = Cookies.get("token");
+      if (token) {
+        await cartModal.addToCart(bookId, value);
+      }
+    }
+  });
+}
+
+if (quantityIncrease && quantityInput) {
+  quantityIncrease.addEventListener("click", async () => {
+    let value = parseInt(quantityInput.value);
+    value++;
+    quantityInput.value = value;
+    // Atualizar no carrinho se estiver logado
+    const token = Cookies.get("token");
+    if (token) {
+      await cartModal.addToCart(bookId, value);
+    }
+  });
 }
 
 /*=============== FETCH LIVROS  ===============*/
@@ -165,12 +225,12 @@ function createBookCard(book) {
 function bindBookCardClicks() {
   document.querySelectorAll(".featured__card").forEach((card) => {
     card.addEventListener("click", (e) => {
-      // Se clicar em botão ou ícone, evite redirecionar para não conflitar
+      // Se clicar em botão ou ícone não redireciona para não conflitar
       if (
         e.target.closest("button") ||
         e.target.closest(".featured__actions button")
       ) {
-        return; // não redirecionar pois já tem ação específica
+        return;
       }
       const bookId = card.dataset.bookId;
       if (bookId) {
@@ -220,7 +280,6 @@ function initializeFeaturedSwiper() {
   const slides = document.querySelectorAll(".featured__card");
 
   if (container && slides.length > 0) {
-    // Verificar se o Swiper está disponível
     if (typeof Swiper === "undefined") {
       console.error(
         "Swiper não está carregado. Verifique se o script está sendo incluído corretamente."
@@ -360,7 +419,8 @@ class CartModal {
     this.loadCartFromServer(); // Recarregar sempre que abrir
   }
 
-  async addToCart(bookCard) {
+  // Alteração: aceita quantidade opcional
+  async addToCart(bookCardOrId, quantity = 1) {
     const token = Cookies.get("token");
     if (!token) {
       alert("Você precisa estar logado para adicionar ao carrinho.");
@@ -368,7 +428,18 @@ class CartModal {
       return;
     }
 
-    const bookId = bookCard.dataset.bookId;
+    // Permite receber o ID diretamente, para uso na página de detalhes
+    let bookId, button;
+    if (typeof bookCardOrId === "string") {
+      // bookId foi passado diretamente
+      bookId = bookCardOrId;
+      button = document.querySelector("#addToCartButton");
+    } else {
+      // bookCard foi passado (card dos destaques)
+      bookId = bookCardOrId.dataset.bookId;
+      button = bookCardOrId.querySelector(".button");
+    }
+
     if (!bookId) {
       alert("Erro: ID do livro não encontrado.");
       return;
@@ -381,7 +452,7 @@ class CartModal {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ bookId, quantity: 1 }),
+        body: JSON.stringify({ bookId, quantity }),
       });
 
       const data = await response.json();
@@ -397,15 +468,16 @@ class CartModal {
       }
 
       // Feedback visual
-      const button = bookCard.querySelector(".button");
-      const originalText = button.textContent;
-      button.textContent = "Adicionado!";
-      button.style.backgroundColor = "#4CAF50";
+      if (button) {
+        const originalText = button.textContent;
+        button.textContent = "Adicionado!";
+        button.style.backgroundColor = "#4CAF50";
 
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.style.backgroundColor = "";
-      }, 2000);
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.backgroundColor = "";
+        }, 2000);
+      }
 
       // Recarregar carrinho
       this.loadCartFromServer();
@@ -873,6 +945,132 @@ function bindFeaturedCardButtons() {
       });
     });
 }
+
+/* =================== BIND EVENTOS DOS BOTÕES NA PAGINA =================== */
+
+// Botão "Adicionar ao Carrinho"
+const addToCartBtn = document.querySelector("#addToCartButton");
+
+if (addToCartBtn) {
+  addToCartBtn.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const token = Cookies.get("token");
+    if (!token) {
+      alert("Você precisa estar logado para adicionar ao carrinho.");
+      window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+      return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get("id");
+
+    try {
+      // Usar o método existente do cartModal
+      await cartModal.addToCart(bookId, 1);
+      // Feedback visual
+      const originalText = addToCartBtn.textContent;
+      addToCartBtn.textContent = "Adicionado!";
+      addToCartBtn.style.backgroundColor = "#4CAF50";
+
+      setTimeout(() => {
+        addToCartBtn.textContent = originalText;
+        addToCartBtn.style.backgroundColor = "";
+      }, 2000);
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro ao adicionar ao carrinho");
+    }
+  });
+} else {
+  console.warn("Botão #addToCartButton não encontrado no DOM");
+}
+
+// Botão "Favoritos"
+const favoriteButton = document.querySelector("#favoriteButton");
+
+if (favoriteButton) {
+  favoriteButton.addEventListener("click", async () => {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      alert("Você precisa estar logado para favoritar.");
+      window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+      return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get("id");
+
+    try {
+      const response = await fetch("http://localhost:3000/favorites", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ bookId }),
+      });
+
+      if (response.ok) {
+        // Feedback visual
+        const heartIcon = favoriteButton.querySelector("i");
+        if (heartIcon) {
+          heartIcon.classList.remove("ri-heart-line");
+          heartIcon.classList.add("ri-heart-fill");
+          heartIcon.style.color = "#ff6b6b";
+        }
+        alert("Livro adicionado aos favoritos!");
+        await favoritesModal.loadFavoritesFromServer();
+      } else {
+        alert("Erro ao favoritar o livro.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Erro de conexão com o servidor.");
+    }
+  });
+} else {
+  console.warn("Botão #favoriteButton não encontrado no DOM");
+}
+
+/* =================== CONTROLE DE QUANTIDADE =================== */
+
+// Botão diminuir quantidade
+quantityDecrease.addEventListener("click", async () => {
+  let value = parseInt(quantityInput.value);
+  if (value > 1) {
+    const newValue = value - 1;
+    quantityInput.value = newValue;
+
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        await cartModal.addToCart(bookId, -1); 
+      } catch (error) {
+        console.error("Erro ao remover 1 do carrinho:", error);
+        quantityInput.value = value;
+      }
+    }
+  }
+});
+
+// Botão aumentar quantidade
+quantityIncrease.addEventListener("click", async () => {
+  let value = parseInt(quantityInput.value);
+  const newValue = value + 1;
+  quantityInput.value = newValue;
+
+  const token = Cookies.get("token");
+  if (token) {
+    try {
+      await cartModal.addToCart(bookId, 1); // Adiciona +1
+    } catch (error) {
+      console.error("Erro ao adicionar 1 ao carrinho:", error);
+      quantityInput.value = value; // Reverter no erro
+    }
+  }
+});
 
 /* =================== MONITORAR ESTADO DE LOGIN =================== */
 function checkLoginStatus() {

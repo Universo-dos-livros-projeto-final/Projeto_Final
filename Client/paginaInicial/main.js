@@ -137,7 +137,7 @@ function createBookCard(book) {
           .toFixed(2)
           .replace(".", ",")}€</span>
       </div>
-      <button class="button">Adicionar ao Carrinho</button>
+      <button type="button" class="button">Adicionar ao Carrinho</button>
       <div class="featured__actions">
         <button><i class="ri-search-line"></i></button>
         <button><i class="ri-heart-line"></i></button>
