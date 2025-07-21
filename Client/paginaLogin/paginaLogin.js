@@ -77,7 +77,7 @@ function handleSubmitLogin(e) {
         Cookies.set("token", data.token, { path: "/", sameSite: "Lax" });
 
         if (isAdmin) {
-          window.location.href = "/adminDashboard/adminDashboard.html";
+          window.location.href = "/Client/adminDashboard/adminDashboard.html";
         } else {
           window.location.href = "/Client/paginaInicial/index.html";
         }

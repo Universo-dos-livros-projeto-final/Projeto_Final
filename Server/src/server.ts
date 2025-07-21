@@ -15,6 +15,10 @@
     import { logout } from "./lib/routes/logout/logout";
     import { cartRoutes } from './lib/routes/cart';
     import { favoritesRoutes } from './lib/routes/favorites';
+    import { adminDashboardRoutes } from "./lib/routes/admin/dashboard";
+
+
+
 
     dotenv.config();
 
@@ -40,6 +44,7 @@
     app.register(adminBookRoutes)
     app.register(adminSupplierRoutes)
     app.register(adminUserRoutes)
+    app.register(adminDashboardRoutes);
     app.register(logout)
     app.register(cartRoutes);
     app.register(favoritesRoutes);
