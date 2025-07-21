@@ -33,13 +33,11 @@ sidebarToggle?.addEventListener("click", () => {
   );
 });
 
-// Obtém token JWT
+// Token
 const token = Cookies?.get("token");
-
-// Referência ao tbody da tabela de usuários
 const userTableBody = document.getElementById("userTableBody");
 
-// Função para carregar usuários do backend e preencher tabela
+// Carrega usuários
 async function loadUsers() {
   if (!token) {
     alert("Token não encontrado. Faça login novamente.");
@@ -54,11 +52,8 @@ async function loadUsers() {
     if (!res.ok) throw new Error("Erro ao carregar usuários");
 
     const users = await res.json();
-
-    // Limpa tabela
     userTableBody.innerHTML = "";
 
-    // Preenche tabela com usuários
     users.forEach((user, index) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -67,15 +62,19 @@ async function loadUsers() {
         }"></td>
         <td>${index + 1}</td>
         <td class="user-id">${user.id}</td>
-        <td>${user.firstname}</td>
+        <td>${user.name}</td>
         <td>${user.email}</td>
         <td><span class="status-badge ${
           user.isBlocked ? "status-blocked" : "status-active"
-        }">${user.isBlocked ? "Bloqueado" : "Ativo"}</span></td>
+        }">
+          ${user.isBlocked ? "Bloqueado" : "Ativo"}</span>
+        </td>
         <td>
           <button class="action-btn ${
             user.isBlocked ? "btn-unblock" : "btn-block"
-          }">${user.isBlocked ? "Desbloquear" : "Bloquear"}</button>
+          }">
+            ${user.isBlocked ? "Desbloquear" : "Bloquear"}
+          </button>
           <button class="action-btn btn-delete">Deletar</button>
         </td>
       `;
@@ -88,7 +87,7 @@ async function loadUsers() {
   }
 }
 
-// Função para adicionar eventos aos botões de ação (bloquear, desbloquear, deletar)
+// Lógica dos botões de ação
 function attachActionButtonsEvents() {
   document.querySelectorAll(".action-btn").forEach((button) => {
     button.onclick = async function () {
@@ -96,20 +95,41 @@ function attachActionButtonsEvents() {
       const statusCell = row.querySelector(".status-badge");
       const userId = row.querySelector('input[type="checkbox"]').dataset.userid;
 
-      if (this.classList.contains("btn-block")) {
-        // Bloquear usuário
-        statusCell.textContent = "Bloqueado";
-        statusCell.classList.replace("status-active", "status-blocked");
-        this.textContent = "Desbloquear";
-        this.classList.replace("btn-block", "btn-unblock");
-      } else if (this.classList.contains("btn-unblock")) {
-        // Desbloquear usuário
-        statusCell.textContent = "Ativo";
-        statusCell.classList.replace("status-blocked", "status-active");
-        this.textContent = "Bloquear";
-        this.classList.replace("btn-unblock", "btn-block");
+      if (
+        this.classList.contains("btn-block") ||
+        this.classList.contains("btn-unblock")
+      ) {
+        // Bloquear ou desbloquear usuário via backend
+        const block = this.classList.contains("btn-block");
+
+        try {
+          const res = await fetch(
+            `http://localhost:3000/admin/user/${userId}/block`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ block }),
+            }
+          );
+
+          if (!res.ok) throw new Error("Erro ao atualizar status do usuário.");
+
+          // Atualiza UI após sucesso
+          statusCell.textContent = block ? "Bloqueado" : "Ativo";
+          statusCell.classList.toggle("status-blocked", block);
+          statusCell.classList.toggle("status-active", !block);
+
+          this.textContent = block ? "Desbloquear" : "Bloquear";
+          this.classList.toggle("btn-block", !block);
+          this.classList.toggle("btn-unblock", block);
+        } catch (err) {
+          alert(err.message);
+        }
       } else if (this.classList.contains("btn-delete")) {
-        // Deletar usuário via backend
+        // Deletar usuário
         if (!confirm("Deseja realmente deletar este usuário?")) return;
         try {
           const res = await fetch(
@@ -193,7 +213,7 @@ document
     }
   });
 
-// Carrega usuários ao abrir a página
+// Inicializa
 window.addEventListener("load", () => {
   loadUsers();
 });
