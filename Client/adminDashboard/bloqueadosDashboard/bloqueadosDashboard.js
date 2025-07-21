@@ -64,7 +64,7 @@ async function loadUsers() {
         }"></td>
         <td>${index + 1}</td>
         <td class="user-id">${user.id}</td>
-        <td>${user.name}</td>
+        <td>${user.firstname}</td>
         <td>${user.email}</td>
         <td><span class="status-badge status-blocked">Bloqueado</span></td>
         <td>
