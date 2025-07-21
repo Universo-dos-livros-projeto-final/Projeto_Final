@@ -31,7 +31,7 @@ export async function loginAdmin(app: FastifyInstance) {
     }
 
     const token = jwt.sign(
-      { userId: admin.id },  
+      { id: admin.id },  
       process.env.JWT_SECRET as string,  
       { expiresIn: '1h' }  
     );
