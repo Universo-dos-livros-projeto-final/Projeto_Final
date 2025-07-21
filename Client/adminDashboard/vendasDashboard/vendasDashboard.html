@@ -1,132 +1,163 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="vendasDashboard.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página Administrador - Vendas</title>
+    <link rel="stylesheet" href="vendasDashboard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <title>Pagina Administrador</title>
-</head>
-<body>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
+  </head>
+  <body>
+    <!-- Navegação lateral -->
     <nav>
-        <div class="logo-name">
-            <div class="logo-image">
-                <img src="/Client/adminDashboard/adminDashboardImagens/logo 4k.jpeg" alt="logo">
-            </div>
-            <span class="logo_name">Universo dos Livros</span>
+      <div class="logo-name">
+        <div class="logo-image">
+          <img
+            src="/Client/adminDashboard/adminDashboardImagens/logo 4k.jpeg"
+            alt="logo"
+          />
         </div>
+        <span class="logo_name">Universo dos Livros</span>
+      </div>
 
-        <div class="menu-itens">
-            <ul class="nav-links">
-                <li><a href="/Client/adminDashboard/adminDashboard.html">
-                    <i class="uil uil-estate"></i>
-                    <span class="link-name">Principal</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/usuariosDashboard/usuariosDashboard.html">
-                    <i class="uil uil-user"></i>
-                    <span class="link-name">Usuários</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/bloqueadosDashboard/bloqueadosDashboard.html">
-                    <i class="uil uil-user-times"></i>
-                    <span class="link-name">Bloqueados</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-archive-alt"></i>
-                    <span class="link-name">Vendas</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/produtosDashboard/produtosDashboard.html">
-                    <i class="uil uil-books"></i>
-                    <span class="link-name">Produtos</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/fornecedoresDashboard/fornecedoresDashboard.html">
-                    <i class="uil uil-box"></i>
-                    <span class="link-name">Fornecedores</span>
-                </a></li>
-            </ul>
-         
-            <ul class="logout-mode">
-                <li><a href="/Client/Pagina Inicial/index.html">
-                    <i class="uil uil-signout"></i>
-                    <span class="link-name">Logout</span>
-                </a></li>
-            
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                        <span class="link-name">Dark Mode</span>
-                    </a>
+      <div class="menu-itens">
+        <ul class="nav-links">
+          <!-- Links do menu -->
+          <li>
+            <a href="/Client/adminDashboard/adminDashboard.html"
+              ><i class="uil uil-estate"></i
+              ><span class="link-name">Principal</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/usuariosDashboard/usuariosDashboard.html"
+              ><i class="uil uil-user"></i
+              ><span class="link-name">Usuários</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/bloqueadosDashboard/bloqueadosDashboard.html"
+              ><i class="uil uil-user-times"></i
+              ><span class="link-name">Bloqueados</span></a
+            >
+          </li>
+          <li>
+            <a href="#"
+              ><i class="uil uil-archive-alt"></i
+              ><span class="link-name">Vendas</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/produtosDashboard/produtosDashboard.html"
+              ><i class="uil uil-books"></i
+              ><span class="link-name">Produtos</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/fornecedoresDashboard/fornecedoresDashboard.html"
+              ><i class="uil uil-box"></i
+              ><span class="link-name">Fornecedores</span></a
+            >
+          </li>
+        </ul>
 
-                    <div class="mode-toggle">
-                    <span class="switch"></span>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
+        <!-- Logout e modo escuro -->
+        <ul class="logout-mode">
+          <li>
+            <a href="/Client/Pagina Inicial/index.html"
+              ><i class="uil uil-signout"></i
+              ><span class="link-name">Logout</span></a
+            >
+          </li>
+          <li class="mode">
+            <a href="#"
+              ><i class="uil uil-moon"></i
+              ><span class="link-name">Dark Mode</span></a
+            >
+            <div class="mode-toggle"><span class="switch"></span></div>
+          </li>
+        </ul>
+      </div>
     </nav>
 
+    <!-- Conteúdo principal -->
     <section class="principal">
-        <div class="top">
-            <i class="uil uil-bars sidebar-toggle"></i>
-
-           
-        </div>
-
-       <div class="dash-content">
-  <div class="overview">
-    <div class="title">
-      <i class="uil uil-tachometer-fast-alt"></i> <strong>Resumo de Vendas</strong>
-    </div>
-    <div class="charts-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
-      <div class="chart-box" style="flex: 1; min-width: 300px;">
-        <canvas id="salesChart" width="600" height="300"></canvas>
+      <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
       </div>
-      <div class="chart-box" style="flex: 1; min-width: 300px;">
-        <h3 style="text-align: center; margin-bottom: 10px;">Gráfico Mensal</h3>
-        <canvas id="monthlySalesChart" width="600" height="300"></canvas>
-      </div>
-    </div>
 
-    <h3 class="title" style="margin-top: 30px;">Produtos Vendidos</h3>
-    <div class="table-container">
-      <table class="sales-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Livro</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Data</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody id="salesTableBody">
-          <!-- JS insere aqui -->
-        </tbody>
-      </table>
-        <div style="text-align: center; margin-top: 10px;">
-            <button id="loadMoreBtn">Ver mais</button>
-            <button id="loadLessBtn" style="display: none;">Ver menos</button>
+      <div class="dash-content">
+        <div class="overview">
+          <div class="title">
+            <i class="uil uil-tachometer-fast-alt"></i
+            ><strong>Resumo de Vendas</strong>
+          </div>
+
+          <!-- Gráficos -->
+          <div
+            class="charts-container"
+            style="display: flex; gap: 20px; flex-wrap: wrap"
+          >
+            <div class="chart-box" style="flex: 1; min-width: 300px">
+              <canvas id="salesChart" width="600" height="300"></canvas>
+            </div>
+            <div class="chart-box" style="flex: 1; min-width: 300px">
+              <h3 style="text-align: center; margin-bottom: 10px">
+                Gráfico Mensal
+              </h3>
+              <canvas id="monthlySalesChart" width="600" height="300"></canvas>
+            </div>
+          </div>
+
+          <!-- Tabela de produtos vendidos -->
+          <h3 class="title" style="margin-top: 30px">Produtos Vendidos</h3>
+          <div class="table-container">
+            <table class="sales-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Livro</th>
+                  <th>Preço</th>
+                  <th>Quantidade</th>
+                  <th>Data</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="salesTableBody">
+                <!-- Linhas adicionadas via JS -->
+              </tbody>
+            </table>
+
+            <!-- Botões de navegação -->
+            <div style="text-align: center; margin-top: 10px">
+              <button id="loadMoreBtn">Ver mais</button>
+              <button id="loadLessBtn" style="display: none">Ver menos</button>
+            </div>
+          </div>
         </div>
+      </div>
 
-
-    </div>
-  </div>
-</div>
-<footer class="footer">
-  <div class="footer-content">
-    <span>Universo dos Livros &copy; 2025</span>
-  </div>
-</footer>
-
-
-
+      <!-- Rodapé -->
+      <footer class="footer">
+        <div class="footer-content">
+          <span>Universo dos Livros &copy; 2025</span>
+        </div>
+      </footer>
     </section>
+
+    <!-- Script de funcionalidade -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="vendasDashboard.js"></script>
-</body>
+  </body>
 </html>
