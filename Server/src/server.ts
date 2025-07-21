@@ -24,12 +24,13 @@
 
     app.register(fastifyCookie);
 
-    app.register(cors, {
-        origin: ['http://127.0.0.1:5501', 'http://localhost:5501'],
-        methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
-        credentials: true,
-    });
+   app.register(cors, {
+    origin: ['http://127.0.0.1:5501', 'http://localhost:5501'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+});
+
 
 
     app.register(registerRoutes)

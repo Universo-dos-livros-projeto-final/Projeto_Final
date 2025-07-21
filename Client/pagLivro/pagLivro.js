@@ -134,16 +134,17 @@ async function loadBookDetails() {
 }
 
 // Atualizar também os controladores de quantidade para sincronizar com o backend
+
 if (quantityDecrease && quantityInput) {
   quantityDecrease.addEventListener("click", async () => {
     let value = parseInt(quantityInput.value);
     if (value > 1) {
-      value--;
-      quantityInput.value = value;
-      // Atualizar no carrinho se estiver logado
+      const newValue = value - 1;
+      quantityInput.value = newValue;
+
       const token = Cookies.get("token");
       if (token) {
-        await cartModal.addToCart(bookId, value);
+        await cartModal.updateQuantity(bookId, newValue);
       }
     }
   });
@@ -152,12 +153,12 @@ if (quantityDecrease && quantityInput) {
 if (quantityIncrease && quantityInput) {
   quantityIncrease.addEventListener("click", async () => {
     let value = parseInt(quantityInput.value);
-    value++;
-    quantityInput.value = value;
-    // Atualizar no carrinho se estiver logado
+    const newValue = value + 1;
+    quantityInput.value = newValue;
+
     const token = Cookies.get("token");
     if (token) {
-      await cartModal.addToCart(bookId, value);
+      await cartModal.updateQuantity(bookId, newValue);
     }
   });
 }
@@ -581,11 +582,6 @@ class CartModal {
   }
 
   async updateQuantity(bookId, newQuantity) {
-    if (newQuantity < 1) {
-      this.removeItem(bookId);
-      return;
-    }
-
     const token = Cookies.get("token");
     if (!token) {
       alert("Você precisa estar logado.");
@@ -594,7 +590,7 @@ class CartModal {
 
     try {
       const response = await fetch("http://localhost:3000/cart", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -1035,42 +1031,6 @@ if (favoriteButton) {
 }
 
 /* =================== CONTROLE DE QUANTIDADE =================== */
-
-// Botão diminuir quantidade
-quantityDecrease.addEventListener("click", async () => {
-  let value = parseInt(quantityInput.value);
-  if (value > 1) {
-    const newValue = value - 1;
-    quantityInput.value = newValue;
-
-    const token = Cookies.get("token");
-    if (token) {
-      try {
-        await cartModal.addToCart(bookId, -1); 
-      } catch (error) {
-        console.error("Erro ao remover 1 do carrinho:", error);
-        quantityInput.value = value;
-      }
-    }
-  }
-});
-
-// Botão aumentar quantidade
-quantityIncrease.addEventListener("click", async () => {
-  let value = parseInt(quantityInput.value);
-  const newValue = value + 1;
-  quantityInput.value = newValue;
-
-  const token = Cookies.get("token");
-  if (token) {
-    try {
-      await cartModal.addToCart(bookId, 1); // Adiciona +1
-    } catch (error) {
-      console.error("Erro ao adicionar 1 ao carrinho:", error);
-      quantityInput.value = value; // Reverter no erro
-    }
-  }
-});
 
 /* =================== MONITORAR ESTADO DE LOGIN =================== */
 function checkLoginStatus() {
