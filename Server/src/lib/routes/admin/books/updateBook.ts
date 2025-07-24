@@ -17,11 +17,13 @@ export async function updateBook(app: FastifyInstance) {
         publicationYear: z.number().optional(),
         genre: z.string().optional(),
         isbn: z.string().optional(),
-        price: z.number().optional(),
+        price: z.number().int().optional(), 
+        description: z.string().optional(), 
+        bookphoto: z.string().optional(),   
         supplierId: z.string().optional(),
       });
 
-      const { id } = request.params; 
+      const { id } = request.params;
 
       try {
         const book = await app.prisma.book.findUnique({
@@ -52,7 +54,7 @@ export async function updateBook(app: FastifyInstance) {
         reply.send(updatedBook);
       } catch (error) {
         console.error("Error updating book:", error);
-        reply.status(400).send({ message: "Failed to update book" });
+        reply.status(400).send({ message: "Failed to update book", error });
       }
     }
   );

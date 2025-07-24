@@ -1,125 +1,153 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bloqueadosDashboard.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="bloqueadosDashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
     <title>Pagina Administrador</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="logo-name">
-            <div class="logo-image">
-                <img src="/Client/adminDashboard/adminDashboardImagens/logo 4k.jpeg" alt="logo">
+      <div class="logo-name">
+        <div class="logo-image">
+          <img
+            src="/Client/adminDashboard/adminDashboardImagens/logo 4k.jpeg"
+            alt="logo"
+          />
+        </div>
+        <span class="logo_name">Universo dos Livros</span>
+      </div>
+
+      <div class="menu-itens">
+        <ul class="nav-links">
+          <li>
+            <a href="/Client/adminDashboard/adminDashboard.html">
+              <i class="uil uil-estate"></i>
+              <span class="link-name">Principal</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/usuariosDashboard/usuariosDashboard.html"
+            >
+              <i class="uil uil-user"></i>
+              <span class="link-name">Usuários</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/bloqueadosDashboard/bloqueadosDashboard.html"
+            >
+              <i class="uil uil-user-times"></i>
+              <span class="link-name">Bloqueados</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/vendasDashboard/vendasDashboard.html"
+            >
+              <i class="uil uil-archive-alt"></i>
+              <span class="link-name">Vendas</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/produtosDashboard/produtosDashboard.html"
+            >
+              <i class="uil uil-books"></i>
+              <span class="link-name">Produtos</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/Client/adminDashboard/fornecedoresDashboard/fornecedoresDashboard.html"
+            >
+              <i class="uil uil-box"></i>
+              <span class="link-name">Fornecedores</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="logout-mode">
+          <li>
+            <a href="/Client/Pagina Inicial/index.html">
+              <i class="uil uil-signout"></i>
+              <span class="link-name">Logout</span>
+            </a>
+          </li>
+
+          <li class="mode">
+            <a href="#">
+              <i class="uil uil-moon"></i>
+              <span class="link-name">Dark Mode</span>
+            </a>
+
+            <div class="mode-toggle">
+              <span class="switch"></span>
             </div>
-            <span class="logo_name">Universo dos Livros</span>
-        </div>
-
-        <div class="menu-itens">
-            <ul class="nav-links">
-                <li><a href="/Client/adminDashboard/adminDashboard.html">
-                    <i class="uil uil-estate"></i>
-                    <span class="link-name">Principal</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/usuariosDashboard/usuariosDashboard.html">
-                    <i class="uil uil-user"></i>
-                    <span class="link-name">Usuários</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/bloqueadosDashboard/bloqueadosDashboard.html">
-                    <i class="uil uil-user-times"></i>
-                    <span class="link-name">Bloqueados</span>
-                </a></li>
-                 <li><a href="/Client/adminDashboard/vendasDashboard/vendasDashboard.html">
-                    <i class="uil uil-archive-alt"></i>
-                    <span class="link-name">Vendas</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/produtosDashboard/produtosDashboard.html">
-                    <i class="uil uil-books"></i>
-                    <span class="link-name">Produtos</span>
-                </a></li>
-                <li><a href="/Client/adminDashboard/fornecedoresDashboard/fornecedoresDashboard.html">
-                    <i class="uil uil-box"></i>
-                    <span class="link-name">Fornecedores</span>
-                </a></li>
-            </ul>
-
-            
-            <ul class="logout-mode">
-                <li><a href="/Client/Pagina Inicial/index.html">
-                    <i class="uil uil-signout"></i>
-                    <span class="link-name">Logout</span>
-                </a></li>
-            
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                        <span class="link-name">Dark Mode</span>
-                    </a>
-
-                    <div class="mode-toggle">
-                    <span class="switch"></span>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
+          </li>
+        </ul>
+      </div>
     </nav>
 
     <section class="principal">
-        <div class="top">
-            <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <input type="text" placeholder="Pesquise aqui...">
-            </div>
-            <img src="/Client/adminDashboard/adminDashboardImagens/gatinhoEstiloso.jpeg" alt="gatinho estiloso perfil">
+      <div class="top">
+        <i class="uil uil-bars sidebar-toggle"></i>
+      </div>
+      <div class="dash-content">
+        <div class="overview">
+          <div class="title">
+            <i class="uil uil-tachometer-fast-alt"></i>
+            <span class="text"> Bloqueados</span>
+          </div>
         </div>
-        <div class="dash-content">
-            <div class="overview">
-                <div class="title">
-                    <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text"> Bloqueados</span>
-                </div>
 
-                 <!-- Tabela de Usuários -->
-         <div class="table-container">
-            <div class="table-header">
-                <h5>Lista de Bloqueados</h5>               
-            </div>            
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            <input type="checkbox" class="form-check-input" id="selectAll">
-                        </th>
-                        <th>#</th>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input"></td>
-                        <td>1</td>
-                        <td>5684236526</td>
-                        <td>Ana Cunha</td>
-                        <td>ana.cunha@email.com</td>
-                        <td><span class="status-badge status-active">Ativo</span></td>
-                        <td>
-                            <button class="action-btn btn-block">Bloquear</button>
-                        </td>
-                    </tr>            
-                </tbody>
-            </table>            
-        </div>       
-    </div>
-</div>
+        <!-- Barra de Pesquisa por ID -->
+        <div class="search-user">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Pesquisar por ID..."
+          />
+          <button id="searchBtn">Buscar</button>
+        </div>
+
+        <!-- Tabela de Usuários -->
+        <div class="table-container">
+          <div class="table-header">
+            <h5>Lista de Usuários Bloqueados</h5>
+          </div>
+          <table class="table" id="userTable">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="selectAll"
+                  />
+                </th>
+                <th>#</th>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+              <!-- Dados dinâmicos via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script src="bloqueadosDashboard.js"></script>
-    </body>
-    </html>
+  </body>
+</html>

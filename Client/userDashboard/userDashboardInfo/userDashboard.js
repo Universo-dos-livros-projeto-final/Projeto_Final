@@ -428,4 +428,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Por favor, insira um link válido.");
     }
   });
+
+  document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:3000/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        throw new Error("Erro ao fazer logout");
+      }
+
+      Cookies.remove("token");
+
+      alert("Logout realizado com sucesso!");
+      window.location.href = "/Client/paginaInicial/index.html";
+    } catch (error) {
+      console.error(error);
+      alert("Falha ao sair da conta. Tente novamente.");
+    }
+  });
 });

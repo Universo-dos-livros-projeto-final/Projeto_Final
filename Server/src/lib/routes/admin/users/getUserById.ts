@@ -9,7 +9,7 @@ export async function getUserById(app: FastifyInstance) {
       const user = await app.prisma.user.findUnique({
         where: { id },
         include: {
-          adresses: true,
+          addresses: true,
           purchases: true,
         },
       });

@@ -6,7 +6,7 @@ export async function getAllUsers(app: FastifyInstance) {
     try {
       const users = await app.prisma.user.findMany({
         include: {
-          adresses: true,
+          addresses: true,
           purchases: true,
         },
       });

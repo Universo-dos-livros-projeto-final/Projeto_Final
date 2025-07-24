@@ -1,115 +1,184 @@
+// ======= DARK MODE e SIDEBAR =======
+
+// Seleciona elementos principais do layout
 const body = document.querySelector("body"),
-    modeToggle = body.querySelector(".mode-toggle");
-    sidebar = body.querySelector("nav");
-    sidebarToggle = body.querySelector(".sidebar-toggle");
+  modeToggle = body.querySelector(".mode-toggle"),
+  sidebar = body.querySelector("nav"),
+  sidebarToggle = body.querySelector(".sidebar-toggle");
 
+// Aplica o modo escuro salvo no localStorage
 let getMode = localStorage.getItem("mode");
-if(getMode && getMode ==="dark"){
-    body.classList.toggle("dark");
+if (getMode === "dark") {
+  body.classList.add("dark");
 }
 
+// Aplica o status da sidebar salvo no localStorage
 let getStatus = localStorage.getItem("status");
-if(getStatus && getStatus ==="close"){
-    sidebar.classList.toggle("close");
+if (getStatus === "close") {
+  sidebar.classList.add("close");
 }
 
+// Alterna o modo claro/escuro e salva no localStorage
 modeToggle.addEventListener("click", () => {
-    body.classList.toggle("dark");
-    if(body.classList.contains("dark")){
-        localStorage.setItem("mode", "dark");
-    }else{
-        localStorage.setItem("mode", "light");
-    }
-
+  body.classList.toggle("dark");
+  localStorage.setItem(
+    "mode",
+    body.classList.contains("dark") ? "dark" : "light"
+  );
 });
 
-
+// Alterna o estado da sidebar (aberta/fechada) e salva
 sidebarToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("close");
-    if(sidebar.classList.contains("close")){
-        localStorage.setItem("status", "close");
-    }else{
-        localStorage.setItem("status", "open");
-    }
-})
+  sidebar.classList.toggle("close");
+  localStorage.setItem(
+    "status",
+    sidebar.classList.contains("close") ? "close" : "open"
+  );
+});
 
-
-// CRUD Fornecedores
+// ======= CRUD FORNECEDORES  =======
 
 let fornecedores = [];
-let editandoFornecedorIndex = null;
+let editandoFornecedorId = null;
+document.addEventListener("DOMContentLoaded", buscarFornecedores);
 
-function abrirModalFornecedor(nome = '', endereco = '', telefone = '', index = null) {
-  document.getElementById('modal').style.display = 'flex';
-  document.getElementById('nomeFornecedor').value = nome;
-  document.getElementById('enderecoFornecedor').value = endereco;
-  document.getElementById('telefoneFornecedor').value = telefone;
-  document.getElementById('modalTitulo').innerText = index !== null ? 'Editar Fornecedor' : 'Adicionar Fornecedor';
-  editandoFornecedorIndex = index;
+// Abre modal e preenche campos se for edição
+function abrirModalFornecedor(
+  nome = "",
+  endereco = "",
+  telefone = "",
+  id = null
+) {
+  document.getElementById("modal").style.display = "flex";
+  document.getElementById("nomeFornecedor").value = nome;
+  document.getElementById("enderecoFornecedor").value = endereco;
+  document.getElementById("telefoneFornecedor").value = telefone;
+  document.getElementById("modalTitulo").innerText = id
+    ? "Editar Fornecedor"
+    : "Adicionar Fornecedor";
+  editandoFornecedorId = id;
 }
 
+// Fecha modal e limpa estados
 function fecharModalFornecedor() {
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('nomeFornecedor').value = '';
-  document.getElementById('enderecoFornecedor').value = '';
-  document.getElementById('telefoneFornecedor').value = '';
-  editandoFornecedorIndex = null;
+  document.getElementById("modal").style.display = "none";
+  document.getElementById("nomeFornecedor").value = "";
+  document.getElementById("enderecoFornecedor").value = "";
+  document.getElementById("telefoneFornecedor").value = "";
+  editandoFornecedorId = null;
 }
 
-function salvarFornecedor() {
-  const nome = document.getElementById('nomeFornecedor').value.trim();
-  const endereco = document.getElementById('enderecoFornecedor').value.trim();
-  const telefone = document.getElementById('telefoneFornecedor').value.trim();
+// Busca fornecedores no backend
+async function buscarFornecedores() {
+  const token = Cookies.get("token");
+  try {
+    const res = await fetch("http://localhost:3000/admin/suppliers", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Erro ao buscar fornecedores");
+    const data = await res.json();
+    fornecedores = data.suppliers;
+    renderizarFornecedores();
+  } catch (err) {
+    console.error("Buscar fornecedores:", err);
+  }
+}
 
+// Salva  ou atualiza fornecedor
+async function salvarFornecedor() {
+  const nome = document.getElementById("nomeFornecedor").value.trim();
+  const endereco = document.getElementById("enderecoFornecedor").value.trim();
+  const telefone = document.getElementById("telefoneFornecedor").value.trim();
   if (!nome || !endereco || !telefone) {
     alert("Preencha todos os campos obrigatórios.");
     return;
   }
 
-  const fornecedor = { nome, endereco, telefone };
+  const payload = { name: nome, address: endereco, phone: telefone };
+  const token = Cookies.get("token");
+  const url = editandoFornecedorId
+    ? `http://localhost:3000/admin/supplier/${editandoFornecedorId}`
+    : "http://localhost:3000/admin/supplier";
+  const method = editandoFornecedorId ? "PATCH" : "POST";
 
-  if (editandoFornecedorIndex !== null) {
-    fornecedores[editandoFornecedorIndex] = fornecedor;
-  } else {
-    fornecedores.push(fornecedor);
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error("Falha ao salvar fornecedor");
+    fecharModalFornecedor();
+    buscarFornecedores();
+  } catch (err) {
+    console.error("Salvar fornecedor:", err);
   }
-
-  fecharModalFornecedor();
-  renderizarFornecedores();
 }
 
-function excluirFornecedor(index) {
-  if (confirm("Deseja realmente excluir este fornecedor?")) {
-    fornecedores.splice(index, 1);
-    renderizarFornecedores();
+// Solicita exclusão ao backend
+async function excluirFornecedor(id) {
+  if (!confirm("Deseja realmente excluir este fornecedor?")) return;
+  const token = Cookies.get("token");
+  try {
+    const res = await fetch(`http://localhost:3000/admin/supplier/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Falha ao excluir fornecedor");
+    buscarFornecedores();
+  } catch (err) {
+    console.error("Excluir fornecedor:", err);
   }
 }
 
-function editarFornecedor(index) {
-  const fornecedor = fornecedores[index];
-  abrirModalFornecedor(fornecedor.nome, fornecedor.endereco, fornecedor.telefone, index);
+// Abre modal para edição
+function editarFornecedor(id) {
+  const f = fornecedores.find((s) => s.id === id);
+  if (!f) return;
+  abrirModalFornecedor(f.name, f.address, f.phone, f.id);
 }
 
+// Renderiza cards de fornecedores na tela
 function renderizarFornecedores() {
-  const lista = document.getElementById('supplierList');
-  lista.innerHTML = '';
+  const lista = document.getElementById("supplierList");
+  lista.innerHTML = "";
 
-  fornecedores.forEach((fornecedor, index) => {
-    const card = document.createElement('div');
-    card.className = 'book-card';
-
+  fornecedores.forEach((f) => {
+    const card = document.createElement("div");
+    card.className = "supplier-card";
     card.innerHTML = `
-      <div style="display: flex; flex-direction: column; gap: 5px;">
-        <div class="book-title">${fornecedor.nome}</div>
-        <div>Endereço: ${fornecedor.endereco}</div>
-        <div>Telefone: ${fornecedor.telefone}</div>
+    
+    <div class="supplier-icon">
+      <i class="uil uil-store"></i>
+    </div>
+    
+    <h3 class="supplier-name">${f.name}</h3>
+    
+    <div class="supplier-info">
+      <div class="info-item">
+        <i class="uil uil-location-point"></i>
+        <span>${f.address}</span>
       </div>
-      <div class="buttons">
-        <button class="edit-btn" onclick="editarFornecedor(${index})">Editar</button>
-        <button class="delete-btn" onclick="excluirFornecedor(${index})">Excluir</button>
+      <div class="info-item">
+        <i class="uil uil-phone"></i>
+        <span>${f.phone}</span>
       </div>
-    `;
-
+    </div>
+    
+    <div class="supplier-buttons">
+      <button class="edit-btn" onclick="editarFornecedor('${f.id}')">
+        <i class="uil uil-edit"></i>
+        Editar
+      </button>
+      <button class="delete-btn" onclick="excluirFornecedor('${f.id}')">
+        <i class="uil uil-trash"></i>
+        Excluir
+      </button>
+    </div>
+  `;
     lista.appendChild(card);
   });
 }
