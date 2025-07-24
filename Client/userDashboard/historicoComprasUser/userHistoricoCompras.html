@@ -71,14 +71,27 @@
   </div>
 
 
-      <div class="dash-content">
-        <div class="overview">
-          <div class="title">
-            <i class="uil uil-tachometer-fast-alt"></i>
-            <span class="text">Histórico de Compras</span>
-          </div>
-        </div>
-      </div>
+   <div class="dash-content">
+  <div class="overview">
+    <div class="title">
+      <i class="uil uil-tachometer-fast-alt"></i>
+      <span class="text">Histórico de Compras</span>
+    </div>
+
+    <!-- Filtro de datas -->
+    <div class="filter-container">
+      <label>De: <input type="date" id="startDate"></label>
+      <label>Até: <input type="date" id="endDate"></label>
+      <button id="filterBtn">Filtrar</button>
+      <button id="resetBtn">Limpar</button>
+    </div>
+
+    <!-- Grid de cards -->
+    <div id="historyGrid" class="history-grid"></div>
+  </div>
+</div>
+
+
     </section>
     <script src="userHistoricoCompras.js"></script>
   </body>

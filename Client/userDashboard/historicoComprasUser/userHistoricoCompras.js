@@ -86,3 +86,92 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+
+
+  // Dados provisórios
+  const salesHistory = [
+    {
+      id: "1",
+      title: "O Senhor dos Anéis",
+      author: "J.R.R. Tolkien",
+      price: 120,
+      soldAt: "2025-07-20",
+      photo: "https://m.media-amazon.com/images/I/41RBd2DvmgL._SY445_SX342_ControlCacheEqualizer_.jpg"
+    },
+    {
+      id: "2",
+      title: "Dom Casmurro",
+      author: "Machado de Assis",
+      price: 45,
+      soldAt: "2025-07-22",
+      photo: "https://m.media-amazon.com/images/I/41AYWyc6qmL._SY445_SX342_ControlCacheEqualizer_.jpg"
+    },
+    {
+      id: "3",
+      title: "O Hobbit",
+      author: "J.R.R. Tolkien",
+      price: 80,
+      soldAt: "2025-07-23",
+      photo: "https://m.media-amazon.com/images/I/511+-lOOtsL._SY445_SX342_ControlCacheEqualizer_.jpg"
+    },
+     {
+      id: "4",
+      title: "Harry Potter e a Ordem da Fenix",
+      author: "J.K Rowling",
+      price: 45,
+      soldAt: "2025-04-12",
+      photo: "https://m.media-amazon.com/images/I/81nTLN-kz7L._SY425_.jpg"
+    }
+  ];
+
+  // Ordenar por data (mais recente primeiro)
+  salesHistory.sort((a, b) => new Date(b.soldAt) - new Date(a.soldAt));
+
+  // Renderizar cards
+ function renderCards(data) {
+  const grid = document.getElementById('historyGrid');
+  grid.innerHTML = "";
+
+  data.forEach(sale => {
+    const card = document.createElement('div');
+    card.classList.add('history-card');
+    card.innerHTML = `
+      <div class="image-wrapper">
+        <img src="${sale.photo}" alt="${sale.title}">
+      </div>
+      <h3>${sale.title}</h3>
+      <p class="author">Autor: ${sale.author}</p>
+      <p class="price">Preço: € ${sale.price.toFixed(2)}</p>
+      <p class="date">Vendido em: ${new Date(sale.soldAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+  // Filtrar por intervalo
+  function filterByDate() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    const filtered = salesHistory.filter(sale => {
+      const saleDate = new Date(sale.soldAt);
+      if (startDate && saleDate < new Date(startDate)) return false;
+      if (endDate && saleDate > new Date(endDate)) return false;
+      return true;
+    });
+
+    renderCards(filtered);
+  }
+
+  // Eventos
+  document.getElementById('filterBtn').addEventListener('click', filterByDate);
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('startDate').value = "";
+    document.getElementById('endDate').value = "";
+    renderCards(salesHistory);
+  });
+
+  // Inicial
+  renderCards(salesHistory);
