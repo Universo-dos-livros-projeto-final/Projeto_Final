@@ -1,0 +1,22 @@
+{
+  "name": "pagpagamento",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "stripe": "^18.3.0",
+    "fastify": "^4.28.0",
+    "dotenv": "^17.2.0",
+    "@fastify/cors": "^8.3.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.11"
+  }
+}

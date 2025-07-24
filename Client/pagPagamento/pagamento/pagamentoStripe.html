@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pagar com Stripe</title>
+     <link rel="stylesheet" href="pagamentoStripe.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+ 
+  <script src="https://js.stripe.com/v3/"></script>
+
+ <script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          first: '#4960d4',
+          title: '#0c1645',
+          text: '#606785',
+          border: '#d9ddf2',
+          body: '#ebeeff',
+          container: 'hsl(230, 100%, 97%)',
+
+          'dark-title': 'hsl(230, 48%, 85%)',
+          'dark-text': 'hsl(0, 0%, 0%)', 
+          'dark-border': 'hsl(230, 12%, 18%)',
+          'dark-body': 'hsl(230, 12%, 8%)',
+          'dark-container': 'hsl(230, 12%, 12%)',
+        },
+      },
+    },
+  };
+</script>
+
+</head>
+
+<body class="text-text dark:text-dark-text bg-body">
+  <!-- HEADER -->
+  <header id="header" class="fixed top-0 left-0 w-full bg-body shadow-sm border-b border-border z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="/Client/paginaInicial/index.html" class="flex items-center gap-2">
+          <img src="/Client/pagPagamento/imagem/logo 4k.jpeg" alt="Logo Universo dos Livros" class="h-10 w-auto object-contain" />
+          <span class="font-cursive text-xl font-bold text-title">Universo dos Livros</span>
+        </a>
+        <div class="nav__menu">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="/Client/paginaInicial/index.html" class="nav__link">
+                <i class="ri-home-line"></i>
+                <span>Home</span>
+              </a>
+            </li>
+
+            <li class="nav__item">
+              <a href="/Client/pagCategorias/categorias.html" class="nav__link">
+                <i class="ri-price-tag-3-line"></i>
+                <span>Categorias</span>
+              </a>
+            </li>
+
+            <li class="nav__item">
+              <a href="#sobrenos" class="nav__link">
+                <i class="ri-message-3-line"></i>
+                <span>Sobre Nós</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+          <div class="flex items-center gap-4 ml-6">
+          <button id="search-button" class="text-text hover:text-first transition">
+            <i class="ri-search-line text-xl"></i>
+          </button>
+         <a href="#" id="user-link"
+            class="text-text hover:text-first transition-colors duration-300 text-xl cursor-pointer">
+             <i class="ri-user-line"></i>
+          </a>
+          <button id="carrinho" class="relative text-text hover:text-first transition">
+            <i class="ri-shopping-cart-line text-xl"></i>
+          </button>
+          <button id="favoritos" class="text-text hover:text-first transition">
+            <i class="ri-heart-line text-xl"></i>
+          </button>
+         <button id="theme-button" class="text-text hover:text-first transition">
+            <i id="theme-icon" class="ri-moon-line text-xl"></i>
+          </button>
+
+        </div>
+      </div>
+    </div>
+ <!-- CAMPO DE BUSCA -->
+<div
+  id="search-content"
+  class="fixed inset-0 top-full w-full h-full z-[100] bg-transparent/30 dark:bg-white/10 backdrop-blur-lg p-32 transition-all duration-500 overflow-auto"
+>
+  <form class="flex items-center gap-6 bg-container border-2 border-border px-4 py-2 rounded-lg mx-auto max-w-2xl">
+    <i class="ri-search-line text-xl text-title"></i>
+    <input type="text" class="w-full py-2 bg-container text-text placeholder:text-text outline-none" placeholder="O que você procura?" />
+  </form>
+  <div id="search-close" class="absolute top-8 right-8 text-3xl text-title cursor-pointer">
+    <i class="ri-close-line"></i>
+  </div>
+</div>
+  </header>
+  <!-- MODAL CARRINHO -->
+<div id="cart-modal" class="cart-modal">
+  <div class="cart-modal-content">
+    <div class="cart-modal-header">
+      <h2>Carrinho</h2>
+      <button class="cart-modal-close">&times;</button>
+    </div>
+    <div class="cart-items-container" id="cart-items"></div>
+    <div class="cart-summary">
+      <div class="cart-total-row">
+        <span>Total</span>
+        <span id="cart-total">R$ 0,00</span>e
+      </div>
+      <button class="cart-finalize-button">Finalizar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FAVORITOS -->
+<div id="favorites-modal" class="favorites-modal">
+  <div class="favorites-modal-content">
+    <div class="favorites-modal-header">
+      <h2>Favoritos</h2>
+      <button class="favorites-modal-close">&times;</button>
+    </div>
+    <div class="favorites-items-container" id="favorites-items"></div>
+  </div>
+</div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- RESUMO DO PEDIDO -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-border overflow-hidden">
+          <div class="bg-container px-6 py-4 border-b border-border">
+            <h3 class="text-lg font-semibold text-title">Resumo do Pedido</h3>
+          </div>
+          <div class="p-6">
+            <div id="product-list" class="space-y-4">
+              <div class="flex items-center space-x-4 p-4 bg-container rounded-lg">
+                <div class="w-16 h-16 bg-first/10 rounded-lg flex items-center justify-center">
+                  <svg class="w-8 h-8 text-first" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4v10l8 4 8-4V7z" />
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-medium text-title">Harry Potter e a Pedra Filosofal</h4>
+                  <p class="text-sm text-text">Descrição do produto</p>
+                  <div class="flex items-center justify-between mt-2">
+                    <span class="text-sm text-text">Qtd: 1</span>
+                    <span class="font-semibold text-title">€34,90</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-border space-y-2 text-sm text-dark-text ">
+              <div class="flex justify-between"><span>Subtotal</span><span>€34,90</span></div>
+              <div class="flex justify-between"><span>Impostos</span><span>€0,00</span></div>
+              <div class="flex justify-between"><span>Frete</span><span class="text-green-600">Grátis</span></div>
+              <div class="flex justify-between text-lg font-semibold pt-2 border-t border-border text-dark-text">
+                <span>Total</span><span class="text-first">€34,90</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULÁRIO DE PAGAMENTO -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-xl shadow-sm border border-border overflow-hidden">
+          <div class="bg-container  px-6 py-6 text-center text-white">
+            <div class="w-16 h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center">
+              <svg class="w-8 h-8 text-first" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.104 0 2-.896 2-2s-.896-2-2-2-2 .896-2 2 .896 2 2 2zm0 2c-1.104 0-2 .896-2 2v6h4v-6c0-1.104-.896-2-2-2z" />
+              </svg>
+            </div>
+            <h2 class="text-2xl text-title font-bold mb-1">Finalizar Pagamento</h2>
+            <p class="text-text text-sm">Preencha os dados para concluir sua compra</p>
+          </div>
+          <div class="px-6 py-8">
+            <form id="payment-form" class="space-y-4">
+              <div>
+                <label for="name" class="block text-sm font-medium text-dark-text">Nome Completo</label>
+                <input id="name" name="name" type="text" required class="mt-1 block w-full rounded-md border border-border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-first focus:border-first sm:text-sm" placeholder="Seu nome" />
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-dark-text">Email</label>
+                <input id="email" name="email" type="email" required class="mt-1 block w-full rounded-md border border-border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-first focus:border-first sm:text-sm" placeholder="voce@email.com" />
+              </div>
+              <div>
+                <label for="card-element" class="block text-sm font-medium text-dark-text">Cartão de Crédito</label>
+                <div id="card-element" class="StripeElement mt-1"></div>
+              </div>
+              <button id="submit" type="submit" class="w-full bg-first hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-sm transition">
+                Pagar €34,90
+              </button>
+            </form>
+            <!-- Mensagem de sucesso -->
+            <div id="mensagem" class="hidden bg-accent-50 border border-accent-200 rounded-lg p-4 mt-4">
+              <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="text-accent-800 font-medium">Pagamento realizado com sucesso!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <!--==================== FOOTER ====================-->
+  <footer class="bg-body px-4 pb-4 pt-8 sm:py-8 text-center shadow-md">
+    <div class="footer-content flex flex-wrap justify-around mb-6">
+      <div class="column mb-4">
+        <h3 class="text-lg font-semibold text-title mb-2">Sobre Nós</h3>
+        <ul class="text-text space-y-1">
+          <li><a href="#nossa-historia" class="hover:underline">Nossa História</a></li>
+          <li><a href="#equipe" class="hover:underline">Equipe</a></li>
+          <li><a href="#missao-e-valores" class="hover:underline">Missão e Valores</a></li>
+        </ul>
+      </div>
+      <div class="column mb-4">
+        <h3 class="text-lg font-semibold text-title mb-2">Contato</h3>
+        <ul class="text-text space-y-1">
+          <li>Email: <a href="mailto:contato@universodoslivros.com" class="text-first hover:underline">contato@universodoslivros.com</a></li>
+          <li>Telefone: (91) 91234 5678</li>
+          <li>Endereço: Rua Universo dos Livros, 123</li>
+        </ul>
+      </div>
+      <div class="column mb-4">
+        <h3 class="text-lg font-semibold text-title mb-2">Ajuda</h3>
+        <ul class="text-text space-y-1">
+          <li><a href="#suporte" class="hover:underline">Suporte ao Cliente</a></li>
+          <li><a href="#faq" class="hover:underline">Perguntas Frequentes</a></li>
+          <li><a href="#devolucoes" class="hover:underline">Política de Devoluções</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="social-links flex justify-center pb-12 pt-8 sm:py-22 gap-6">
+      <a href="#">
+        <img src="/Client/imagens/Facebook_Logo_2023.png" alt="Facebook" class="w-10 h-10" />
+      </a>
+      <a href="#">
+        <img src="/Client/imagens/circle-linkedin-512.webp" alt="LinkedIn" class="w-10 h-10" />
+      </a>
+      <a href="#">
+        <img src="/Client/imagens/social-instagram-new-circle-512.webp" alt="Instagram" class="w-10 h-10" />
+      </a>
+    </div>
+  </footer>
+  <script src="pagamentoStripe.js"></script>
+ 
+
+</body>
+</html>

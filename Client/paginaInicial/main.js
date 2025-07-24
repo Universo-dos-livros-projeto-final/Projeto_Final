@@ -463,7 +463,10 @@ if (themeButton) {
 /*   parte carrinho e favoritos */
 
 // =================== CART MODAL COM AUTENTICAÇÃO ===================
+
+
 class CartModal {
+  
   constructor() {
     this.cart = [];
     this.cartModal = document.getElementById("cart-modal");

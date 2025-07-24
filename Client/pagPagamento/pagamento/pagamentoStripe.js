@@ -1,69 +1,139 @@
-/*=============== SEARCH ===============*/
-const searchButton = document.getElementById('search-button'),
-      searchClose = document.getElementById('search-close'),
-      searchContent = document.getElementById('search-content');
+const stripe = Stripe('pk_test_51RiwxXRpegXRgAZ8mmpsxJTbCjoxZnsA9gdLBdsmF9GR27Q09Zp5F63PqASkoqtdVSTJ7vWIt6lVgCNDeyZ4OIgE00CRYBFHuT');
+  const elements = stripe.elements();
+  const card = elements.create('card', {
+    style: {
+      base: {
+        fontSize: '16px',
+        color: '#424770',
+        '::placeholder': {
+          color: '#aab7c4',
+        },
+      },
+      invalid: {
+        color: '#9e2146',
+      },
+    },
+  });
+  card.mount('#card-element');
 
-//===== MENU SHOW =====//
-if(searchButton){
-    searchButton.addEventListener('click', () => {
-        searchContent.classList.add('show-search');
+  const form = document.getElementById('payment-form');
+  const mensagem = document.getElementById('mensagem');
+  const submitButton = document.getElementById('submit');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+      <span class="flex items-center justify-center space-x-2">
+        <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <span>Processando...</span>
+      </span>
+    `;
+
+    const { paymentIntent, error: paymentIntentError } = await criarIntentDePagamento();
+
+    if (paymentIntentError) {
+      alert(paymentIntentError);
+      submitButton.disabled = false;
+      submitButton.textContent = 'Pagar €34,90';
+      return;
+    }
+
+    const { error } = await stripe.confirmCardPayment(paymentIntent.clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+        },
+      },
     });
-}
 
-//===== MENU HIDDEN =====//
-if(searchClose){
-    searchClose.addEventListener('click', () => {
-        searchContent.classList.remove('show-search');
-    });
-}
+    if (error) {
+      alert(error.message);
+      submitButton.disabled = false;
+      submitButton.textContent = 'Pagar €34,90';
+    } else {
+      mensagem.classList.remove('hidden');
+      form.reset();
+      card.clear();
+      submitButton.disabled = false;
+      submitButton.textContent = 'Pagar €34,90';
+    }
+  });
 
-/*=============== ADD SHADOW HEADER ===============*/
-const shadowHeader = () => {
-    const header = document.getElementById('header');
-    window.scrollY >= 50 ? header.classList.add('shadow-header')
-                          : header.classList.remove('shadow-header');
-}
-
-window.addEventListener('scroll', shadowHeader)
-
-
-/*=============== DARK LIGHT THEME ===============*/ 
-const themeButton = document.getElementById('theme-button')
-const darkTheme = 'dark-theme'
-const iconTheme = 'ri-sun-line'
-
-const selectedTheme = localStorage.getItem('selected-theme')
-const selectedIcon = localStorage.getItem('selected-icon')
-
-const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light';
-const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'ri-moon-line' : 'ri-sun-line';
-
-if (selectedTheme) {
-    document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme);
-    themeButton.classList[selectedIcon === 'ri-moon-line' ? 'add' : 'remove'](iconTheme);
-}
-
-themeButton.addEventListener('click', () => {
-    document.body.classList.toggle(darkTheme);
-    themeButton.classList.toggle(iconTheme);
-    
-    localStorage.setItem('selected-theme', getCurrentTheme());
-    localStorage.setItem('selected-icon', getCurrentIcon());
+  async function criarIntentDePagamento() {
+    try {
+      const response = await fetch('http://127.0.0.1:3000/criar-intent', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    total: 34.90,
+    nome: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+  }),
 });
 
-/*=============== SCROLL REVEAL ANIMATION ===============*/
-const sr = ScrollReveal({
-    origin: 'top',
-    distance: '60px',
-    duration: 2500,
-    delay: 400,
-})
 
-sr.reveal('.home__data, .featured__container, .new__container, .footer')
-sr.reveal('.home__images', {delay: 600})
-sr.reveal('.services__card', {interval: 100})
-sr.reveal('.discount__data', {origin: 'left'})
-sr.reveal('.discount__images', {origin: 'right'})
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao criar Payment Intent');
+      }
+
+      return { paymentIntent: data, error: null };
+    } catch (error) {
+      return { paymentIntent: null, error: error.message };
+    }
+  }
+
+
+/*=============== DARK LIGHT THEME ===============*/
+ const themeButton = document.getElementById("theme-button");
+  const themeIcon = document.getElementById("theme-icon");
+  const darkThemeClass = "dark-theme";
+
+  // Classe dos ícones Remix
+  const iconMoon = "ri-moon-line";
+  const iconSun = "ri-sun-line";
+
+  // Carrega tema salvo
+  const savedTheme = localStorage.getItem("selected-theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add(darkThemeClass);
+    themeIcon.classList.remove(iconMoon);
+    themeIcon.classList.add(iconSun);
+  }
+
+  // Toggle ao clicar
+  themeButton.addEventListener("click", () => {
+    document.body.classList.toggle(darkThemeClass);
+    const isDark = document.body.classList.contains(darkThemeClass);
+
+    themeIcon.classList.toggle(iconMoon, !isDark);
+    themeIcon.classList.toggle(iconSun, isDark);
+
+    localStorage.setItem("selected-theme", isDark ? "dark" : "light");
+  });
+
+  // botao de pesquisa 
+     document.addEventListener("DOMContentLoaded", function () {
+    const searchButton = document.getElementById("search-button");
+    const searchClose = document.getElementById("search-close");
+    const searchContent = document.getElementById("search-content");
+
+    searchButton?.addEventListener("click", () => {
+      searchContent.classList.add("show-search");
+    });
+
+    searchClose?.addEventListener("click", () => {
+      searchContent.classList.remove("show-search");
+    });
+  });
 
 class CartModal {
     constructor() {
@@ -324,136 +394,46 @@ class FavoritesModal {
 
 const favoritesModal = new FavoritesModal();
 
-// Filtros e Categorias
- const filtros = { genero: [], preco: null, autor: null };
+/*=============== User Page ===============*/
+document.addEventListener("DOMContentLoaded", () => {
+  const userLink = document.getElementById("user-link");  
 
-    function verificarPreco(preco, faixa) {
-      if (faixa === '0-20') return preco <= 20;
-      if (faixa === '20-50') return preco > 20 && preco <= 50;
-      if (faixa === '50+') return preco > 50;
-      return true;
-    }
+  if (userLink) {
+    userLink.addEventListener("click", async (e) => {
+      e.preventDefault();
 
-    function filtrarProdutos() {
-      const produtos = document.querySelectorAll('.produto');
-      let visiveis = 0;
-      produtos.forEach(produto => {
-        const genero = produto.dataset.genero;
-        const preco = parseFloat(produto.dataset.preco);
-        const autor = produto.dataset.autor;
+      const token = Cookies.get("token");
+      console.log("Token atual:", token);
 
-        const generoValido = filtros.genero.length === 0 || filtros.genero.includes(genero);
-        const precoValido = !filtros.preco || verificarPreco(preco, filtros.preco);
-        const autorValido = !filtros.autor || filtros.autor === autor;
-
-        if (generoValido && precoValido && autorValido) {
-          produto.style.display = 'block';
-          visiveis++;
-        } else {
-          produto.style.display = 'none';
-        }
-      });
-
-      document.querySelector('.sem-resultados').style.display = visiveis === 0 ? 'block' : 'none';
-      atualizarFiltrosAplicados();
-    }
-
-    function atualizarFiltrosAplicados() {
-      const container = document.getElementById('filtros-ativos');
-      container.innerHTML = '';
-
-      if (filtros.genero.length > 0) {
-        const p = document.createElement('p');
-        p.innerHTML = `<strong>Gêneros:</strong> ${filtros.genero.join(', ')}`;
-        container.appendChild(p);
+      if (!token) {
+        console.warn("Sem token — redirecionando para login");
+        window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+        return;
       }
 
-      if (filtros.preco) {
-        const p = document.createElement('p');
-        const texto = filtros.preco === '0-20' ? '€ 0 - € 20'
-                    : filtros.preco === '20-50' ? '€ 20 - € 50'
-                    : '€ 50+';
-        p.innerHTML = `<strong>Preço:</strong> ${texto}`;
-        container.appendChild(p);
-      }
+      try {
+        const response = await fetch("http://localhost:3000/validate-token", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      if (filtros.autor) {
-        const p = document.createElement('p');
-        p.innerHTML = `<strong>Autor:</strong> ${filtros.autor}`;
-        container.appendChild(p);
-      }
-
-      document.querySelector('.filtros-aplicados').style.display =
-        (filtros.genero.length > 0 || filtros.preco || filtros.autor) ? 'block' : 'none';
-    }
-
-    document.querySelectorAll('.filtro input[type="checkbox"]').forEach(el => {
-      el.addEventListener('change', e => {
-        const genero = e.target.value;
-        if (e.target.checked) {
-          filtros.genero.push(genero);
+        if (response.ok) {
+          console.log("Token válido — redirecionando para o dashboard");
+          window.location.href =
+            "/Client/userDashboard/userDashboardInfo/userDashboard.html";
         } else {
-          filtros.genero = filtros.genero.filter(g => g !== genero);
+          console.warn("Token inválido — redirecionando para login");
+          Cookies.remove("token");
+          window.location.href = "/Client/PaginaLogin/paginaLogin.html";
         }
-        filtrarProdutos();
-      });
+      } catch (error) {
+        console.error("Erro ao validar token:", error);
+        Cookies.remove("token");
+        window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+      }
     });
+  } else {
+    console.error("#user-link não encontrado no DOM");
+  }
+});
 
-    document.querySelectorAll('.filtro input[type="radio"]').forEach(el => {
-      el.addEventListener('change', e => {
-        filtros.preco = e.target.value;
-        filtrarProdutos();
-      });
-    });
 
-    document.getElementById('autor').addEventListener('change', e => {
-      filtros.autor = e.target.value;
-      filtrarProdutos();
-    });
-
-    document.getElementById('ordenar').addEventListener('change', e => {
-      ordenarProdutos(e.target.value);
-    });
-
-    function ordenarProdutos(ordem) {
-      const produtos = Array.from(document.querySelectorAll('.produto'));
-      const container = document.querySelector('.produtos');
-
-      produtos.sort((a, b) => {
-        if (ordem.includes('titulo')) {
-          const tA = a.querySelector('h2').textContent.toLowerCase();
-          const tB = b.querySelector('h2').textContent.toLowerCase();
-          return ordem === 'titulo-asc' ? tA.localeCompare(tB) : tB.localeCompare(tA);
-        } else {
-          const pA = parseFloat(a.dataset.preco);
-          const pB = parseFloat(b.dataset.preco);
-          return ordem === 'preco-asc' ? pA - pB : pB - pA;
-        }
-      });
-
-      produtos.forEach(card => container.appendChild(card));
-    }
-
-    document.getElementById('limpar-filtros').addEventListener('click', () => {
-      document.querySelectorAll('.filtro input').forEach(input => input.checked = false);
-      document.getElementById('autor').value = '';
-      document.getElementById('ordenar').value = 'titulo-asc';
-      filtros.genero = [];
-      filtros.preco = null;
-      filtros.autor = null;
-      ordenarProdutos('titulo-asc');
-      filtrarProdutos();
-    });
-
-    function addToCart(titulo) {
-      alert(`📦 "${titulo}" adicionado ao carrinho!`);
-    }
-
-    function toggleFavorite(icon, titulo) {
-      icon.classList.toggle('active');
-      const favorito = icon.classList.contains('active');
-      alert(`${favorito ? '❤️' : '💔'} "${titulo}" ${favorito ? 'adicionado aos favoritos!' : 'removido dos favoritos!'}`);
-    }
-
-    ordenarProdutos('titulo-asc');
-    filtrarProdutos();
