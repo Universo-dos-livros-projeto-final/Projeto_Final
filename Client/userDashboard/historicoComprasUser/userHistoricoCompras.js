@@ -138,14 +138,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.createElement('div');
     card.classList.add('history-card');
     card.innerHTML = `
-      <div class="image-wrapper">
-        <img src="${sale.photo}" alt="${sale.title}">
-      </div>
+  <div class="image-wrapper">
+    <img src="${sale.photo}" alt="${sale.title}">
+  </div>
+  <div class="content">
+    <div class="top-line">
       <h3>${sale.title}</h3>
-      <p class="author">Autor: ${sale.author}</p>
-      <p class="price">Preço: € ${sale.price.toFixed(2)}</p>
-      <p class="date">Vendido em: ${new Date(sale.soldAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
-    `;
+      <div class="info-right">
+        <span class="price">Preço: € ${sale.price.toFixed(2)}</span>
+        <span class="date">${new Date(sale.soldAt).toLocaleDateString('pt-BR', {
+          day: '2-digit', month: '2-digit', year: 'numeric'
+        })}</span>
+      </div>
+    </div>
+    <p class="author">Autor: ${sale.author}</p>
+  </div>
+`;
     grid.appendChild(card);
   });
 }
