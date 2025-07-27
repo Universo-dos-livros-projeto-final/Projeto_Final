@@ -5,6 +5,9 @@ import { getCart } from "./getCart";
 import { removeFromCart } from "./removeFromCart";
 import { checkoutCart } from "./checkoutCart";
 import { updateCart } from "./updateCart";  
+import { createIntent } from "./createIntent";
+
+
 
 export async function cartRoutes(app: FastifyInstance) {
   await addToCart(app);
@@ -12,4 +15,5 @@ export async function cartRoutes(app: FastifyInstance) {
   await removeFromCart(app);
   await checkoutCart(app);
   await updateCart(app);  
+  await createIntent(app);
 }

@@ -18,8 +18,9 @@ export async function checkoutCart(app: FastifyInstance) {
 
       // Calcular total
       const total = cartItems.reduce((sum, item) => {
-        return sum + (parseFloat(item.book.price) * item.quantity);
-      }, 0);
+      return sum + (item.book.price * item.quantity);
+    }, 0);
+
 
       // Criar registro de compra (você pode criar uma tabela Order se necessário)
       // Por enquanto, vamos apenas limpar o carrinho
