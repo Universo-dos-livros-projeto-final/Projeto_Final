@@ -60,39 +60,41 @@
     </nav>
 
     <section class="principal">
-      <div class="top fixed top-0 left-0 w-full flex justify-between items-center px-2 py-6 bg-white border-b border-gray-200 shadow-sm transition-all duration-300 z-50">
-    <i class="uil uil-bars sidebar-toggle text-2xl cursor-pointer text-gray-600 hover:text-blue-600 transition-colors duration-200"></i>
-    <img
-      id="profileImageHeader"
-      src=""
-      alt="Foto de perfil topo"
-      class="w-10 h-10 rounded-full object-cover border-2 border-blue-500 cursor-pointer hover:border-blue-600 transition-colors duration-200"
-    />
-  </div>
+      <div
+        class="top fixed top-0 left-0 w-full flex justify-between items-center px-2 py-6 bg-white border-b border-gray-200 shadow-sm transition-all duration-300 z-50"
+      >
+        <i
+          class="uil uil-bars sidebar-toggle text-2xl cursor-pointer text-gray-600 hover:text-blue-600 transition-colors duration-200"
+        ></i>
+        <img
+          id="profileImageHeader"
+          src=""
+          alt="Foto de perfil topo"
+          class="w-10 h-10 rounded-full object-cover border-2 border-blue-500 cursor-pointer hover:border-blue-600 transition-colors duration-200"
+        />
+      </div>
 
+      <div class="dash-content">
+        <div class="overview">
+          <div class="title">
+            <i class="uil uil-tachometer-fast-alt"></i>
+            <span class="text">Histórico de Compras</span>
+          </div>
 
-   <div class="dash-content">
-  <div class="overview">
-    <div class="title">
-      <i class="uil uil-tachometer-fast-alt"></i>
-      <span class="text">Histórico de Compras</span>
-    </div>
+          <!-- Filtro de datas -->
+          <div class="filter-container">
+            <label>De: <input type="date" id="startDate" /></label>
+            <label>Até: <input type="date" id="endDate" /></label>
+            <button id="filterBtn">Filtrar</button>
+            <button id="resetBtn">Limpar</button>
+          </div>
 
-    <!-- Filtro de datas -->
-    <div class="filter-container">
-      <label>De: <input type="date" id="startDate"></label>
-      <label>Até: <input type="date" id="endDate"></label>
-      <button id="filterBtn">Filtrar</button>
-      <button id="resetBtn">Limpar</button>
-    </div>
-
-    <!-- Grid de cards -->
-    <div id="historyGrid" class="history-grid"></div>
-  </div>
-</div>
-
-
+          <!-- Grid de cards -->
+          <div id="historyGrid" class="history-grid"></div>
+        </div>
+      </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="userHistoricoCompras.js"></script>
   </body>
 </html>

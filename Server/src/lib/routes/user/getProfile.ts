@@ -13,8 +13,8 @@ export async function getProfile(app: FastifyInstance) {
       const user = await app.prisma.user.findUnique({
         where: { id: userId },
         include: {
-          addresses: true,  
-          purchases: true, 
+          addresses: true,
+          purchases: true,
         },
       });
 
@@ -24,7 +24,10 @@ export async function getProfile(app: FastifyInstance) {
 
       const { password, ...safeUser } = user;
 
-      reply.send(safeUser);
+      reply.send({
+        ...safeUser,
+        profilephoto: user.profilephoto || null
+      });
     } catch (error) {
       console.error("Error fetching user:", error);
       reply.status(500).send({ message: "Error fetching user" });
