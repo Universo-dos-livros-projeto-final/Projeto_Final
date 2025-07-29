@@ -6,7 +6,6 @@ export async function checkoutCart(app: FastifyInstance) {
     const userId = request.user!.userId;
 
     try {
-      // Buscar itens do carrinho
       const cartItems = await app.prisma.cartItem.findMany({
         where: { userId },
         include: { book: true },
@@ -16,22 +15,30 @@ export async function checkoutCart(app: FastifyInstance) {
         return reply.status(400).send({ message: "Carrinho está vazio" });
       }
 
-      // Calcular total
       const total = cartItems.reduce((sum, item) => {
-      return sum + (item.book.price * item.quantity);
-    }, 0);
+        return sum + item.book.price * item.quantity;
+      }, 0);
 
+      // Criar registros de compra (sem o campo 'price' pois não existe no model Purchase)
+      const purchasesData = cartItems.map(item => ({
+        userId,
+        bookId: item.bookId,
+        quantity: item.quantity,
+      }));
 
-      // Criar registro de compra (você pode criar uma tabela Order se necessário)
-      // Por enquanto, vamos apenas limpar o carrinho
+      await app.prisma.purchase.createMany({
+        data: purchasesData,
+      });
+
+      // Limpar o carrinho
       await app.prisma.cartItem.deleteMany({
         where: { userId },
       });
 
-      return reply.send({ 
+      return reply.send({
         message: "Compra finalizada com sucesso",
         total: total.toFixed(2),
-        items: cartItems.length 
+        items: cartItems.length,
       });
 
     } catch (error) {

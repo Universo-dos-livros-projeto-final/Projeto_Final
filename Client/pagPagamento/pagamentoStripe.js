@@ -229,36 +229,61 @@ form.addEventListener("submit", async (e) => {
       </span>
     `;
 
-  const { paymentIntent, error } = await criarIntentDePagamento();
+  try {
+    const { paymentIntentSecret, error: intentError } =
+      await criarIntentDePagamento();
 
-  if (error) {
-    alert(error);
-    submitButton.disabled = false;
-    await atualizarCarrinho();
-    return;
-  }
+    if (intentError) throw new Error(intentError);
+    if (!paymentIntentSecret)
+      throw new Error("Erro: clientSecret não foi retornado");
 
-  const result = await stripe.confirmCardPayment(paymentIntent.clientSecret, {
-    payment_method: {
-      card,
-      billing_details: {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
+    const result = await stripe.confirmCardPayment(paymentIntentSecret, {
+      payment_method: {
+        card,
+        billing_details: {
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+        },
       },
-    },
-  });
+    });
 
-  if (result.error) {
-    alert(result.error.message);
-    submitButton.disabled = false;
-  } else {
+    if (result.error) throw new Error(result.error.message);
+
+    const token = Cookies.get("token");
+    if (!token) throw new Error("Usuário não autenticado");
+
+    const resCheckout = await fetch("http://localhost:3000/cart/checkout", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!resCheckout.ok) {
+      const errorData = await resCheckout.json();
+      throw new Error(errorData.message || "Erro ao finalizar compra");
+    }
+
+    const checkoutData = await resCheckout.json();
+
+    localStorage.removeItem("cart");
+
+    mensagem.textContent =
+      checkoutData.message || "Compra finalizada com sucesso!";
     mensagem.classList.remove("hidden");
+
     form.reset();
     card.clear();
-  }
 
-  await atualizarCarrinho();
-  submitButton.disabled = false;
+    await atualizarCarrinho();
+
+    setTimeout(() => {
+      window.location.href = "/Client/paginaInicial/index.html";
+    }, 3000);
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = `Pagar`;
+  }
 });
 
 /* ========== Controle do Tema Dark/Light ========== */

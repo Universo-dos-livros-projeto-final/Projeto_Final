@@ -120,25 +120,27 @@ async function fetchBooks() {
 }
 
 /*=============== FUNÇÃO PARA CRIAR CARD DE LIVRO ===============*/
-function createBookCard(book) {
+function createBookCard(book, cardClass = "featured__card") {
+  const prefix = cardClass.split("__")[0]; //
+
   const bookPrice = book.price ? parseFloat(book.price) : 0;
   const bookTitle = book.title || "Título não disponível";
   const bookImage =
     book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
 
   return `
-    <article class="featured__card swiper-slide" data-book-id="${book.id}">
-      <a href="../pagLivro/pagLivro.html?id=${book.id}" class="featured__link">
-        <img src="${bookImage}" alt="${bookTitle}" class="featured__img" />
-        <h3 class="featured__title">${bookTitle}</h3>
+    <article class="${cardClass} swiper-slide" data-book-id="${book.id}">
+      <a href="../pagLivro/pagLivro.html?id=${book.id}" class="${prefix}__link">
+        <img src="${bookImage}" alt="${bookTitle}" class="${prefix}__img" />
+        <h3 class="${prefix}__title">${bookTitle}</h3>
       </a>
-      <div class="featured__prices">
-        <span class="featured__discount">${bookPrice
-          .toFixed(2)
-          .replace(".", ",")}€</span>
+      <div class="${prefix}__prices">
+        <span class="${prefix}__discount">${bookPrice
+    .toFixed(2)
+    .replace(".", ",")}€</span>
       </div>
       <button type="button" class="button">Adicionar ao Carrinho</button>
-      <div class="featured__actions">
+      <div class="${prefix}__actions">
         <button><i class="ri-search-line"></i></button>
         <button><i class="ri-heart-line"></i></button>
       </div>  
@@ -180,10 +182,11 @@ async function loadFeaturedBooks() {
       container.innerHTML = "<p>Nenhum livro encontrado.</p>";
       return;
     }
-    booksArray.forEach((book) => {
-      const cardHTML = createBookCard(book);
-      container.insertAdjacentHTML("beforeend", cardHTML);
-    });
+
+    container.innerHTML = booksArray
+      .map((book) => createBookCard(book, "featured__card"))
+      .join("");
+
     initializeFeaturedSwiper();
     bindCardButtons(".featured__card");
     bindBookCardClicks();
@@ -211,10 +214,11 @@ async function loadPopularBooks() {
       container.innerHTML = "<p>Nenhum livro encontrado.</p>";
       return;
     }
-    booksArray.forEach((book) => {
-      const cardHTML = createBookCard(book);
-      container.insertAdjacentHTML("beforeend", cardHTML);
-    });
+
+    container.innerHTML = booksArray
+      .map((book) => createBookCard(book, "popular__card"))
+      .join("");
+
     initializePopularSwiper();
     bindCardButtons(".popular__card");
     bindBookCardClicks();
@@ -227,6 +231,7 @@ async function loadPopularBooks() {
     }
   }
 }
+
 /*=============== CARREGAR LIVROS - NOVOS LIVROS ===============*/
 async function loadNewBooks() {
   try {
@@ -241,10 +246,11 @@ async function loadNewBooks() {
       container.innerHTML = "<p>Nenhum livro encontrado.</p>";
       return;
     }
-    booksArray.forEach((book) => {
-      const cardHTML = createBookCard(book);
-      container.insertAdjacentHTML("beforeend", cardHTML);
-    });
+
+    container.innerHTML = booksArray
+      .map((book) => createBookCard(book, "new__card"))
+      .join("");
+
     initializeNewSwiper();
     bindCardButtons(".new__card");
     bindBookCardClicks();
@@ -336,7 +342,6 @@ async function loadHomeBooks() {
     }
 
     initializeHomeSwiper();
-    bindFeaturedCardButtons();
   } catch (error) {
     console.error("Erro ao carregar livros na Home:", error);
   }
@@ -473,26 +478,35 @@ function initializePopularSwiper() {
 }
 
 /*=============== BIND EVENTOS DOS BOTÕES ===============*/
+
+// Botão "Adicionar ao carrinho"
 function bindCardButtons(cardSelector) {
-  // Botões de adicionar ao carrinho
+  document.querySelectorAll(`${cardSelector} .button`).forEach((oldBtn) => {
+    const newBtn = oldBtn.cloneNode(true);
+    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+  });
+
   document.querySelectorAll(`${cardSelector} .button`).forEach((button) => {
     button.addEventListener("click", (e) => {
       const card = e.target.closest(cardSelector);
-      if (card && typeof cartModal !== "undefined") {
-        cartModal.addToCart(card);
-      }
+      if (card) cartModal.addToCart(card);
     });
   });
 
-  // Botões de favoritar (geralmente o segundo botão dentro de .featured__actions)
+  // Botão "Favoritar"
   document
     .querySelectorAll(`${cardSelector} .featured__actions button:nth-child(2)`)
     .forEach((button) => {
       button.addEventListener("click", (e) => {
         e.preventDefault();
         const card = e.target.closest(cardSelector);
-        if (card && typeof favoritesModal !== "undefined") {
-          favoritesModal.addToFavorites(card);
+        if (card) {
+          const heartIcon = button.querySelector("i");
+          if (heartIcon && heartIcon.classList.contains("ri-heart-fill")) {
+            favoritesModal.removeFromFavorites(card.dataset.bookId);
+          } else {
+            favoritesModal.addToFavorites(card);
+          }
         }
       });
     });
@@ -568,9 +582,7 @@ if (themeButton) {
 
 // =================== CART MODAL COM AUTENTICAÇÃO ===================
 
-
 class CartModal {
-  
   constructor() {
     this.cart = [];
     this.cartModal = document.getElementById("cart-modal");
@@ -615,7 +627,7 @@ class CartModal {
       return;
     }
 
-    const bookId = bookCard.dataset.bookId;
+    const bookId = bookCard.dataset.bookId; // CORRETO AQUI
     if (!bookId) {
       alert("Erro: ID do livro não encontrado.");
       return;
@@ -644,7 +656,7 @@ class CartModal {
       }
 
       // Feedback visual
-      const button = bookCard.querySelector(".button");
+      const button = bookCard.querySelector("button.button");
       const originalText = button.textContent;
       button.textContent = "Adicionado!";
       button.style.backgroundColor = "#4CAF50";
@@ -689,7 +701,6 @@ class CartModal {
 
       const cartItems = await response.json();
 
-      // Transformar dados do servidor para o formato esperado pelo frontend
       this.cart = cartItems.map((item) => ({
         id: item.id,
         bookId: item.bookId,
@@ -709,47 +720,56 @@ class CartModal {
 
   renderCartItems() {
     this.cartItemsContainer.innerHTML = "";
-    let total = 0;
 
     if (this.cart.length === 0) {
       this.cartItemsContainer.innerHTML = `
-        <div class="cart-empty-message">
-          <p>Seu carrinho está vazio</p>
-          <p>Adicione alguns livros para começar!</p>
-        </div>
-      `;
+      <div class="cart-empty-message">
+        <p>Seu carrinho está vazio</p>
+        <p>Adicione alguns livros para começar!</p>
+      </div>
+    `;
       this.cartTotalElement.textContent = "R$ 0,00";
       return;
     }
 
-    this.cart.forEach((item, index) => {
-      const itemTotal = item.price * item.quantity;
-      total += itemTotal;
-
+    this.cart.forEach((item) => {
       const cartItemElement = document.createElement("div");
       cartItemElement.classList.add("cart-item");
+
       cartItemElement.innerHTML = `
-        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
-        <div class="cart-item-details">
-          <h3>${item.title}</h3>
-          <div class="cart-item-quantity">
-            <button onclick="cartModal.updateQuantity('${item.bookId}', ${
-        item.quantity - 1
-      })">-</button>
-            <input type="text" value="${item.quantity}" readonly>
-            <button onclick="cartModal.updateQuantity('${item.bookId}', ${
-        item.quantity + 1
-      })">+</button>
-          </div>
-          <span class="cart-item-price">R$ ${item.price.toFixed(2)}</span>
-          <span class="cart-item-total">Total: R$ ${itemTotal.toFixed(2)}</span>
+      <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+      <div class="cart-item-details">
+        <h3>${item.title}</h3>
+        <div class="cart-item-quantity">
+          <button onclick="cartModal.changeQuantity('${
+            item.bookId
+          }', -1)">-</button>
+          <input type="text" value="${item.quantity}" readonly>
+          <button onclick="cartModal.changeQuantity('${
+            item.bookId
+          }', 1)">+</button>
         </div>
-        <button class="cart-item-remove" onclick="cartModal.removeItem('${
-          item.bookId
-        }')">×</button>
-      `;
+        <span class="cart-item-price">R$ ${item.price.toFixed(2)}</span>
+        <span class="cart-item-total">Total: R$ ${(
+          item.price * item.quantity
+        ).toFixed(2)}</span>
+      </div>
+      <button class="cart-item-remove" onclick="cartModal.removeItem('${
+        item.bookId
+      }')">×</button>
+    `;
 
       this.cartItemsContainer.appendChild(cartItemElement);
+    });
+
+    // Atualiza total após renderizar todos os itens
+    this.updateCartTotal();
+  }
+
+  updateCartTotal() {
+    let total = 0;
+    this.cart.forEach((item) => {
+      total += item.price * item.quantity;
     });
 
     this.cartTotalElement.textContent = `R$ ${total.toFixed(2)}`;
@@ -769,7 +789,7 @@ class CartModal {
 
     try {
       const response = await fetch("http://localhost:3000/cart", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -785,6 +805,19 @@ class CartModal {
     } catch (error) {
       console.error("Erro ao atualizar quantidade:", error);
       alert("Erro ao atualizar quantidade");
+    }
+  }
+
+  changeQuantity(bookId, delta) {
+    const item = this.cart.find((i) => i.bookId === bookId);
+    if (!item) return;
+
+    const newQuantity = item.quantity + delta;
+
+    if (newQuantity < 1) {
+      this.removeItem(bookId);
+    } else {
+      this.updateQuantity(bookId, newQuantity);
     }
   }
 
@@ -826,26 +859,7 @@ class CartModal {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:3000/cart/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao finalizar compra");
-      }
-
-      alert("Compra finalizada com sucesso!");
-      this.loadCartFromServer();
-      this.toggleCart();
-    } catch (error) {
-      console.error("Erro ao finalizar compra:", error);
-      alert("Erro ao finalizar compra: " + error.message);
-    }
+    window.location.href = "/Client/pagPagamento/pagamentoStripe.html";
   }
 }
 
@@ -1099,7 +1113,10 @@ function bindFeaturedCardButtons() {
     button.addEventListener("click", (e) => {
       const card = e.target.closest(".featured__card");
       if (card) {
-        cartModal.addToCart(card);
+        const bookId = card.dataset.bookId;
+        if (bookId) {
+          cartModal.addToCart(card);
+        }
       }
     });
   });
