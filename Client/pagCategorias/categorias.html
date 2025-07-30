@@ -5,36 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!--=============== FAVICON ===============-->
-    <link
-      rel="shortcut icon"
-      href="assets/img/favicon.png"
-      type="image/x-icon"
-    />
-
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon"/>
     <!--=============== REMIXICONS ===============-->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"
-    />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"/>
     <!--=============== SWIPER CSS ===============-->
     <link rel="stylesheet" href="swiper-bundle.min.css" />
-
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="categorias.css" />
-
     <title>Universo dos livros</title>
   </head>
   <body>
@@ -42,11 +24,7 @@
     <header class="header" id="header">
       <nav class="nav container">
         <a href="/Client/paginaInicial/index.html" class="nav__logo">
-          <img
-            src="logo 4k.jpeg"
-            alt="Logo Universo dos Livros"
-            class="nav__logo-img"
-          />
+          <img src="logo 4k.jpeg" alt="Logo Universo dos Livros" class="nav__logo-img"/>
           <span class="nav__logo-text">Universo dos Livros</span>
         </a>
 
@@ -128,112 +106,61 @@
           class="search__input"
         />
       </form>
-
-      <i class="ri-close-line search__close" id="search-close"></i>
     </div>
 
-    <h1>Livros</h1>
-  <div class="container">
-    <aside class="filtros-sidebar">
-      <h2>Filtros</h2>
-      <div class="filtros-aplicados">
-        <strong>Filtros aplicados:</strong>
-        <div id="filtros-ativos"></div>
-        <button class="botao-limpar" id="limpar-filtros">Limpar todos os filtros</button>
+    <!-- ================= CONTEUDO PRINCIPAL ========== -->
+<body class="bg-gray-50 text-gray-800 p-4">
+
+<div class="max-w-[1600px] mx-auto flex overflow-x-auto gap-6">
+
+  <!-- Sidebar fixa -->
+  <aside class="w-52 flex-shrink-0 mt-6">
+    <h2 class="font-semibold text-lg mb-4">CATEGORIAS</h2>
+    <ul id="categoryList" class="space-y-2">
+      <!-- Preenchido via JS -->
+    </ul>
+    <button id="loadMoreCategories" class="mt-4 text-indigo-600 font-medium hover:underline">ver mais</button>
+  </aside>
+
+  <!-- Conteúdo principal -->
+  <main class="flex-1 min-w-[300px]">
+    <!-- Topo -->
+    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+      <h2 class="text-2xl font-bold">Livros</h2>
+      <div class="flex gap-2">
+        <button id="filterBtn" class="bg-gray-200 px-4 py-2 rounded-md font-medium hover:bg-gray-300">Filtros ☰</button>
+        <button id="clearFilters" class="bg-red-100 text-red-600 px-4 py-2 rounded-md font-medium hover:bg-red-200">Limpar filtros</button>
       </div>
+    </div>
 
-      <div class="filtro">
-        <h3>Gênero</h3>
-        <label><input type="checkbox" value="aventura"> Aventura</label>
-        <label><input type="checkbox" value="ficcao"> Ficção</label>
-        <label><input type="checkbox" value="romance"> Romance</label>
-        <label><input type="checkbox" value="terror"> Terror</label>
-      </div>
-
-      <div class="filtro">
-        <h3>Preço</h3>
-        <label><input type="radio" name="preco" value="0-20"> €0 - €20</label>
-        <label><input type="radio" name="preco" value="20-50"> €20 - €50</label>
-        <label><input type="radio" name="preco" value="50+"> €50+</label>
-      </div>
-
-      <div class="filtro">
-        <h3>Autor</h3>
-        <select id="autor" class="form-select">
-          <option value="">Todos os autores</option>
-          <option value="autor1">Autor 1</option>
-          <option value="autor2">Autor 2</option>
-        </select>
-      </div>
-
-      <div class="filtro">
-        <h3>Ordenar por</h3>
-        <select id="ordenar" class="form-select">
-          <option value="titulo-asc">Título (A-Z)</option>
-          <option value="titulo-desc">Título (Z-A)</option>
-          <option value="preco-asc">Preço (menor para maior)</option>
-          <option value="preco-desc">Preço (maior para menor)</option>
-        </select>
-      </div>
-    </aside>
-
-    <section class="produtos">
-      <div class="sem-resultados">Nenhum livro encontrado.</div>
-
-      <!--  Os cards dos livros virão na próxima parte -->
-
-            <!-- Cards de livros (dentro da seção .produtos) -->
-      <div class="produto" data-genero="aventura" data-preco="49.90" data-autor="autor1">
-        <i class="ri-heart-line favorite-icon" onclick="toggleFavorite(this, 'A Guerra dos Tronos')"></i>
-        <img src="https://via.placeholder.com/120x180?text=Livro+1" alt="Livro 1" />
-        <h2>A Guerra dos Tronos</h2>
-        <div>€ 49,90</div>
-        <div class="btns">
-          <button class="btn" onclick="addToCart('A Guerra dos Tronos')"><i class="ri-shopping-cart-2-line"></i></button>
+    <!-- Filtros -->
+    <div id="filterPanel" class="hidden bg-white border rounded-md p-4 mb-6 shadow-sm">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block font-medium mb-1">Autor</label>
+          <select id="authorFilter" class="w-full border rounded-md p-2">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-medium mb-1">Preço até: <span id="priceValue">100</span>€</label>
+          <input type="range" id="priceFilter" min="0" max="100" value="100" class="w-full">
         </div>
       </div>
+    </div>
 
-      <div class="produto" data-genero="ficcao" data-preco="39.90" data-autor="autor2">
-        <i class="ri-heart-line favorite-icon" onclick="toggleFavorite(this, '1984')"></i>
-        <img src="https://via.placeholder.com/120x180?text=Livro+2" alt="Livro 2" />
-        <h2>1984</h2>
-        <div>€ 39,90</div>
-        <div class="btns">
-          <button class="btn" onclick="addToCart('1984')"><i class="ri-shopping-cart-2-line"></i></button>
-        </div>
-      </div>
+    <!-- Grade de livros -->
+    <div id="bookGrid" class="flex flex-wrap gap-4">
+      <!-- Livros via JS -->
+    </div>
 
-      <div class="produto" data-genero="aventura" data-preco="59.90" data-autor="autor1">
-        <i class="ri-heart-line favorite-icon" onclick="toggleFavorite(this, 'O Senhor dos Anéis')"></i>
-        <img src="https://via.placeholder.com/120x180?text=Livro+3" alt="Livro 3" />
-        <h2>O Senhor dos Anéis</h2>
-        <div>€ 59,90</div>
-        <div class="btns">
-          <button class="btn" onclick="addToCart('O Senhor dos Anéis')"><i class="ri-shopping-cart-2-line"></i></button>
-        </div>
-      </div>
-
-      <div class="produto" data-genero="ficcao" data-preco="44.90" data-autor="autor2">
-        <i class="ri-heart-line favorite-icon" onclick="toggleFavorite(this, 'Harry Potter')"></i>
-        <img src="https://via.placeholder.com/120x180?text=Livro+4" alt="Livro 4" />
-        <h2>Harry Potter</h2>
-        <div>€ 44,90</div>
-        <div class="btns">
-          <button class="btn" onclick="addToCart('Harry Potter')"><i class="ri-shopping-cart-2-line"></i></button>
-        </div>
-      </div>
-
-      <div class="produto" data-genero="romance" data-preco="34.90" data-autor="autor1">
-        <i class="ri-heart-line favorite-icon" onclick="toggleFavorite(this, 'Dom Quixote')"></i>
-        <img src="https://via.placeholder.com/120x180?text=Livro+5" alt="Livro 5" />
-        <h2>Dom Quixote</h2>
-        <div>€ 34,90</div>
-        <div class="btns">
-          <button class="btn" onclick="addToCart('Dom Quixote')"><i class="ri-shopping-cart-2-line"></i></button>
-        </div>
-      </div>
-    </section>
-  </div>
+    <!-- Ver mais -->
+    <div class="text-center mt-6">
+      <button id="loadMoreBtn" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 hidden">Ver mais</button>
+    </div>
+  </main>
+</div>
+    <!-- ================= FOOTER ================ -->
     </footer>
 
     <!--=============== SCROLLREVEAL ===============-->

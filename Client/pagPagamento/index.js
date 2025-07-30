@@ -43,7 +43,7 @@ fastify.post('/criar-intent', async (req, reply) => {
   }
 });
 
-// ✅ Garante que o servidor escute em 127.0.0.1
+//  Garante que o servidor escute em 127.0.0.1
 fastify.listen({ port: 3000, host: '127.0.0.1' }, (err, address) => {
   if (err) throw err;
   console.log(`✅ Servidor rodando em: ${address}`);
