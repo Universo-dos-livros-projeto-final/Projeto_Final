@@ -728,7 +728,7 @@ class CartModal {
         <p>Adicione alguns livros para começar!</p>
       </div>
     `;
-      this.cartTotalElement.textContent = "R$ 0,00";
+      this.cartTotalElement.textContent = "€ 0,00";
       return;
     }
 
@@ -749,8 +749,8 @@ class CartModal {
             item.bookId
           }', 1)">+</button>
         </div>
-        <span class="cart-item-price">R$ ${item.price.toFixed(2)}</span>
-        <span class="cart-item-total">Total: R$ ${(
+        <span class="cart-item-price">€ ${item.price.toFixed(2)}</span>
+        <span class="cart-item-total">Total: € ${(
           item.price * item.quantity
         ).toFixed(2)}</span>
       </div>
@@ -772,7 +772,7 @@ class CartModal {
       total += item.price * item.quantity;
     });
 
-    this.cartTotalElement.textContent = `R$ ${total.toFixed(2)}`;
+    this.cartTotalElement.textContent = `€ ${total.toFixed(2)}`;
   }
 
   async updateQuantity(bookId, newQuantity) {
@@ -1017,7 +1017,7 @@ class FavoritesModal {
       }" class="favorites-item-image">
         <div class="favorites-item-details">
           <h3>${item.title}</h3>
-          <p class="favorites-item-price">R$ ${item.price.toFixed(2)}</p>
+          <p class="favorites-item-price">€ ${item.price.toFixed(2)}</p>
         </div>
         <div class="favorites-item-actions">
           <button class="favorites-item-cart" onclick="favoritesModal.addToCartFromFavorites('${
