@@ -763,7 +763,7 @@ class FavoritesModal {
       }" class="favorites-item-image">
         <div class="favorites-item-details">
           <h3>${item.title}</h3>
-          <p class="favorites-item-price">R$ ${item.price.toFixed(2)}</p>
+          <p class="favorites-item-price">€ ${item.price.toFixed(2)}</p>
         </div>
         <div class="favorites-item-actions">
           <button class="favorites-item-cart" onclick="favoritesModal.addToCartFromFavorites('${
