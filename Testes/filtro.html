@@ -160,7 +160,53 @@
     </div>
   </main>
 </div>
-
+<!--================ FOOTER ================ -->
+<footer>
+      <div class="footer-content" id="sobrenos">
+        <div class="column">
+          <h3>Sobre Nós</h3>
+          <ul>
+            <li><a href="#nossa-historia">Nossa História</a></li>
+            <li><a href="#equipe">Equipe</a></li>
+            <li><a href="#missao-e-valores">Missão e Valores</a></li>
+          </ul>
+        </div>
+        <div class="column">
+          <h3>Contato</h3>
+          <ul>
+            <li>
+              Email:
+              <a href="mailto:contato@universodoslivros.com"
+                >contato@universodoslivros.com</a
+              >
+            </li>
+            <li>Telefone: (91) 91234 5678</li>
+            <li>Endereço: Rua Universo dos Livros, 123</li>
+          </ul>
+        </div>
+        <div class="column">
+          <h3>Ajuda</h3>
+          <ul>
+            <li><a href="#suporte">Suporte ao Cliente</a></li>
+            <li><a href="#faq">Perguntas Frequentes</a></li>
+            <li><a href="#devolucoes">Política de Devoluções</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="#"
+          ><img src="/Client/imagens/Facebook_Logo_2023.png" alt="Facebook"
+        /></a>
+        <a href="#"
+          ><img src="/Client/imagens/circle-linkedin-512.webp" alt="LinkedIn"
+        /></a>
+        <a href="#"
+          ><img
+            src="/Client/imagens/social-instagram-new-circle-512.webp"
+            alt="Instagram"
+        /></a>
+      </div>
+    </footer>
 <script>
 // Livros 
 const books = [
@@ -287,7 +333,7 @@ authors.forEach(author => {
   authorSelect.appendChild(option);
 });
 
-// Categorias com checkbox arredondado
+// Categorias com checkbox 
 const categoryList = document.getElementById("categoryList");
 let shownCategories = 0;
 const categoriesPerLoad = 5;
