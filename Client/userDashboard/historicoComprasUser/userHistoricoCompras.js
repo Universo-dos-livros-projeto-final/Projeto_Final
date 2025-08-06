@@ -1,4 +1,4 @@
-// Modo escuro e toggle da sidebar
+// ===================== MODO ESCURO E TOGGLE DA SIDEBAR =====================
 const body = document.querySelector("body"),
   modeToggle = body.querySelector(".mode-toggle"),
   sidebar = body.querySelector("nav"),
@@ -31,7 +31,6 @@ sidebarToggle.addEventListener("click", () => {
 });
 
 // ===================== PERFIL DO USUÁRIO =====================
-
 async function carregarPerfilUsuario() {
   const token = Cookies.get("token");
 
@@ -49,20 +48,16 @@ async function carregarPerfilUsuario() {
 
     const user = await response.json();
 
-    // Atualiza a imagem do perfil
     if (user.profilephoto) {
       if (profileImageHeader) profileImageHeader.src = user.profilephoto;
       if (profileImageMain) profileImageMain.src = user.profilephoto;
     }
-
   } catch (err) {
     console.error("Erro ao carregar dados do usuário:", err);
   }
 }
 
-// ===================== HISTÓRICO DE VENDAS =====================
-
-// Renderiza os cards no grid
+// ===================== HISTÓRICO DE COMPRAS =====================
 function renderCards(data) {
   const grid = document.getElementById("historyGrid");
   grid.innerHTML = "";
@@ -96,7 +91,6 @@ function renderCards(data) {
   });
 }
 
-// Busca histórico do backend
 async function fetchAndRenderUserPurchases() {
   const token = Cookies.get("token");
 
@@ -131,7 +125,7 @@ async function fetchAndRenderUserPurchases() {
   }
 }
 
-// Filtro por data
+// ===================== FILTRO DE DATAS =====================
 function filterByDate() {
   const startDate = document.getElementById("startDate").value;
   const endDate = document.getElementById("endDate").value;
@@ -146,7 +140,6 @@ function filterByDate() {
   renderCards(filtered);
 }
 
-// Botões de filtro
 document.getElementById("filterBtn").addEventListener("click", filterByDate);
 document.getElementById("resetBtn").addEventListener("click", () => {
   document.getElementById("startDate").value = "";
@@ -154,6 +147,40 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   renderCards(window.salesHistory);
 });
 
-// Carregamento inicial
+// ===================== LOGOUT =====================
+document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const token = Cookies.get("token");
+
+  if (!token) {
+    alert("Você já está desconectado.");
+    window.location.href = "/Client/paginaInicial/index.html";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/logout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      throw new Error("Erro ao fazer logout");
+    }
+
+    Cookies.remove("token");
+
+    window.location.href = "/Client/paginaInicial/index.html";
+  } catch (error) {
+    console.error("Erro no logout:", error);
+    alert("Falha ao sair da conta. Tente novamente.");
+  }
+});
+
+// ===================== CARREGAMENTO INICIAL =====================
 carregarPerfilUsuario();
 fetchAndRenderUserPurchases();

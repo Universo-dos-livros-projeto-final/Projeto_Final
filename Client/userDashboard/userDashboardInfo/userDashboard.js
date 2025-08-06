@@ -68,8 +68,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       });
 
-      if (!res.ok) throw new Error("Erro ao carregar dados");
-
       const user = await res.json();
 
       displayNome.innerText = user.firstname || "";
@@ -78,7 +76,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       displaySenha.innerText = "••••••••";
     } catch (error) {
       console.error(error);
-      alert("Erro ao carregar perfil");
     }
   }
 
@@ -160,8 +157,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modalTitulo = document.getElementById("modalEnderecoTitulo");
 
   // Carrega os endereços do backend
-  await loadEnderecos();
-
   async function loadEnderecos() {
     try {
       const res = await fetch("http://localhost:3000/user/addresses", {
@@ -170,15 +165,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       });
 
-      if (!res.ok) throw new Error("Erro ao carregar endereços");
+      if (res.status === 404) {
+        console.log("Nenhum endereço cadastrado para o usuário.");
+        enderecos = [];
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(`Erro ao buscar os endereços: ${res.status}`);
+      }
 
       const data = await res.json();
-      // O backend retorna { addresses: [...] }
-      enderecos = data.addresses || [];
-      renderizarEnderecos();
+
+      enderecos = Array.isArray(data.addresses) ? data.addresses : [];
+
+      if (enderecos.length > 0 && typeof renderizarEnderecos === "function") {
+        renderizarEnderecos();
+      }
     } catch (error) {
-      console.error("Erro ao carregar endereços:", error);
-      alert("Erro ao carregar endereços");
+      console.error("Erro ao carregar endereços:", error.message || error);
+      alert("Erro ao carregar endereços. Tente novamente mais tarde.");
     }
   }
 
@@ -301,7 +307,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           try {
             await excluirEndereco(end.id);
             await loadEnderecos();
-            alert("Endereço excluído com sucesso!");
           } catch (error) {
             alert("Erro ao excluir endereço");
           }
@@ -328,7 +333,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       if (editandoId !== null) {
         await atualizarEndereco(editandoId, novoEndereco);
-        alert("Endereço atualizado com sucesso!");
       } else {
         await salvarEndereco(novoEndereco);
         alert("Endereço salvo com sucesso!");
@@ -364,16 +368,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       });
 
-      if (!res.ok) throw new Error("Erro ao carregar dados");
+      if (!res.ok) throw new Error("Erro ao buscar usuário");
 
       const user = await res.json();
 
       if (user.profilephoto) {
-        if (profileImageHeader) profileImageHeader.src = user.profilephoto;
-        if (profileImageMain) profileImageMain.src = user.profilephoto;
+        profileImageHeader.src = user.profilephoto;
+        profileImageMain.src = user.profilephoto;
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error("Erro ao carregar foto do perfil:", err);
     }
   }
 
@@ -399,35 +403,37 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Salvar novo link e enviar para o backend
   btnSalvarUrl.addEventListener("click", async () => {
     const url = inputUrl.value.trim();
-    if (url) {
-      try {
-        const res = await fetch("http://localhost:3000/user", {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ profilephoto: url }),
-        });
 
-        if (!res.ok) throw new Error("Erro ao atualizar foto");
+    if (!url) {
+      alert("Insira uma URL válida");
+      return;
+    }
 
-        // Atualiza as imagens
-        if (profileImageHeader) profileImageHeader.src = url;
-        if (profileImageMain) profileImageMain.src = url;
+    try {
+      const res = await fetch("http://localhost:3000/user/photo-url", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ photoUrl: url }),
+      });
 
-        // Fechar modal
-        modalOverlay.classList.add("hidden");
-        inputUrl.value = "";
-        alert("Foto atualizada com sucesso!");
-      } catch (error) {
-        console.error(error);
-        alert("Erro ao atualizar foto");
-      }
-    } else {
-      alert("Por favor, insira um link válido.");
+      if (!res.ok) throw new Error("Erro ao atualizar a foto");
+
+      // Atualiza imagem no site
+      profileImageHeader.src = url;
+      profileImageMain.src = url;
+
+      modalOverlay.classList.add("hidden");
+      inputUrl.value = "";
+    } catch (err) {
+      console.error("Erro ao atualizar a foto:", err);
+      alert("Não foi possível atualizar a foto");
     }
   });
+
+  // ======= LOGOUT =======
 
   document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     e.preventDefault();
@@ -447,7 +453,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       Cookies.remove("token");
 
-      alert("Logout realizado com sucesso!");
       window.location.href = "/Client/paginaInicial/index.html";
     } catch (error) {
       console.error(error);
