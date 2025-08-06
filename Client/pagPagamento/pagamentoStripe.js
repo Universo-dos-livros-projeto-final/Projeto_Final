@@ -97,34 +97,31 @@ async function atualizarCarrinho() {
     productList.innerHTML = "";
     let total = 0;
 
-    cartItems.forEach((item) => {
-      const preco = parseFloat(item.book.price);
-      const qtd = item.quantity;
-      const subtotal = preco * qtd;
-      total += subtotal;
+   cartItems.forEach((item) => {
+  const preco = parseFloat(item.book.price);
+  const qtd = item.quantity;
+  const subtotal = preco * qtd;
+  total += subtotal;
 
-      const produto = document.createElement("div");
-      produto.className =
-        "flex items-center space-x-4 p-4 bg-container rounded-lg";
-      produto.innerHTML = `
-          <div class="w-16 h-16 bg-first/10 rounded-lg flex items-center justify-center">
-            <img src="${item.book.bookphoto}" alt="${
-        item.book.title
-      }" class="w-full h-full object-contain rounded" />
-          </div>
-          <div class="flex-1">
-            <h4 class="font-medium text-title">${item.book.title}</h4>
-            <p class="text-sm text-text">${item.book.description}</p>
-            <div class="flex items-center justify-between mt-2">
-              <span class="text-sm text-text">Qtd: ${qtd}</span>
-              <span class="font-semibold text-title">€${subtotal.toFixed(
-                2
-              )}</span>
-            </div>
-          </div>
-        `;
-      productList.appendChild(produto);
-    });
+  const produto = document.createElement("div");
+  produto.className =
+    "flex items-center space-x-4 p-4 bg-container rounded-lg";
+  produto.innerHTML = `
+      <div class="w-16 h-16 bg-first/10 rounded-lg flex items-center justify-center">
+        <img src="${item.book.bookphoto}" alt="${item.book.title}" class="w-full h-full object-contain rounded" />
+      </div>
+      <div class="flex-1">
+        <h4 class="font-medium text-title">${item.book.title}</h4>
+        <p class="text-sm text-text line-clamp-2">${item.book.description}</p>
+        <div class="flex items-center justify-between mt-2">
+          <span class="text-sm text-text">Qtd: ${qtd}</span>
+          <span class="font-semibold text-title">€${subtotal.toFixed(2)}</span>
+        </div>
+      </div>
+    `;
+  productList.appendChild(produto);
+});
+
 
     subtotalEl.textContent = `€${total.toFixed(2)}`;
     totalEl.textContent = `€${total.toFixed(2)}`;

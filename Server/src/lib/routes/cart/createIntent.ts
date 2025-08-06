@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 import { FastifyInstance } from 'fastify';
 import Stripe from 'stripe';
 
