@@ -568,7 +568,7 @@ class CartModal {
       })">+</button>
           </div>
           <span class="cart-item-price">€ ${item.price.toFixed(2)}</span>
-          <span class="cart-item-total">Total: € ${itemTotal.toFixed(2)}</span>
+         
         </div>
         <button class="cart-item-remove" onclick="cartModal.removeItem('${
           item.bookId
