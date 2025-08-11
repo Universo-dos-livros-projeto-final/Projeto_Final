@@ -17,6 +17,48 @@ if(searchClose){
     });
 }
 
+/*=============== User Page ===============*/
+document.addEventListener("DOMContentLoaded", () => {
+  const userLink = document.getElementById("user-link");
+
+  if (userLink) {
+    userLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const token = Cookies.get("token");
+      console.log("Token atual:", token);
+
+      if (!token) {
+        console.warn("Sem token — redirecionando para login");
+        window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/validate-token", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
+          console.log("Token válido — redirecionando para o dashboard");
+          window.location.href =
+            "/Client/userDashboard/userDashboardInfo/userDashboard.html";
+        } else {
+          console.warn("Token inválido — redirecionando para login");
+          Cookies.remove("token");
+          window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+        }
+      } catch (error) {
+        console.error("Erro ao validar token:", error);
+        Cookies.remove("token");
+        window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+      }
+    });
+  } else {
+    console.error("#user-link não encontrado no DOM");
+  }
+});
+
 /*=============== ADD SHADOW HEADER ===============*/
 const shadowHeader = () => {
     const header = document.getElementById('header');
