@@ -487,7 +487,6 @@ body.dark-theme {
   transition: border 0.4s, background-color 0.4s;
 }
 
-/* Cards populares e novos iguais a featured */
 .popular__card,
 .new__card {
   position: relative;
