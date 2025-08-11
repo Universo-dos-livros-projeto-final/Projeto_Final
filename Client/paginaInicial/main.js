@@ -551,25 +551,24 @@ if (typeof ScrollReveal !== "undefined") {
 /*=============== DARK LIGHT THEME ===============*/
 const themeButton = document.getElementById("theme-button");
 const darkTheme = "dark-theme";
-const iconTheme = "ri-sun-line";
+const iconTheme = "ri-moon-line"; // Ícone que aparece no DARK MODE (lua)
 
 if (themeButton) {
   const selectedTheme = localStorage.getItem("selected-theme");
   const selectedIcon = localStorage.getItem("selected-icon");
+
   const getCurrentTheme = () =>
     document.body.classList.contains(darkTheme) ? "dark" : "light";
   const getCurrentIcon = () =>
     themeButton.classList.contains(iconTheme) ? "ri-moon-line" : "ri-sun-line";
 
+  // Aplicar o tema e ícone salvos no localStorage
   if (selectedTheme) {
-    document.body.classList[selectedTheme === "dark" ? "add" : "remove"](
-      darkTheme
-    );
-    themeButton.classList[selectedIcon === "ri-moon-line" ? "add" : "remove"](
-      iconTheme
-    );
+    document.body.classList[selectedTheme === "dark" ? "add" : "remove"](darkTheme);
+    themeButton.classList[selectedIcon === "ri-moon-line" ? "add" : "remove"](iconTheme);
   }
 
+  // Alternar tema e ícone ao clicar
   themeButton.addEventListener("click", () => {
     document.body.classList.toggle(darkTheme);
     themeButton.classList.toggle(iconTheme);

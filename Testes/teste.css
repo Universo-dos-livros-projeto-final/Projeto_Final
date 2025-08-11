@@ -69,7 +69,6 @@ button {
 }
 
 body {
-  flex-direction: column;
   background-color: var(--body-color);
   color: var(--text-color);
   transition: background-color 0.4s;
@@ -83,7 +82,6 @@ button {
   border: none;
   outline: none;
 }
-
 
 h1,
 h2,
@@ -310,7 +308,19 @@ body.dark-theme {
   top:0;
 }
 
+
+
+
+
+
+
+
+
 /* ---------------- --  CARRINHO E FAVORITOS ---------------------*/
+
+
+/* carrinho e favoritos*/
+/* Cart Modal Styles */
 .cart-modal {
     position: fixed;
     top: 0;
@@ -547,6 +557,14 @@ body.dark-theme {
     padding: 20px;
   }
 
+
+
+
+
+
+
+
+
 /*=============== BREAKPOINTS ===============*/
 /* For small devices */
 @media screen and (max-width: 320px) {
@@ -632,143 +650,4 @@ body.dark-theme {
       box-shadow: none;
     }
   }
-
-
-/*=============== FOOTER - SEU DESIGN + TELA CHEIA ===============*/
-
-/* Garantir que o footer ocupe toda a largura sem bordas */
-footer {
-  width: 100vw; /* Força 100% da viewport width */
-  padding: 50px 20px; /* Mantém seu padding, mas ajusta laterais */
-  background-color: var(--body-color);
-  text-align: center;
-  box-shadow: 0 -4px 10px rgba(117, 125, 151, 0.5);
   
-  /* Técnicas para quebrar fora do container e ocupar tela cheia */
-  margin: 0;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  box-sizing: border-box;
-}
-
-footer * {
-  margin: 0;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
-  flex-wrap: wrap; /* Flexível para telas menores */
-  max-width: 1200px; /* Limita largura do conteúdo */
-  margin-left: auto;
-  margin-right: auto;
- 
-}
-
-.column h3 {
-  margin-bottom: 10px;
-  color: var(--title-color);
-}
-
-.column ul {
-  list-style: none;
-  padding: 0;
-  color: var(--text-color);
-}
-
-.column ul li {
-  margin-bottom: 5px;
-  color: var(--text-color);
-}
-
-.column ul li a {
-  color: var(--text-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.column ul li a:hover {
-  color: var(--first-color);
-}
-
-.social-links {
-  display: flex; /* Organiza os links horizontalmente */
-  justify-content: center; /* Centraliza horizontalmente */
-  gap: 15px; /* Espaçamento entre os ícones */
-  margin: 0; /* Remove margens que podem causar bordas */
-}
-
-.social-links a {
-  transition: transform 0.3s ease;
-}
-
-.social-links a:hover {
-  transform: translateY(-3px);
-}
-
-.social-links img {
-  width: 40px; /* Tamanho dos ícones */
-  height: 40px; /* Proporção dos ícones */
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease;
-}
-
-.social-links img:hover {
-  box-shadow: 0 4px 15px rgba(73, 96, 212, 0.3);
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
-  footer {
-    padding: 40px 15px; /* Ajusta padding para mobile */
-  }
-  
-  .footer-content {
-    flex-direction: column; /* Coloca as colunas uma embaixo da outra */
-    align-items: center; /* Centraliza as colunas */
-  }
-  
-  .column {
-    margin-bottom: 20px;
-  }
-
-  .social-links {
-    margin-top: 20px;
-    gap: 10px; /* Reduz o espaçamento entre ícones */
-  }
-}
-  
-/* For large devices */
-@media screen and (min-width: 1150px) {
-
-  .footer {
-    padding-block:8rem 3rem;
-  }
-  .footer__data {
-    grid-template-columns: 4, max-content;
-    column-gap: 4.5rem;
-  }
-
-  .footer__logo,
-  .footer__title {
-    font-size: var(--h2-font-size);
-    margin-bottom: 1.5rem;
-  }
-
-  .footer__links {
-    row-gap: 1rem;
-  }
-  .footer__social {
-    column-gap: 1.5rem;
-  }
-  .footer__social-link {
-    font-size: 1.5rem;
-  }
-  .footer__copy {
-    margin-top: 7.5rem;
-  }
-}

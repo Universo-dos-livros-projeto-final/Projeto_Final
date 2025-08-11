@@ -17,34 +17,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <!--=============== CSS ===============-->
-    <link rel="stylesheet" href="categorias.css" />
+    <link rel="stylesheet" href="teste.css" />
     <title>Universo dos livros</title>
 </head>
- <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              first: "#4960d4",
-              title: "#0c1645",
-              text: "#606785",
-              border: "#d9ddf2",
-              body: "#ebeeff",
-              container: "hsl(230, 100%, 97%)",
-
-              "dark-title": "hsl(230, 48%, 85%)",
-              "dark-text": "hsl(0, 0%, 0%)",
-              "dark-border": "hsl(230, 12%, 18%)",
-              "dark-body": "hsl(230, 12%, 8%)",
-              "dark-container": "hsl(230, 12%, 12%)",
-            },
-          },
-        },
-      };
-    </script>
 <body class=" text-gray-800 p-4">
 
+   <!--==================== HEADER ====================-->
     <!--==================== HEADER ====================-->
     <header class="header" id="header">
       <nav class="nav container">
@@ -60,17 +38,33 @@
         <div class="nav__menu">
           <ul class="nav__list">
             <li class="nav__item">
-              <a href="/Client/paginaInicial/index.html" class="nav__link">
+              <a href="#home" class="nav__link">
                 <i class="ri-home-line"></i>
                 <span>Home</span>
               </a>
             </li>
+
+            <li class="nav__item">
+              <a href="#destaques" class="nav__link">
+                <i class="ri-book-3-line"></i>
+                <span>Destaques</span>
+              </a>
+            </li>
+
             <li class="nav__item">
               <a href="/Client/pagCategorias/categorias.html" class="nav__link">
                 <i class="ri-price-tag-3-line"></i>
                 <span>Categorias</span>
               </a>
             </li>
+
+            <li class="nav__item">
+              <a href="#new" class="nav__link">
+                <i class="ri-bookmark-line"></i>
+                <span>Novos Livros</span>
+              </a>
+            </li>
+
             <li class="nav__item">
               <a href="#sobrenos" class="nav__link">
                 <i class="ri-message-3-line"></i>
@@ -85,7 +79,7 @@
           <i class="ri-search-line search-button" id="search-button"></i>
 
           <!-- Usuario -->
-          <a href="/Client/paginaLogin/paginaLogin.html" class="login" id="user-link">
+          <a href="#" class="login" id="user-link">
             <i class="ri-user-line login-button"></i>
           </a>
 
@@ -143,20 +137,19 @@
       <i class="ri-close-line search__close" id="search-close"></i>
     </div>
 
-  <!--====================BODY ====================-->
+    <!-- BODY -->
 
 <div class="max-w-[1600px] mx-auto flex overflow-x-auto gap-6 pt-20">
 
-<aside class="w-52 flex-shrink-0 mt-6">
-  <h2 class="font-semibold text-lg mb-4">CATEGORIAS</h2>
-  <ul id="categoryList" class="space-y-2">
-    <!-- Preenchido via JS -->
-  </ul>
-  <button id="loadMoreCategories" class="mt-4 text-indigo-600 font-medium hover:underline">
-    ver mais
-  </button>
-</aside>
 
+  <!-- Sidebar fixa -->
+  <aside class="w-52 flex-shrink-0 mt-6">
+    <h2 class="font-semibold text-lg mb-4">CATEGORIAS</h2>
+    <ul id="categoryList" class="space-y-2">
+      <!-- Preenchido via JS -->
+    </ul>
+    <button id="loadMoreCategories" class="mt-4 text-indigo-600 font-medium hover:underline">ver mais</button>
+  </aside>
 
   <!-- Conteúdo principal -->
   <main class="flex-1 min-w-[300px]">
@@ -197,42 +190,14 @@
   </main>
 </div>
 
- <!--==================== FOOTER ====================-->
-<footer>
-    <div class="footer-content">
-      <div class="column">
-        <h3>Sobre Nós</h3>
-        <ul>
-          <li><a href="#nossa-historia">Nossa História</a></li>
-          <li><a href="#equipe">Equipe</a></li>
-          <li><a href="#missao-e-valores">Missão e Valores</a></li>
-        </ul>
-      </div>
-      <div class="column">
-        <h3>Contato</h3>
-        <ul>
-          <li>Email: <a href="mailto:contato@universodoslivros.com">contato@universodoslivros.com</a></li>
-          <li>Telefone: (91) 91234 5678</li>
-          <li>Endereço: Rua Universo dos Livros, 123</li>
-        </ul>
-      </div>
-      <div class="column">
-        <h3>Ajuda</h3>
-        <ul>
-          <li><a href="#suporte">Suporte ao Cliente</a></li>
-          <li><a href="#faq">Perguntas Frequentes</a></li>
-          <li><a href="#devolucoes">Política de Devoluções</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="social-links">
-      <a href="#"><img src="../imagens/Facebook_Logo_2023.png" alt="Facebook" /></a>
-      <a href="#"><img src="../imagens/circle-linkedin-512.webp" alt="LinkedIn" /></a>
-      <a href="#"><img src="../imagens/social-instagram-new-circle-512.webp" alt="Instagram" /></a>
-    </div>
-  </footer>
-
 <script>
+
+
+
+
+
+
+
 
 // Livros 
 const books = [
@@ -287,11 +252,24 @@ function renderBooks(filteredBooks) {
           </button>
         </div>
       </div>
-     <h3 class="font-semibold text-black">${book.title}</h3>
-
+      <h3 class="font-semibold">${book.title}</h3>
       <p class="text-sm text-gray-600">${book.author}</p>
       <p class="text-indigo-600 font-bold">${book.price.toFixed(2)}€</p>
     `;
+
+    card.addEventListener("click", () => {
+      alert(`Abrindo detalhes do livro: ${book.title}`);
+    });
+
+    card.querySelector(".favorite-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      alert(`Adicionado aos favoritos: ${book.title}`);
+    });
+
+    card.querySelector(".cart-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      alert(`Adicionado ao carrinho: ${book.title}`);
+    });
 
     bookGrid.appendChild(card);
   }
@@ -346,7 +324,7 @@ authors.forEach(author => {
   authorSelect.appendChild(option);
 });
 
-// Categorias com checkbox
+// Categorias com checkbox arredondado 
 const categoryList = document.getElementById("categoryList");
 let shownCategories = 0;
 const categoriesPerLoad = 5;
@@ -356,14 +334,10 @@ function renderCategories() {
   for (const cat of slice) {
     const li = document.createElement("li");
     li.innerHTML = `
-      <label class="inline-flex items-center gap-2 text-sm" style="color: gray;">
-        <input type="checkbox" class="form-checkbox" />
+      <label class="inline-flex items-center gap-2 text-sm">
+        <input type="checkbox" class="form-checkbox rounded-full text-indigo-600 focus:ring-0" />
         ${cat}
       </label>`;
-
-      
-
-
     categoryList.appendChild(li);
 
     const checkbox = li.querySelector('input[type="checkbox"]');
@@ -371,9 +345,9 @@ function renderCategories() {
   }
 
   shownCategories += categoriesPerLoad;
-  document.getElementById("loadMoreCategories")
-    .classList.toggle("hidden", shownCategories >= allCategories.length);
+  document.getElementById("loadMoreCategories").classList.toggle("hidden", shownCategories >= allCategories.length);
 }
+
 // Carregar mais categorias ao clicar no botão
 document.getElementById("loadMoreCategories").addEventListener("click", renderCategories);
 
@@ -383,6 +357,6 @@ renderCategories();
 renderBooks(books);
 </script>
  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-<script src="categorias.js"></script>
+<script src="teste.js"></script>
 </body>
 </html>
