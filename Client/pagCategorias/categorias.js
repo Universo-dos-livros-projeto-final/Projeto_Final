@@ -1,23 +1,23 @@
 /*=============== SEARCH ===============*/
-const searchButton = document.getElementById('search-button'),
-      searchClose = document.getElementById('search-close'),
-      searchContent = document.getElementById('search-content');
+// Mostrar o campo de busca ao clicar no ícone
+const searchButton = document.getElementById("search-button"),
+  searchClose = document.getElementById("search-close"),
+  searchContent = document.getElementById("search-content");
 
-//===== MENU SHOW =====//
-if(searchButton){
-    searchButton.addEventListener('click', () => {
-        searchContent.classList.add('show-search');
-    });
+if (searchButton) {
+  searchButton.addEventListener("click", () => {
+    searchContent.classList.add("show-search");
+  });
 }
 
-//===== MENU HIDDEN =====//
-if(searchClose){
-    searchClose.addEventListener('click', () => {
-        searchContent.classList.remove('show-search');
-    });
+if (searchClose) {
+  searchClose.addEventListener("click", () => {
+    searchContent.classList.remove("show-search");
+  });
 }
 
 /*=============== User Page ===============*/
+// Controla o clique no ícone do usuário para validar token e redirecionar
 document.addEventListener("DOMContentLoaded", () => {
   const userLink = document.getElementById("user-link");
 
@@ -60,16 +60,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /*=============== ADD SHADOW HEADER ===============*/
+// Adiciona sombra no header quando a página é rolada para baixo
 const shadowHeader = () => {
-    const header = document.getElementById('header');
-    window.scrollY >= 50 ? header.classList.add('shadow-header')
-                          : header.classList.remove('shadow-header');
-}
+  const header = document.getElementById("header");
+  window.scrollY >= 50
+    ? header.classList.add("shadow-header")
+    : header.classList.remove("shadow-header");
+};
 
-window.addEventListener('scroll', shadowHeader)
-
+window.addEventListener("scroll", shadowHeader);
 
 /*=============== DARK LIGHT THEME ===============*/
+// Alterna entre tema claro e escuro, guardando preferência no localStorage
 const themeButton = document.getElementById("theme-button");
 const darkTheme = "dark-theme";
 const iconTheme = "ri-sun-line";
@@ -100,18 +102,200 @@ if (themeButton) {
 }
 
 /*=============== SCROLL REVEAL ANIMATION ===============*/
+// Anima elementos na tela ao dar scroll
 const sr = ScrollReveal({
-    origin: 'top',
-    distance: '60px',
-    duration: 2500,
-    delay: 400,
-})
+  origin: "top",
+  distance: "60px",
+  duration: 2500,
+  delay: 400,
+});
 
-sr.reveal('.home__data, .featured__container, .new__container, .footer')
-sr.reveal('.home__images', {delay: 600})
-sr.reveal('.services__card', {interval: 100})
-sr.reveal('.discount__data', {origin: 'left'})
-sr.reveal('.discount__images', {origin: 'right'})
+sr.reveal(".home__data, .featured__container, .new__container, .footer");
+sr.reveal(".home__images", { delay: 600 });
+sr.reveal(".services__card", { interval: 100 });
+sr.reveal(".discount__data", { origin: "left" });
+sr.reveal(".discount__images", { origin: "right" });
+
+/*=============== BOOKS FETCH & RENDER ===============*/
+let books = [];
+
+// Busca livros no backend, usando token JWT se houver
+async function fetchBooks() {
+  try {
+    const token = Cookies.get("token");
+    const headers = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
+
+    const res = await fetch("http://localhost:3000/books", { headers });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const json = await res.json();
+
+    // Tenta vários formatos comuns para array de livros
+    if (Array.isArray(json)) return json;
+    if (Array.isArray(json.books)) return json.books;
+    if (Array.isArray(json.data)) return json.data;
+
+    console.error("Formato inválido vindo do backend:", json);
+    return [];
+  } catch (err) {
+    console.error("Erro ao buscar livros:", err);
+    return [];
+  }
+}
+
+// Renderiza os livros no grid, exibindo até 20 por vez
+function renderBooks(filteredBooks) {
+  const bookGrid = document.getElementById("bookGrid");
+  bookGrid.innerHTML = "";
+
+  const slice = filteredBooks.slice(0, 20);
+  for (const book of slice) {
+    const card = document.createElement("div");
+    card.className =
+      "relative group bg-white shadow p-3 rounded w-full sm:w-[220px] flex-shrink-0 cursor-pointer transition-transform hover:-translate-y-1";
+
+    // Usa a string da URL da imagem direto no src
+    card.innerHTML = `
+        <div class="relative">
+          <img src="${book.bookphoto}" alt="${
+      book.title
+    }" class="w-full h-72 object-cover rounded mb-2" />
+          <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button class="bg-white p-1 rounded-full shadow favorite-btn hover:text-red-500" title="Favoritar">
+              <i class="ri-heart-line text-xl"></i>
+            </button>
+            <button class="bg-white p-1 rounded-full shadow cart-btn hover:text-green-600" title="Adicionar ao carrinho">
+              <i class="ri-shopping-cart-line text-xl"></i>
+            </button>
+          </div>
+        </div>
+        <h3 class="font-semibold text-black">${book.title}</h3>
+        <p class="text-sm text-gray-600">${book.author}</p>
+        <p class="text-indigo-600 font-bold">${book.price.toFixed(2)}€</p>
+      `;
+
+    bookGrid.appendChild(card);
+  }
+}
+
+/*=============== FILTRAGEM ===============*/
+// Aplica filtros (autor, preço e categorias) à lista de livros global
+function applyFilters() {
+  const selectedAuthor = document.getElementById("authorFilter").value;
+  const selectedPrice = parseFloat(
+    document.getElementById("priceFilter").value
+  );
+
+  // Aqui pegamos o value dos checkboxes para comparar diretamente
+  const selectedCategories = Array.from(
+    document.querySelectorAll('#categoryList input[type="checkbox"]:checked')
+  ).map((cb) => cb.value);
+
+  const filtered = books.filter((book) => {
+    const matchAuthor = selectedAuthor === "" || book.author === selectedAuthor;
+    const matchPrice = book.price <= selectedPrice;
+    const matchCategory =
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(book.category);
+    return matchAuthor && matchPrice && matchCategory;
+  });
+
+  renderBooks(filtered);
+}
+
+// Atualiza o select de autores com opções únicas baseadas nos livros
+function populateAuthors() {
+  const authorSelect = document.getElementById("authorFilter");
+  authorSelect.innerHTML = '<option value="">Todos</option>';
+
+  const authors = [...new Set(books.map((book) => book.author))];
+  authors.forEach((author) => {
+    const option = document.createElement("option");
+    option.value = author;
+    option.textContent = author;
+    authorSelect.appendChild(option);
+  });
+}
+
+/*=============== CATEGORIAS ===============*/
+const allCategories = [
+  "Romance",
+  "Fantasia",
+  "Terror",
+  "Ficção Científica",
+  "Suspense",
+  "Drama",
+  "Comédia",
+  "Autoajuda",
+  "Aventura",
+  "Biografia",
+  "Infantil",
+  "História",
+  "Educação",
+  "Religião",
+  "Negócios",
+];
+
+const categoryList = document.getElementById("categoryList");
+let shownCategories = 0;
+const categoriesPerLoad = 5;
+
+// Renderiza as categorias com checkbox, adicionando valor para facilitar o filtro
+function renderCategories() {
+  const slice = allCategories.slice(
+    shownCategories,
+    shownCategories + categoriesPerLoad
+  );
+  for (const cat of slice) {
+    const li = document.createElement("li");
+    li.innerHTML = `
+        <label class="inline-flex items-center gap-2 text-sm" style="color: gray;">
+          <input type="checkbox" class="form-checkbox" value="${cat}" />
+          ${cat}
+        </label>`;
+
+    categoryList.appendChild(li);
+
+    const checkbox = li.querySelector('input[type="checkbox"]');
+    checkbox.addEventListener("change", applyFilters);
+  }
+  shownCategories += categoriesPerLoad;
+
+  document
+    .getElementById("loadMoreCategories")
+    .classList.toggle("hidden", shownCategories >= allCategories.length);
+}
+
+/*=============== EVENTOS DE FILTROS ===============*/
+document
+  .getElementById("authorFilter")
+  .addEventListener("change", applyFilters);
+
+document.getElementById("priceFilter").addEventListener("input", (e) => {
+  document.getElementById("priceValue").textContent = e.target.value;
+  applyFilters();
+});
+
+document.getElementById("clearFilters").addEventListener("click", () => {
+  document.getElementById("authorFilter").value = "";
+  document.getElementById("priceFilter").value = 100;
+  document.getElementById("priceValue").textContent = 100;
+  document
+    .querySelectorAll('#categoryList input[type="checkbox"]')
+    .forEach((cb) => {
+      cb.checked = false;
+    });
+  renderBooks(books);
+});
+
+document.getElementById("filterBtn").addEventListener("click", () => {
+  document.getElementById("filterPanel").classList.toggle("hidden");
+});
+
+document
+  .getElementById("loadMoreCategories")
+  .addEventListener("click", renderCategories);
 
 /*   parte carrinho e favoritos */
 
@@ -639,8 +823,6 @@ class FavoritesModal {
 const cartModal = new CartModal();
 const favoritesModal = new FavoritesModal();
 
-
-
 // =================== MONITORAR ESTADO DE LOGIN ===================
 function checkLoginStatus() {
   const token = Cookies.get("token");
@@ -661,10 +843,14 @@ function checkLoginStatus() {
 }
 
 // =================== EVENTO GLOBAL PARA VERIFICAR LOGIN ===================
-document.addEventListener("DOMContentLoaded", () => {
+/*=============== INICIALIZAÇÃO AO CARREGAR PÁGINA ===============*/
+document.addEventListener("DOMContentLoaded", async () => {
+  renderCategories();
   checkLoginStatus();
 
-  // Verificar status de login periodicamente
-  setInterval(checkLoginStatus, 30000); // A cada 30 segundos
-});
+  books = await fetchBooks();
 
+  populateAuthors();
+  renderBooks(books);
+  setInterval(checkLoginStatus, 30000);
+});
