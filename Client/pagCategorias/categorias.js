@@ -177,6 +177,7 @@ function renderBooks(filteredBooks) {
 
     bookGrid.appendChild(card);
   }
+  
 }
 
 /*=============== FILTRAGEM ===============*/
