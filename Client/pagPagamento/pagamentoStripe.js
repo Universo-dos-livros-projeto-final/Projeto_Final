@@ -358,7 +358,7 @@ class CartModal {
         this.checkout();
       });
   }
-
+   
   toggleCart() {
     this.cartModal.classList.toggle("show");
     this.loadCartFromServer(); // Recarregar sempre que abrir

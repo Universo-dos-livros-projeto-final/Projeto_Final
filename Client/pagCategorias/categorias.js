@@ -326,4 +326,3 @@ const favoritesModal = new FavoritesModal();
 
 
 
-

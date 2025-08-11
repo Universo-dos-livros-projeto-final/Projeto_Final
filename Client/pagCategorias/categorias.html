@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!--=============== FAVICON ===============-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Livros - Categorias</title>
+  <!--=============== FAVICON ===============-->
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon"/>
     <!--=============== REMIXICONS ===============-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"/>
@@ -19,100 +19,136 @@
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="categorias.css" />
     <title>Universo dos livros</title>
-  </head>
-  <body>
-    <!--==================== HEADER ====================-->
-    <header class="header" id="header">
-      <nav class="nav container">
-        <a href="/Client/paginaInicial/index.html" class="nav__logo">
-          <img src="logo 4k.jpeg" alt="Logo Universo dos Livros" class="nav__logo-img"/>
-          <span class="nav__logo-text">Universo dos Livros</span>
-        </a>
+</head>
+<body class=" text-gray-800 p-4">
 
-        <div class="nav__menu">
-          <ul class="nav__list">
-            <li class="nav__item">
-              <a href="/Client/paginaInicial/index.html" class="nav__link">
-                <i class="ri-home-line"></i>
-                <span>Home</span>
-              </a>
-            </li>
-
-            <li class="nav__item">
-              <a href="/Client/pagCategorias/categorias.html" class="nav__link">
-                <i class="ri-price-tag-3-line"></i>
-                <span>Categorias</span>
-              </a>
-            </li>
-
-            <li class="nav__item">
-              <a href="#sobrenos" class="nav__link">
-                <i class="ri-message-3-line"></i>
-                <span>Sobre Nós</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="nav__actions">
-          <i class="ri-search-line search-button" id="search-button"></i>
-
-          <a href="/Client/paginaLogin/paginaLogin.html" class="login"
-            ><i class="ri-user-line login-button" id="login-button"></i>
+   <!--==================== HEADER ====================-->
+    <!-- HEADER -->
+    <header
+      id="header"
+      class="fixed top-0 left-0 w-full bg-body shadow-sm border-b border-border z-50"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a
+            href="/Client/paginaInicial/index.html"
+            class="flex items-center gap-2"
+          >
+            <img
+              src="/Client/imagens/logo 4k.jpeg"
+              alt="Logo Universo dos Livros"
+              class="h-10 w-auto object-contain"
+            />
+            <span class="font-cursive text-xl font-bold text-title"
+              >Universo dos Livros</span
+            >
           </a>
-          <i class="ri-shopping-cart-line" id="carrinho"></i>
-          <div id="cart-modal" class="cart-modal">
-            <div class="cart-modal-content">
-              <div class="cart-modal-header">
-                <h2>Carrinho</h2>
-                <button class="cart-modal-close">&times;</button>
-              </div>
+          <div class="nav__menu">
+            <ul class="nav__list">
+              <li class="nav__item">
+                <a href="/Client/paginaInicial/index.html" class="nav__link">
+                  <i class="ri-home-line"></i>
+                  <span>Home</span>
+                </a>
+              </li>
 
-              <div class="cart-items-container" id="cart-items"></div>
+              <li class="nav__item">
+                <a
+                  href="/Client/pagCategorias/categorias.html"
+                  class="nav__link"
+                >
+                  <i class="ri-price-tag-3-line"></i>
+                  <span>Categorias</span>
+                </a>
+              </li>
 
-              <div class="cart-summary">
-                <div class="cart-total-row">
-                  <span>Total</span>
-                  <span id="cart-total">R$ 0,00</span>
-                </div>
-                <button class="cart-finalize-button">Finalizar</button>
-              </div>
-            </div>
+              <li class="nav__item">
+                <a href="#sobrenos" class="nav__link">
+                  <i class="ri-message-3-line"></i>
+                  <span>Sobre Nós</span>
+                </a>
+              </li>
+            </ul>
           </div>
-
-          <i class="ri-heart-line" id="favoritos"></i>
-          <div id="favorites-modal" class="favorites-modal">
-            <div class="favorites-modal-content">
-              <div class="favorites-modal-header">
-                <h2>Favoritos</h2>
-                <button class="favorites-modal-close">&times;</button>
-              </div>
-
-              <div class="favorites-items-container" id="favorites-items"></div>
-            </div>
+          <div class="flex items-center gap-4 ml-6">
+            <button
+              id="search-button"
+              class="text-text hover:text-first transition"
+            >
+              <i class="ri-search-line text-xl"></i>
+            </button>
+            <a
+              href="#"
+              id="user-link"
+              class="text-text hover:text-first transition-colors duration-300 text-xl cursor-pointer"
+            >
+              <i class="ri-user-line"></i>
+            </a>
+            <button
+              id="carrinho"
+              class="relative text-text hover:text-first transition"
+            >
+              <i class="ri-shopping-cart-line text-xl"></i>
+            </button>
+            <button
+              id="favoritos"
+              class="text-text hover:text-first transition"
+            >
+              <i class="ri-heart-line text-xl"></i>
+            </button>
+            <button
+              id="theme-button"
+              class="text-text hover:text-first transition"
+            >
+              <i id="theme-icon" class="ri-moon-line text-xl"></i>
+            </button>
           </div>
-
-          <i class="ri-moon-line change-theme" id="theme-button"></i>
         </div>
-      </nav>
+      </div>
+      <!-- CAMPO DE BUSCA -->
+      <div
+        id="search-content"
+        class="fixed inset-0 top-full w-full h-full z-[100] bg-transparent/30 dark:bg-white/10 backdrop-blur-lg p-32 transition-all duration-500 overflow-auto"
+      >
+        <div
+          id="search-close"
+          class="absolute top-8 right-8 text-3xl text-title cursor-pointer"
+        >
+          <i class="ri-close-line"></i>
+        </div>
+      </div>
     </header>
-
-    <!--==================== SEARCH ====================-->
-    <div class="search" id="search-content">
-      <form action="" class="search__form">
-        <i class="ri-search-line search__icon"></i>
-        <input
-          type="search"
-          placeholder="Buscar Livros e a autores..."
-          class="search__input"
-        />
-      </form>
+    <!-- MODAL CARRINHO -->
+    <div id="cart-modal" class="cart-modal">
+      <div class="cart-modal-content">
+        <div class="cart-modal-header">
+          <h2>Carrinho</h2>
+          <button class="cart-modal-close">&times;</button>
+        </div>
+        <div class="cart-items-container" id="cart-items"></div>
+        <div class="cart-summary">
+          <div class="cart-total-row">
+            <span>Total</span>
+            <span id="cart-total">R$ 0,00</span>e
+          </div>
+          <button class="cart-finalize-button">Finalizar</button>
+        </div>
+      </div>
     </div>
 
-    <!-- ================= CONTEUDO PRINCIPAL ========== -->
-<body class="bg-gray-50 text-gray-800 p-4">
+    <!-- MODAL FAVORITOS -->
+    <div id="favorites-modal" class="favorites-modal">
+      <div class="favorites-modal-content">
+        <div class="favorites-modal-header">
+          <h2>Favoritos</h2>
+          <button class="favorites-modal-close">&times;</button>
+        </div>
+        <div class="favorites-items-container" id="favorites-items"></div>
+      </div>
+    </div>
 
-<div class="max-w-[1600px] mx-auto flex overflow-x-auto gap-6">
+<div class="max-w-[1600px] mx-auto flex overflow-x-auto gap-6 pt-20">
+
 
   <!-- Sidebar fixa -->
   <aside class="w-52 flex-shrink-0 mt-6">
@@ -161,16 +197,173 @@
     </div>
   </main>
 </div>
-    <!-- ================= FOOTER ================ -->
-    </footer>
 
-    <!--=============== SCROLLREVEAL ===============-->
-    <script src="scrollreveal.min.js"></script>
+<script>
 
-    <!--=============== SWIPER JS ===============-->
-    <script src="swiper-bundle.min.js"></script>
+  0
 
-    <!--=============== MAIN JS ===============-->
-    <script src="categorias.js"></script>
-  </body>
+
+
+
+
+
+// Livros 
+const books = [
+  { title: "Dom Quixote", author: "Miguel de Cervantes", price: 14.99, category: "Romance", image: "https://m.media-amazon.com/images/I/91Q2QLxT6BL._SY425_.jpg" },
+  { title: "Orgulho e Preconceito", author: "Jane Austen", price: 12.90, category: "Romance", image: "https://m.media-amazon.com/images/I/51AHB+f-0DL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "1984", author: "George Orwell", price: 18.50, category: "Ficção Científica", image: "https://m.media-amazon.com/images/I/51VXYaKO-sL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "O Pequeno Príncipe", author: "Antoine de Saint-Exupéry", price: 9.99, category: "Infantil", image: "https://m.media-amazon.com/images/I/418VLwcUXsL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "A Metamorfose", author: "Franz Kafka", price: 11.00, category: "Drama", image: "https://m.media-amazon.com/images/I/51H+90dUjzL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "O Senhor dos Anéis", author: "J.R.R. Tolkien", price: 25.90, category: "Fantasia", image: "https://m.media-amazon.com/images/I/81hCVEC0ExL._SY466_.jpg" },
+  { title: "Harry Potter e a Pedra Filosofal", author: "J.K. Rowling", price: 19.90, category: "Fantasia", image: "https://m.media-amazon.com/images/I/81YOuOGFCJL._SY466_.jpg" },
+  { title: "A Revolução dos Bichos", author: "George Orwell", price: 10.00, category: "Ficção Científica", image: "https://m.media-amazon.com/images/I/61owA5ey3iL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "O Morro dos Ventos Uivantes", author: "Emily Brontë", price: 13.50, category: "Romance", image: "https://m.media-amazon.com/images/I/71lqmkoeosL._SY466_.jpg" },
+  { title: "Fahrenheit 451", author: "Ray Bradbury", price: 16.90, category: "Ficção Científica", image: "https://m.media-amazon.com/images/I/51tAD6LyZ-L._SY466_.jpg" },
+  { title: "O Hobbit", author: "J.R.R. Tolkien", price: 21.80, category: "Fantasia", image: "https://m.media-amazon.com/images/I/511+-lOOtsL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "Romeu e Julieta", author: "William Shakespeare", price: 10.99, category: "Drama", image: "https://m.media-amazon.com/images/I/51E+5jqplTL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "O Diário de Anne Frank", author: "Anne Frank", price: 14.20, category: "Biografia", image: "https://m.media-amazon.com/images/I/41ujmhW4HNL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "Alice no País das Maravilhas", author: "Lewis Carroll", price: 11.75, category: "Infantil", image: "https://m.media-amazon.com/images/I/71KY1l+E1LL._SY342_.jpg" },
+  { title: "Drácula", author: "Bram Stoker", price: 15.60, category: "Terror", image: "https://m.media-amazon.com/images/I/5150FfwWxUL._SY445_SX342_ControlCacheEqualizer_.jpg" },
+  { title: "O Conde de Monte Cristo", author: "Alexandre Dumas", price: 22.90, category: "Aventura", image: "https://m.media-amazon.com/images/I/51LXa0AFUCL._SY445_SX342_ControlCacheEqualizer_.jpg" }
+];
+
+
+
+// Categorias disponíveis
+const allCategories = [
+  "Romance", "Fantasia", "Terror", "Ficção Científica", "Suspense",
+  "Drama", "Comédia", "Autoajuda", "Aventura", "Biografia",
+  "Infantil", "História", "Educação", "Religião", "Negócios"
+];
+
+const bookGrid = document.getElementById("bookGrid");
+const loadMoreBtn = document.getElementById("loadMoreBtn");
+let displayed = 0;
+
+// Renderizar livros
+function renderBooks(filteredBooks) {
+  bookGrid.innerHTML = "";
+  const slice = filteredBooks.slice(0, 20);
+  for (const book of slice) {
+    const card = document.createElement("div");
+    card.className = "relative group bg-white shadow p-3 rounded w-full sm:w-[220px] flex-shrink-0 cursor-pointer transition-transform hover:-translate-y-1";
+
+    card.innerHTML = `
+      <div class="relative">
+        <img src="${book.image}" alt="${book.title}" class="w-full h-72 object-cover rounded mb-2">
+        <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button class="bg-white p-1 rounded-full shadow favorite-btn hover:text-red-500" title="Favoritar">
+            <i class="ri-heart-line text-xl"></i>
+          </button>
+          <button class="bg-white p-1 rounded-full shadow cart-btn hover:text-green-600" title="Adicionar ao carrinho">
+            <i class="ri-shopping-cart-line text-xl"></i>
+          </button>
+        </div>
+      </div>
+      <h3 class="font-semibold">${book.title}</h3>
+      <p class="text-sm text-gray-600">${book.author}</p>
+      <p class="text-indigo-600 font-bold">${book.price.toFixed(2)}€</p>
+    `;
+
+    card.addEventListener("click", () => {
+      alert(`Abrindo detalhes do livro: ${book.title}`);
+    });
+
+    card.querySelector(".favorite-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      alert(`Adicionado aos favoritos: ${book.title}`);
+    });
+
+    card.querySelector(".cart-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      alert(`Adicionado ao carrinho: ${book.title}`);
+    });
+
+    bookGrid.appendChild(card);
+  }
+}
+
+// Aplicar filtros
+function applyFilters() {
+  const selectedAuthor = document.getElementById("authorFilter").value;
+  const selectedPrice = parseFloat(document.getElementById("priceFilter").value);
+
+  const selectedCategories = Array.from(document.querySelectorAll('#categoryList input[type="checkbox"]:checked'))
+    .map(cb => cb.parentElement.textContent.trim());
+
+  const filtered = books.filter(book => {
+    const matchAuthor = selectedAuthor === "" || book.author === selectedAuthor;
+    const matchPrice = book.price <= selectedPrice;
+    const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(book.category);
+    return matchAuthor && matchPrice && matchCategory;
+  });
+
+  renderBooks(filtered);
+}
+
+// Eventos de filtro
+document.getElementById("authorFilter").addEventListener("change", applyFilters);
+document.getElementById("priceFilter").addEventListener("input", e => {
+  document.getElementById("priceValue").textContent = e.target.value;
+  applyFilters();
+});
+
+// Limpar filtros
+document.getElementById("clearFilters").addEventListener("click", () => {
+  document.getElementById("authorFilter").value = "";
+  document.getElementById("priceFilter").value = 100;
+  document.getElementById("priceValue").textContent = 100;
+  document.querySelectorAll('#categoryList input[type="checkbox"]').forEach(cb => cb.checked = false);
+  renderBooks(books);
+});
+
+// Mostrar/esconder painel de filtros
+document.getElementById("filterBtn").addEventListener("click", () => {
+  document.getElementById("filterPanel").classList.toggle("hidden");
+});
+
+// Carregar autores dinamicamente
+const authors = [...new Set(books.map(book => book.author))];
+const authorSelect = document.getElementById("authorFilter");
+authors.forEach(author => {
+  const option = document.createElement("option");
+  option.value = author;
+  option.textContent = author;
+  authorSelect.appendChild(option);
+});
+
+// Categorias com checkbox arredondado 
+const categoryList = document.getElementById("categoryList");
+let shownCategories = 0;
+const categoriesPerLoad = 5;
+
+function renderCategories() {
+  const slice = allCategories.slice(shownCategories, shownCategories + categoriesPerLoad);
+  for (const cat of slice) {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <label class="inline-flex items-center gap-2 text-sm">
+        <input type="checkbox" class="form-checkbox rounded-full text-indigo-600 focus:ring-0" />
+        ${cat}
+      </label>`;
+    categoryList.appendChild(li);
+
+    const checkbox = li.querySelector('input[type="checkbox"]');
+    checkbox.addEventListener("change", applyFilters);
+  }
+
+  shownCategories += categoriesPerLoad;
+  document.getElementById("loadMoreCategories").classList.toggle("hidden", shownCategories >= allCategories.length);
+}
+
+// Carregar mais categorias ao clicar no botão
+document.getElementById("loadMoreCategories").addEventListener("click", renderCategories);
+
+
+// Inicialização
+renderCategories();
+renderBooks(books);
+</script>
+<script src="categorias.js"></script>
+</body>
 </html>
