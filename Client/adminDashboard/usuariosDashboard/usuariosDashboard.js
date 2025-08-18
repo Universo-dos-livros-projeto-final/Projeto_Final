@@ -37,6 +37,39 @@ sidebarToggle?.addEventListener("click", () => {
 const token = Cookies?.get("token");
 const userTableBody = document.getElementById("userTableBody");
 
+// ===================== LOGOUT =====================
+document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const token = Cookies.get("token");
+
+  if (!token) {
+    alert("Você já está desconectado.");
+    window.location.href = "/Client/paginaInicial/index.html";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/logout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      throw new Error("Erro ao fazer logout");
+    }
+
+    Cookies.remove("token");
+
+    window.location.href = "/Client/paginaInicial/index.html";
+  } catch (error) {
+    console.error("Erro no logout:", error);
+    alert("Falha ao sair da conta. Tente novamente.");
+  }
+});
 // Carrega usuários
 async function loadUsers() {
   if (!token) {

@@ -184,3 +184,5 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
 // ===================== CARREGAMENTO INICIAL =====================
 carregarPerfilUsuario();
 fetchAndRenderUserPurchases();
+
+

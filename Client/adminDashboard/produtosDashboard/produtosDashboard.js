@@ -34,6 +34,89 @@ sidebarToggle.addEventListener("click", () => {
   );
 });
 
+// ===================== LOGOUT =====================
+document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const token = Cookies.get("token");
+
+  if (!token) {
+    alert("Você já está desconectado.");
+    window.location.href = "/Client/paginaInicial/index.html";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/logout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      throw new Error("Erro ao fazer logout");
+    }
+
+    Cookies.remove("token");
+
+    window.location.href = "/Client/paginaInicial/index.html";
+  } catch (error) {
+    console.error("Erro no logout:", error);
+    alert("Falha ao sair da conta. Tente novamente.");
+  }
+});
+// Carrega usuários
+async function loadUsers() {
+  if (!token) {
+    alert("Token não encontrado. Faça login novamente.");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/admin/users", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) throw new Error("Erro ao carregar usuários");
+
+    const users = await res.json();
+    userTableBody.innerHTML = "";
+
+    users.forEach((user, index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="checkbox" class="user-checkbox" data-userid="${
+          user.id
+        }"></td>
+        <td>${index + 1}</td>
+        <td class="user-id">${user.id}</td>
+        <td>${user.firstname}</td>
+        <td>${user.email}</td>
+        <td><span class="status-badge ${
+          user.isBlocked ? "status-blocked" : "status-active"
+        }">
+          ${user.isBlocked ? "Bloqueado" : "Ativo"}</span>
+        </td>
+        <td>
+          <button class="action-btn ${
+            user.isBlocked ? "btn-unblock" : "btn-block"
+          }">
+            ${user.isBlocked ? "Desbloquear" : "Bloquear"}
+          </button>
+          <button class="action-btn btn-delete">Deletar</button>
+        </td>
+      `;
+      userTableBody.appendChild(tr);
+    });
+
+    attachActionButtonsEvents();
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
 // Abrir modal para adicionar novo livro (limpa campos)
 function abrirModal() {
   const modal = document.getElementById("modal");

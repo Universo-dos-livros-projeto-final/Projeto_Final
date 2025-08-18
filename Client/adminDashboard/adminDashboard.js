@@ -33,18 +33,53 @@ sidebarToggle.addEventListener("click", () => {
   }
 });
 
+
+// ===================== LOGOUT =====================
+document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const token = Cookies.get("token");
+
+  if (!token) {
+    alert("Você já está desconectado.");
+    window.location.href = "/Client/paginaInicial/index.html";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/logout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      throw new Error("Erro ao fazer logout");
+    }
+
+    Cookies.remove("token");
+
+    window.location.href = "/Client/paginaInicial/index.html";
+  } catch (error) {
+    console.error("Erro no logout:", error);
+    alert("Falha ao sair da conta. Tente novamente.");
+  }
+});
+
 // --- Função para carregar dados do backend ---
 
 document.addEventListener("DOMContentLoaded", async () => {
   const token = Cookies.get("token");
   if (!token) {
     alert("Você precisa estar logado para acessar o dashboard.");
-    window.location.href = "/Client/login.html"; // ajuste seu caminho de login
+    window.location.href = "/Client/login.html"; 
     return;
   }
 
   try {
-    // 1) Buscar estatísticas principais
+    
     const resInfo = await fetch("http://localhost:3000/admin/dashboard/info", {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -60,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("soldCount").textContent =
       info.totalVendidos.toLocaleString();
 
-    // 2) Buscar atividades recentes
+    
     const resRecent = await fetch(
       "http://localhost:3000/admin/dashboard/recent",
       {
@@ -78,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const typeDiv = document.querySelector(".type");
     const statusDiv = document.querySelector(".status");
 
-    // Limpa dados antigos (exceto o título)
+    
     namesDiv.innerHTML = '<span class="data-title">Nome</span>';
     emailsDiv.innerHTML = '<span class="data-title">Email</span>';
     joinedDiv.innerHTML = '<span class="data-title">Inscreveu-se</span>';
