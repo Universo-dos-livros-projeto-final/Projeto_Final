@@ -173,12 +173,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!res.ok) throw new Error("Erro ao carregar endereços");
 
       const data = await res.json();
-      // O backend retorna { addresses: [...] }
       enderecos = data.addresses || [];
       renderizarEnderecos();
     } catch (error) {
       console.error("Erro ao carregar endereços:", error);
-      alert("Erro ao carregar endereços");
     }
   }
 
@@ -295,29 +293,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div class="space-y-2">
-            <p class="flex items-center gap-2">
-              <span><strong>Endereço:</strong> ${end.street || ""}</span>
-            </p>
-            <p class="flex items-center gap-2">
-              <span><strong>Número:</strong> ${end.number || ""}</span>
-            </p>
-            <p class="flex items-center gap-2">
-              <span><strong>Código Postal:</strong> ${end.zipcode || ""}</span>
-            </p>
-            <p class="flex items-center gap-2">
-              <span><strong>Freguesia:</strong> ${end.parish || ""}</span>
-            </p>
+            <p><strong>Endereço:</strong> ${end.street || ""}</p>
+            <p><strong>Número:</strong> ${end.number || ""}</p>
+            <p><strong>Código Postal:</strong> ${end.zipcode || ""}</p>
+            <p><strong>Freguesia:</strong> ${end.parish || ""}</p>
           </div>
           <div class="space-y-2">
-            <p class="flex items-center gap-2">
-              <span><strong>Concelho:</strong> ${end.county || ""}</span>
-            </p>
-            <p class="flex items-center gap-2">
-              <span><strong>Estado:</strong> ${end.state || ""}</span>
-            </p>
-            <p class="flex items-center gap-2">
-              <span><strong>País:</strong> ${end.country || ""}</span>
-            </p>
+            <p><strong>Concelho:</strong> ${end.county || ""}</p>
+            <p><strong>Estado:</strong> ${end.state || ""}</p>
+            <p><strong>País:</strong> ${end.country || ""}</p>
           </div>
         </div>
       `;
@@ -367,10 +351,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       if (editandoId !== null) {
         await atualizarEndereco(editandoId, novoEndereco);
-        alert("Endereço atualizado com sucesso!");
       } else {
         await salvarEndereco(novoEndereco);
-        alert("Endereço salvo com sucesso!");
       }
 
       await loadEnderecos();
