@@ -2,5 +2,8 @@
     "liveServer.settings.port": 5501,
     "cSpell.words": [
         "Fenix"
+    ],
+    "conventionalCommits.scopes": [
+        "moon icon inicial page"
     ]
 }
