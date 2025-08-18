@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* ======= render card ======= */
-  function renderBooks(filteredBooks) {
+  async function renderBooks(filteredBooks) {
     bookGridEl.innerHTML = "";
     if (!filteredBooks || filteredBooks.length === 0) {
       bookGridEl.innerHTML = "<p>Nenhum livro encontrado.</p>";
@@ -170,6 +170,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const slice = filteredBooks.slice(0, 20);
+
+    // Busca os favoritos do backend
+    let backendFavorites = [];
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        const res = await fetch("http://localhost:3000/favorites", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          backendFavorites = data.map((f) => f.bookId.toString());
+        }
+      } catch (err) {
+        console.error("Erro ao buscar favoritos:", err);
+      }
+    }
+
     for (const book of slice) {
       const imgUrl =
         book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
@@ -179,24 +197,89 @@ document.addEventListener("DOMContentLoaded", async () => {
       card.className =
         "relative group bg-white shadow p-3 rounded w-full sm:w-[220px] flex-shrink-0 cursor-pointer transition-transform hover:-translate-y-1";
 
+      card.dataset.bookId = book.id;
+
+      const isFavorite = backendFavorites.includes(book.id.toString());
+
       card.innerHTML = `
-        <div class="relative">
-          <img src="${imgUrl}" alt="${
+      <div class="relative">
+        <img src="${imgUrl}" alt="${
         book.title || "Livro"
       }" class="w-full h-72 object-cover rounded mb-2" />
-          <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button class="bg-white p-1 rounded-full shadow favorite-btn hover:text-red-500" title="Favoritar">
-              <i class="ri-heart-line text-xl"></i>
-            </button>
-            <button class="bg-white p-1 rounded-full shadow cart-btn hover:text-green-600" title="Adicionar ao carrinho">
-              <i class="ri-shopping-cart-line text-xl"></i>
-            </button>
-          </div>
+        <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button class="bg-white p-1 rounded-full shadow favorite-btn" title="Favoritar">
+            <i class="${
+              isFavorite
+                ? "ri-heart-fill text-xl text-red-500"
+                : "ri-heart-line text-xl"
+            }"></i>
+          </button>
+          <button class="bg-white p-1 rounded-full shadow cart-btn hover:text-green-600" title="Adicionar ao carrinho">
+            <i class="ri-shopping-cart-line text-xl"></i>
+          </button>
         </div>
-        <h3 class="font-semibold text-black">${book.title || ""}</h3>
-        <p class="text-sm text-gray-600">${book.author || ""}</p>
-        <p class="text-indigo-600 font-bold">${price.toFixed(2)}€</p>
-      `;
+      </div>
+      <h3 class="font-semibold text-black">${book.title || ""}</h3>
+      <p class="text-sm text-gray-600">${book.author || ""}</p>
+      <p class="text-indigo-600 font-bold">${price.toFixed(2)}€</p>
+    `;
+
+      // === evento carrinho ===
+      card.querySelector(".cart-btn").addEventListener("click", (e) => {
+        e.preventDefault();
+        cartModal.addToCart(card);
+      });
+
+      // === evento favoritos ===
+      card
+        .querySelector(".favorite-btn")
+        .addEventListener("click", async (e) => {
+          e.preventDefault();
+          const icon = e.currentTarget.querySelector("i");
+          const bookId = card.dataset.bookId.toString();
+
+          if (!token) {
+            alert("Você precisa estar logado para favoritar.");
+            window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+            return;
+          }
+
+          try {
+            if (backendFavorites.includes(bookId)) {
+              // Remover favorito
+              const res = await fetch(
+                `http://localhost:3000/favorites/${bookId}`,
+                {
+                  method: "DELETE",
+                  headers: { Authorization: `Bearer ${token}` },
+                }
+              );
+              if (!res.ok) throw new Error("Erro ao remover favorito");
+
+              icon.classList.replace("ri-heart-fill", "ri-heart-line");
+              icon.classList.remove("text-red-500");
+              backendFavorites = backendFavorites.filter((id) => id !== bookId);
+            } else {
+              // Adicionar favorito
+              const res = await fetch(`http://localhost:3000/favorites`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ bookId }),
+              });
+              if (!res.ok) throw new Error("Erro ao adicionar favorito");
+
+              icon.classList.replace("ri-heart-line", "ri-heart-fill");
+              icon.classList.add("text-red-500");
+              backendFavorites.push(bookId);
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Não foi possível atualizar favorito. Tente novamente.");
+          }
+        });
 
       bookGridEl.appendChild(card);
     }
@@ -423,8 +506,9 @@ class CartModal {
       // Recarregar carrinho
       this.loadCartFromServer();
     } catch (error) {
-      console.error("Erro ao adicionar ao carrinho:", error);
-      alert("Erro ao adicionar ao carrinho: " + error.message);
+      console.warn(
+        "Não foi possível confirmar com o servidor, mas o item foi adicionado localmente."
+      );
     }
   }
 
@@ -878,14 +962,15 @@ function checkLoginStatus() {
 }
 
 // =================== EVENTO GLOBAL PARA VERIFICAR LOGIN ===================
-  /*=============== INICIALIZAÇÃO AO CARREGAR PÁGINA ===============*/
-  document.addEventListener("DOMContentLoaded", async () => {
-    renderCategories();
-    checkLoginStatus();
+/*=============== INICIALIZAÇÃO AO CARREGAR PÁGINA ===============*/
+document.addEventListener("DOMContentLoaded", async () => {
+  renderCategories();
+  checkLoginStatus();
 
-    books = await fetchBooks();
+  books = await fetchBooks();
 
-    populateAuthors();
-    renderBooks(books);
-    setInterval(checkLoginStatus, 30000);
-  });
+  populateAuthors();
+  renderBooks(books);
+  favoritesModal.updateFavoriteIcons();
+  setInterval(checkLoginStatus, 30000);
+});
