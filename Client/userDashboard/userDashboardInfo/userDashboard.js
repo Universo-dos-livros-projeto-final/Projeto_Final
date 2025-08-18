@@ -68,6 +68,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       });
 
+      if (!res.ok) throw new Error("Erro ao carregar dados");
+
       const user = await res.json();
 
       displayNome.innerText = user.firstname || "";
@@ -76,6 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       displaySenha.innerText = "••••••••";
     } catch (error) {
       console.error(error);
+      alert("Erro ao carregar perfil");
     }
   }
 
@@ -157,6 +160,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modalTitulo = document.getElementById("modalEnderecoTitulo");
 
   // Carrega os endereços do backend
+  await loadEnderecos();
+
   async function loadEnderecos() {
     try {
       const res = await fetch("http://localhost:3000/user/addresses", {
@@ -165,26 +170,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       });
 
-      if (res.status === 404) {
-        console.log("Nenhum endereço cadastrado para o usuário.");
-        enderecos = [];
-        return;
-      }
-
-      if (!res.ok) {
-        throw new Error(`Erro ao buscar os endereços: ${res.status}`);
-      }
+      if (!res.ok) throw new Error("Erro ao carregar endereços");
 
       const data = await res.json();
-
-      enderecos = Array.isArray(data.addresses) ? data.addresses : [];
-
-      if (enderecos.length > 0 && typeof renderizarEnderecos === "function") {
-        renderizarEnderecos();
-      }
+      // O backend retorna { addresses: [...] }
+      enderecos = data.addresses || [];
+      renderizarEnderecos();
     } catch (error) {
-      console.error("Erro ao carregar endereços:", error.message || error);
-      alert("Erro ao carregar endereços. Tente novamente mais tarde.");
+      console.error("Erro ao carregar endereços:", error);
+      alert("Erro ao carregar endereços");
     }
   }
 
@@ -272,20 +266,59 @@ document.addEventListener("DOMContentLoaded", async () => {
     enderecos.forEach((end) => {
       const div = document.createElement("div");
       div.className =
-        "border p-2 rounded shadow flex justify-between items-start";
+        "endereco-card group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 mb-4";
+
       div.innerHTML = `
-        <div>
-          <p><strong>Endereço:</strong> ${end.street || ""}</p>
-          <p><strong>Número:</strong> ${end.number || ""}</p>
-          <p><strong>Código Postal:</strong> ${end.zipcode || ""}</p>
-          <p><strong>Freguesia:</strong> ${end.parish || ""}</p>
-          <p><strong>Concelho:</strong> ${end.county || ""}</p>
-          <p><strong>Estado:</strong> ${end.state || ""}</p>
-          <p><strong>País:</strong> ${end.country || ""}</p>
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex items-center gap-4">
+            <div class="p-3 bg-blue-100 rounded-xl group-hover:bg-blue-200 transition-colors">
+              <i class="uil uil-map-marker text-blue-600 text-lg"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 text-lg">Endereço</h3>
+              <p class="text-sm text-gray-500">${end.parish || ""} ${
+        end.county ? "• " + end.county : ""
+      }</p>
+            </div>
+          </div>
+          <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <button class="btnEditar p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 hover:scale-110" title="Editar">
+              <i class="uil uil-edit text-lg"></i>
+            </button>
+            <button class="btnExcluir p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 hover:scale-110" title="Excluir">
+              <i class="uil uil-trash-alt text-lg"></i>
+            </button>
+          </div>
         </div>
-        <div class="space-y-2">
-          <button class="btnEditar px-3 py-1 bg-yellow-500 text-white rounded">Editar</button>
-          <button class="btnExcluir px-3 py-1 bg-red-600 text-white rounded">Excluir</button>
+        
+        <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-4"></div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div class="space-y-2">
+            <p class="flex items-center gap-2">
+              <span><strong>Endereço:</strong> ${end.street || ""}</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <span><strong>Número:</strong> ${end.number || ""}</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <span><strong>Código Postal:</strong> ${end.zipcode || ""}</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <span><strong>Freguesia:</strong> ${end.parish || ""}</span>
+            </p>
+          </div>
+          <div class="space-y-2">
+            <p class="flex items-center gap-2">
+              <span><strong>Concelho:</strong> ${end.county || ""}</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <span><strong>Estado:</strong> ${end.state || ""}</span>
+            </p>
+            <p class="flex items-center gap-2">
+              <span><strong>País:</strong> ${end.country || ""}</span>
+            </p>
+          </div>
         </div>
       `;
 
@@ -307,6 +340,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           try {
             await excluirEndereco(end.id);
             await loadEnderecos();
+            alert("Endereço excluído com sucesso!");
           } catch (error) {
             alert("Erro ao excluir endereço");
           }
@@ -333,6 +367,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       if (editandoId !== null) {
         await atualizarEndereco(editandoId, novoEndereco);
+        alert("Endereço atualizado com sucesso!");
       } else {
         await salvarEndereco(novoEndereco);
         alert("Endereço salvo com sucesso!");
@@ -368,16 +403,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       });
 
-      if (!res.ok) throw new Error("Erro ao buscar usuário");
+      if (!res.ok) throw new Error("Erro ao carregar dados");
 
       const user = await res.json();
 
       if (user.profilephoto) {
-        profileImageHeader.src = user.profilephoto;
-        profileImageMain.src = user.profilephoto;
+        if (profileImageHeader) profileImageHeader.src = user.profilephoto;
+        if (profileImageMain) profileImageMain.src = user.profilephoto;
       }
-    } catch (err) {
-      console.error("Erro ao carregar foto do perfil:", err);
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -403,37 +438,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Salvar novo link e enviar para o backend
   btnSalvarUrl.addEventListener("click", async () => {
     const url = inputUrl.value.trim();
+    if (url) {
+      try {
+        const res = await fetch("http://localhost:3000/user", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ profilephoto: url }),
+        });
 
-    if (!url) {
-      alert("Insira uma URL válida");
-      return;
-    }
+        if (!res.ok) throw new Error("Erro ao atualizar foto");
 
-    try {
-      const res = await fetch("http://localhost:3000/user/photo-url", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ photoUrl: url }),
-      });
+        // Atualiza as imagens
+        if (profileImageHeader) profileImageHeader.src = url;
+        if (profileImageMain) profileImageMain.src = url;
 
-      if (!res.ok) throw new Error("Erro ao atualizar a foto");
-
-      // Atualiza imagem no site
-      profileImageHeader.src = url;
-      profileImageMain.src = url;
-
-      modalOverlay.classList.add("hidden");
-      inputUrl.value = "";
-    } catch (err) {
-      console.error("Erro ao atualizar a foto:", err);
-      alert("Não foi possível atualizar a foto");
+        // Fechar modal
+        modalOverlay.classList.add("hidden");
+        inputUrl.value = "";
+        alert("Foto atualizada com sucesso!");
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao atualizar foto");
+      }
+    } else {
+      alert("Por favor, insira um link válido.");
     }
   });
-
-  // ======= LOGOUT =======
 
   document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     e.preventDefault();
@@ -453,6 +486,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       Cookies.remove("token");
 
+      alert("Logout realizado com sucesso!");
       window.location.href = "/Client/paginaInicial/index.html";
     } catch (error) {
       console.error(error);
