@@ -14,7 +14,6 @@ if (searchClose) {
     searchContent.classList.remove("show-search");
   });
 }
-
 /*=============== User Page ===============*/
 document.addEventListener("DOMContentLoaded", () => {
   const userLink = document.getElementById("user-link");

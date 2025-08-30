@@ -120,6 +120,7 @@ sr.reveal(".discount__images", { origin: "right" });
 document.addEventListener("DOMContentLoaded", async () => {
   /* ======= variáveis globais ======= */
   let books = [];
+  let currentSearch = "";
 
   const categoryListEl = document.getElementById("categoryList");
   const authorFilterEl = document.getElementById("authorFilter");
@@ -130,6 +131,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const filterBtn = document.getElementById("filterBtn");
   const filterPanel = document.getElementById("filterPanel");
   const clearFiltersBtn = document.getElementById("clearFilters");
+  const searchInput = document.querySelector(".search__input");
+
+  if (searchInput) {
+    searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        currentSearch = searchInput.value.trim().toLowerCase();
+        applyFilters();
+
+        const searchContent = document.getElementById("search-content");
+        if (searchContent) searchContent.classList.remove("show-search");
+      }
+    });
+  }
 
   /* ======= helpers ======= */
   const normalize = (s) =>
@@ -298,6 +313,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const bookAuthor = normalize(book.author);
       const bookCategory = normalize(book.category || book.genre || "");
       const bookPrice = toNumber(book.price);
+      const bookTitle = (book.title || "").toLowerCase();
+      const bookAuthorLower = bookAuthor.toLowerCase();
 
       const matchAuthor =
         selectedAuthor === "" || bookAuthor === selectedAuthor;
@@ -305,8 +322,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const matchCategory =
         selectedCategories.length === 0 ||
         selectedCategories.includes(bookCategory);
+      const matchSearch =
+        currentSearch === "" ||
+        bookTitle.includes(currentSearch) ||
+        bookAuthorLower.includes(currentSearch);
 
-      return matchAuthor && matchPrice && matchCategory;
+      return matchAuthor && matchPrice && matchCategory && matchSearch;
     });
 
     renderBooks(filtered);
