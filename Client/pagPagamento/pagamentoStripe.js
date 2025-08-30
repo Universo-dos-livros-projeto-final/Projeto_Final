@@ -14,6 +14,20 @@ if (searchClose) {
     searchContent.classList.remove("show-search");
   });
 }
+
+const searchInput = document.querySelector(".search__input");
+
+if (searchInput) {
+  searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const query = encodeURIComponent(searchInput.value.trim());
+      if (query) {
+        window.location.href = `/Client/pagCategorias/categorias.html?search=${query}`;
+      }
+    }
+  });
+}
 /*=============== User Page ===============*/
 document.addEventListener("DOMContentLoaded", () => {
   const userLink = document.getElementById("user-link");
