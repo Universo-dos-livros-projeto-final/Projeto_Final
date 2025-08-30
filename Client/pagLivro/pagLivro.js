@@ -506,7 +506,6 @@ class CartModal {
       this.loadCartFromServer();
     } catch (error) {
       console.error("Erro ao adicionar ao carrinho:", error);
-      alert("Erro ao adicionar ao carrinho: " + error.message);
     }
   }
 
