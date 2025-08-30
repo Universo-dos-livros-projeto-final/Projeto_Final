@@ -97,18 +97,20 @@ async function atualizarCarrinho() {
     productList.innerHTML = "";
     let total = 0;
 
-   cartItems.forEach((item) => {
-  const preco = parseFloat(item.book.price);
-  const qtd = item.quantity;
-  const subtotal = preco * qtd;
-  total += subtotal;
+    cartItems.forEach((item) => {
+      const preco = parseFloat(item.book.price);
+      const qtd = item.quantity;
+      const subtotal = preco * qtd;
+      total += subtotal;
 
-  const produto = document.createElement("div");
-  produto.className =
-    "flex items-center space-x-4 p-4 bg-container rounded-lg";
-  produto.innerHTML = `
+      const produto = document.createElement("div");
+      produto.className =
+        "flex items-center space-x-4 p-4 bg-container rounded-lg";
+      produto.innerHTML = `
       <div class="w-16 h-16 bg-first/10 rounded-lg flex items-center justify-center">
-        <img src="${item.book.bookphoto}" alt="${item.book.title}" class="w-full h-full object-contain rounded" />
+        <img src="${item.book.bookphoto}" alt="${
+        item.book.title
+      }" class="w-full h-full object-contain rounded" />
       </div>
       <div class="flex-1">
         <h4 class="font-medium text-title">${item.book.title}</h4>
@@ -119,9 +121,8 @@ async function atualizarCarrinho() {
         </div>
       </div>
     `;
-  productList.appendChild(produto);
-});
-
+      productList.appendChild(produto);
+    });
 
     subtotalEl.textContent = `€${total.toFixed(2)}`;
     totalEl.textContent = `€${total.toFixed(2)}`;
@@ -358,7 +359,7 @@ class CartModal {
         this.checkout();
       });
   }
-   
+
   toggleCart() {
     this.cartModal.classList.toggle("show");
     this.loadCartFromServer(); // Recarregar sempre que abrir
@@ -372,7 +373,7 @@ class CartModal {
       return;
     }
 
-    const bookId = bookCard.dataset.bookId;
+    const bookId = bookCard.dataset.bookId; // CORRETO AQUI
     if (!bookId) {
       alert("Erro: ID do livro não encontrado.");
       return;
@@ -401,7 +402,7 @@ class CartModal {
       }
 
       // Feedback visual
-      const button = bookCard.querySelector(".button");
+      const button = bookCard.querySelector("button.button");
       const originalText = button.textContent;
       button.textContent = "Adicionado!";
       button.style.backgroundColor = "#4CAF50";
@@ -446,7 +447,6 @@ class CartModal {
 
       const cartItems = await response.json();
 
-      // Transformar dados do servidor para o formato esperado pelo frontend
       this.cart = cartItems.map((item) => ({
         id: item.id,
         bookId: item.bookId,
@@ -466,47 +466,54 @@ class CartModal {
 
   renderCartItems() {
     this.cartItemsContainer.innerHTML = "";
-    let total = 0;
 
     if (this.cart.length === 0) {
       this.cartItemsContainer.innerHTML = `
-        <div class="cart-empty-message">
-          <p>Seu carrinho está vazio</p>
-          <p>Adicione alguns livros para começar!</p>
-        </div>
-      `;
+      <div class="cart-empty-message">
+        <p>Seu carrinho está vazio</p>
+        <p>Adicione alguns livros para começar!</p>
+      </div>
+    `;
       this.cartTotalElement.textContent = "€ 0,00";
       return;
     }
 
-    this.cart.forEach((item, index) => {
-      const itemTotal = item.price * item.quantity;
-      total += itemTotal;
-
+    this.cart.forEach((item) => {
       const cartItemElement = document.createElement("div");
       cartItemElement.classList.add("cart-item");
+
       cartItemElement.innerHTML = `
-        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
-        <div class="cart-item-details">
-          <h3>${item.title}</h3>
-          <div class="cart-item-quantity">
-            <button onclick="cartModal.updateQuantity('${item.bookId}', ${
-        item.quantity - 1
-      })">-</button>
-            <input type="text" value="${item.quantity}" readonly>
-            <button onclick="cartModal.updateQuantity('${item.bookId}', ${
-        item.quantity + 1
-      })">+</button>
-          </div>
-          <span class="cart-item-price">€ ${item.price.toFixed(2)}</span>
-          <span class="cart-item-total">Total: € ${itemTotal.toFixed(2)}</span>
+      <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+      <div class="cart-item-details">
+        <h3>${item.title}</h3>
+        <div class="cart-item-quantity">
+          <button onclick="cartModal.changeQuantity('${
+            item.bookId
+          }', -1)">-</button>
+          <input type="text" value="${item.quantity}" readonly>
+          <button onclick="cartModal.changeQuantity('${
+            item.bookId
+          }', 1)">+</button>
         </div>
-        <button class="cart-item-remove" onclick="cartModal.removeItem('${
-          item.bookId
-        }')">×</button>
-      `;
+        <span class="cart-item-price">€ ${item.price.toFixed(2)}</span>
+       
+      </div>
+      <button class="cart-item-remove" onclick="cartModal.removeItem('${
+        item.bookId
+      }')">×</button>
+    `;
 
       this.cartItemsContainer.appendChild(cartItemElement);
+    });
+
+    // Atualiza total após renderizar todos os itens
+    this.updateCartTotal();
+  }
+
+  updateCartTotal() {
+    let total = 0;
+    this.cart.forEach((item) => {
+      total += item.price * item.quantity;
     });
 
     this.cartTotalElement.textContent = `€ ${total.toFixed(2)}`;
@@ -526,7 +533,7 @@ class CartModal {
 
     try {
       const response = await fetch("http://localhost:3000/cart", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -542,6 +549,19 @@ class CartModal {
     } catch (error) {
       console.error("Erro ao atualizar quantidade:", error);
       alert("Erro ao atualizar quantidade");
+    }
+  }
+
+  changeQuantity(bookId, delta) {
+    const item = this.cart.find((i) => i.bookId === bookId);
+    if (!item) return;
+
+    const newQuantity = item.quantity + delta;
+
+    if (newQuantity < 1) {
+      this.removeItem(bookId);
+    } else {
+      this.updateQuantity(bookId, newQuantity);
     }
   }
 
@@ -583,26 +603,7 @@ class CartModal {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:3000/cart/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao finalizar compra");
-      }
-
-      alert("Compra finalizada com sucesso!");
-      this.loadCartFromServer();
-      this.toggleCart();
-    } catch (error) {
-      console.error("Erro ao finalizar compra:", error);
-      alert("Erro ao finalizar compra: " + error.message);
-    }
+    window.location.href = "/Client/pagPagamento/pagamentoStripe.html";
   }
 }
 
