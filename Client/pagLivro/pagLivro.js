@@ -75,61 +75,94 @@ const bookId = urlParams.get("id");
 // Função para buscar dados do backend e atualizar a página
 async function loadBookDetails() {
   if (!bookId) {
-    alert("Livro não especificado.");
     return;
   }
 
   try {
-    // Carregar detalhes do livro
     const response = await fetch(`http://localhost:3000/books/${bookId}`);
     if (!response.ok) throw new Error("Livro não encontrado");
 
-    const { book } = await response.json();
+    // Suporta duas formas de retorno: { book: {...} } ou {...} (o próprio livro)
+    const json = await response.json();
+    const book = json.book || json;
 
     // Atualizar os detalhes do livro na página
-    document
-      .querySelector(".product-container")
-      .setAttribute("data-book-id", book.id);
-    document.getElementById("book-title").textContent = book.title;
-    document.getElementById("book-author-main").textContent = book.author;
-    document.getElementById("book-author-info").textContent = book.author;
-    document.getElementById("book-price").textContent = `€${book.price}`;
-    document.getElementById("book-image").src =
-      book.bookphoto || "imagens/imagem-padrao.jpg";
-    document.getElementById("book-image").alt = `Capa do livro ${book.title}`;
-    document.getElementById("book-description").innerHTML = `<p>${
-      book.description || ""
-    }</p>`;
-    document.getElementById("book-isbn").textContent = book.isbn || "-";
-    document.getElementById("book-year").textContent =
-      book.publicationYear || "-";
-    document.getElementById("book-genres").textContent = book.genre || "-";
+    const productContainer = document.querySelector(".product-container");
+    if (productContainer)
+      productContainer.setAttribute("data-book-id", book.id || bookId);
 
-    // Verificar se o livro está no carrinho e atualizar a quantidade
+    if (document.getElementById("book-title"))
+      document.getElementById("book-title").textContent =
+        book.title || "Título não disponível";
+    if (document.getElementById("book-author-main"))
+      document.getElementById("book-author-main").textContent =
+        book.author || "Autor não informado";
+    if (document.getElementById("book-author-info"))
+      document.getElementById("book-author-info").textContent =
+        book.author || "Autor não informado";
+
+    if (document.getElementById("book-price")) {
+      const price =
+        book.price !== undefined && book.price !== null
+          ? parseFloat(book.price)
+          : 0;
+      document.getElementById("book-price").textContent = `€ ${price.toFixed(
+        2
+      )}`;
+    }
+
+    if (document.getElementById("book-image")) {
+      document.getElementById("book-image").src =
+        book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
+      document.getElementById("book-image").alt = `Capa do livro ${
+        book.title || ""
+      }`;
+    }
+
+    if (document.getElementById("book-description")) {
+      document.getElementById("book-description").innerHTML = `<p>${
+        book.description || ""
+      }</p>`;
+    }
+
+    if (document.getElementById("book-isbn"))
+      document.getElementById("book-isbn").textContent = book.isbn || "-";
+    if (document.getElementById("book-year"))
+      document.getElementById("book-year").textContent =
+        book.publicationYear || book.year || "-";
+    if (document.getElementById("book-genres"))
+      document.getElementById("book-genres").textContent = (
+        book.genre ||
+        book.genres ||
+        []
+      ).join
+        ? (book.genre || book.genres).join(", ")
+        : book.genre || book.genres || "-";
+
+    // Verificar se o livro está no carrinho e atualizar a quantidade (se usuário logado)
     const token = Cookies.get("token");
     if (token) {
       const cartResponse = await fetch("http://localhost:3000/cart", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (cartResponse.ok) {
         const cartItems = await cartResponse.json();
-        const cartItem = cartItems.find((item) => item.bookId === bookId);
+        const cartItem = (
+          Array.isArray(cartItems) ? cartItems : cartItems.items || []
+        ).find((item) => String(item.bookId) === String(book.id || bookId));
 
-        if (cartItem && cartItem.quantity) {
-          // Atualizar o input de quantidade se o livro estiver no carrinho
-          const quantityInput = document.querySelector("#qty-input");
-          if (quantityInput) {
-            quantityInput.value = cartItem.quantity;
-          }
+        if (
+          cartItem &&
+          cartItem.quantity &&
+          document.querySelector("#qty-input")
+        ) {
+          document.querySelector("#qty-input").value = cartItem.quantity;
         }
       }
     }
   } catch (error) {
-    alert("Erro ao carregar dados do livro.");
-    console.error(error);
+    console.error("Erro ao carregar dados do livro:", error);
   }
 }
 
@@ -226,7 +259,6 @@ function createBookCard(book) {
 function bindBookCardClicks() {
   document.querySelectorAll(".featured__card").forEach((card) => {
     card.addEventListener("click", (e) => {
-      // Se clicar em botão ou ícone não redireciona para não conflitar
       if (
         e.target.closest("button") ||
         e.target.closest(".featured__actions button")
@@ -382,7 +414,10 @@ if (themeButton) {
   });
 }
 
-/* =================== CART MODAL COM AUTENTICAÇÃO =================== */
+/*   parte carrinho e favoritos */
+
+// =================== CART MODAL COM AUTENTICAÇÃO ===================
+
 class CartModal {
   constructor() {
     this.cart = [];
@@ -420,8 +455,7 @@ class CartModal {
     this.loadCartFromServer(); // Recarregar sempre que abrir
   }
 
-  // Alteração: aceita quantidade opcional
-  async addToCart(bookCardOrId, quantity = 1) {
+  async addToCart(bookCard) {
     const token = Cookies.get("token");
     if (!token) {
       alert("Você precisa estar logado para adicionar ao carrinho.");
@@ -429,18 +463,7 @@ class CartModal {
       return;
     }
 
-    // Permite receber o ID diretamente, para uso na página de detalhes
-    let bookId, button;
-    if (typeof bookCardOrId === "string") {
-      // bookId foi passado diretamente
-      bookId = bookCardOrId;
-      button = document.querySelector("#addToCartButton");
-    } else {
-      // bookCard foi passado (card dos destaques)
-      bookId = bookCardOrId.dataset.bookId;
-      button = bookCardOrId.querySelector(".button");
-    }
-
+    const bookId = bookCard.dataset.bookId; // CORRETO AQUI
     if (!bookId) {
       alert("Erro: ID do livro não encontrado.");
       return;
@@ -453,7 +476,7 @@ class CartModal {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ bookId, quantity }),
+        body: JSON.stringify({ bookId, quantity: 1 }),
       });
 
       const data = await response.json();
@@ -469,16 +492,15 @@ class CartModal {
       }
 
       // Feedback visual
-      if (button) {
-        const originalText = button.textContent;
-        button.textContent = "Adicionado!";
-        button.style.backgroundColor = "#4CAF50";
+      const button = bookCard.querySelector("button.button");
+      const originalText = button.textContent;
+      button.textContent = "Adicionado!";
+      button.style.backgroundColor = "#4CAF50";
 
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.style.backgroundColor = "";
-        }, 2000);
-      }
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.backgroundColor = "";
+      }, 2000);
 
       // Recarregar carrinho
       this.loadCartFromServer();
@@ -486,6 +508,11 @@ class CartModal {
       console.error("Erro ao adicionar ao carrinho:", error);
       alert("Erro ao adicionar ao carrinho: " + error.message);
     }
+  }
+
+  async addToCartById(bookId, quantity = 1) {
+    const fakeCard = { dataset: { bookId } };
+    await this.addToCart(fakeCard);
   }
 
   async loadCartFromServer() {
@@ -515,7 +542,6 @@ class CartModal {
 
       const cartItems = await response.json();
 
-      // Transformar dados do servidor para o formato esperado pelo frontend
       this.cart = cartItems.map((item) => ({
         id: item.id,
         bookId: item.bookId,
@@ -535,53 +561,65 @@ class CartModal {
 
   renderCartItems() {
     this.cartItemsContainer.innerHTML = "";
-    let total = 0;
 
     if (this.cart.length === 0) {
       this.cartItemsContainer.innerHTML = `
-        <div class="cart-empty-message">
-          <p>Seu carrinho está vazio</p>
-          <p>Adicione alguns livros para começar!</p>
-        </div>
-      `;
-      this.cartTotalElement.textContent = "R$ 0,00";
+      <div class="cart-empty-message">
+        <p>Seu carrinho está vazio</p>
+        <p>Adicione alguns livros para começar!</p>
+      </div>
+    `;
+      this.cartTotalElement.textContent = "€ 0,00";
       return;
     }
 
-    this.cart.forEach((item, index) => {
-      const itemTotal = item.price * item.quantity;
-      total += itemTotal;
-
+    this.cart.forEach((item) => {
       const cartItemElement = document.createElement("div");
       cartItemElement.classList.add("cart-item");
+
       cartItemElement.innerHTML = `
-        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
-        <div class="cart-item-details">
-          <h3>${item.title}</h3>
-          <div class="cart-item-quantity">
-            <button onclick="cartModal.updateQuantity('${item.bookId}', ${
-        item.quantity - 1
-      })">-</button>
-            <input type="text" value="${item.quantity}" readonly>
-            <button onclick="cartModal.updateQuantity('${item.bookId}', ${
-        item.quantity + 1
-      })">+</button>
-          </div>
-          <span class="cart-item-price">R$ ${item.price.toFixed(2)}</span>
-          <span class="cart-item-total">Total: R$ ${itemTotal.toFixed(2)}</span>
+      <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+      <div class="cart-item-details">
+        <h3>${item.title}</h3>
+        <div class="cart-item-quantity">
+          <button onclick="cartModal.changeQuantity('${
+            item.bookId
+          }', -1)">-</button>
+          <input type="text" value="${item.quantity}" readonly>
+          <button onclick="cartModal.changeQuantity('${
+            item.bookId
+          }', 1)">+</button>
         </div>
-        <button class="cart-item-remove" onclick="cartModal.removeItem('${
-          item.bookId
-        }')">×</button>
-      `;
+        <span class="cart-item-price">€ ${item.price.toFixed(2)}</span>
+       
+      </div>
+      <button class="cart-item-remove" onclick="cartModal.removeItem('${
+        item.bookId
+      }')">×</button>
+    `;
 
       this.cartItemsContainer.appendChild(cartItemElement);
     });
 
-    this.cartTotalElement.textContent = `R$ ${total.toFixed(2)}`;
+    // Atualiza total após renderizar todos os itens
+    this.updateCartTotal();
+  }
+
+  updateCartTotal() {
+    let total = 0;
+    this.cart.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+
+    this.cartTotalElement.textContent = `€ ${total.toFixed(2)}`;
   }
 
   async updateQuantity(bookId, newQuantity) {
+    if (newQuantity < 1) {
+      this.removeItem(bookId);
+      return;
+    }
+
     const token = Cookies.get("token");
     if (!token) {
       alert("Você precisa estar logado.");
@@ -606,6 +644,19 @@ class CartModal {
     } catch (error) {
       console.error("Erro ao atualizar quantidade:", error);
       alert("Erro ao atualizar quantidade");
+    }
+  }
+
+  changeQuantity(bookId, delta) {
+    const item = this.cart.find((i) => i.bookId === bookId);
+    if (!item) return;
+
+    const newQuantity = item.quantity + delta;
+
+    if (newQuantity < 1) {
+      this.removeItem(bookId);
+    } else {
+      this.updateQuantity(bookId, newQuantity);
     }
   }
 
@@ -647,30 +698,11 @@ class CartModal {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:3000/cart/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao finalizar compra");
-      }
-
-      alert("Compra finalizada com sucesso!");
-      this.loadCartFromServer();
-      this.toggleCart();
-    } catch (error) {
-      console.error("Erro ao finalizar compra:", error);
-      alert("Erro ao finalizar compra: " + error.message);
-    }
+    window.location.href = "/Client/pagPagamento/pagamentoStripe.html";
   }
 }
 
-/* =================== FAVORITES MODAL COM AUTENTICAÇÃO =================== */
+// =================== FAVORITES MODAL COM AUTENTICAÇÃO ===================
 class FavoritesModal {
   constructor() {
     this.favorites = [];
@@ -824,7 +856,7 @@ class FavoritesModal {
       }" class="favorites-item-image">
         <div class="favorites-item-details">
           <h3>${item.title}</h3>
-          <p class="favorites-item-price">R$ ${item.price.toFixed(2)}</p>
+          <p class="favorites-item-price">€ ${item.price.toFixed(2)}</p>
         </div>
         <div class="favorites-item-actions">
           <button class="favorites-item-cart" onclick="favoritesModal.addToCartFromFavorites('${
@@ -909,14 +941,21 @@ class FavoritesModal {
   }
 }
 
-/* =================== BIND EVENTOS DOS BOTÕES NOS CARDS =================== */
+/* =================== INICIALIZAÇÃO =================== */
+const cartModal = new CartModal();
+const favoritesModal = new FavoritesModal();
+
+// =================== BIND EVENTOS DOS BOTÕES NOS CARDS ===================
 function bindFeaturedCardButtons() {
   // Botões de adicionar ao carrinho
   document.querySelectorAll(".featured__card .button").forEach((button) => {
     button.addEventListener("click", (e) => {
       const card = e.target.closest(".featured__card");
       if (card) {
-        cartModal.addToCart(card);
+        const bookId = card.dataset.bookId;
+        if (bookId) {
+          cartModal.addToCart(card);
+        }
       }
     });
   });
@@ -962,9 +1001,8 @@ if (addToCartBtn) {
     const bookId = urlParams.get("id");
 
     try {
-      // Usar o método existente do cartModal
-      await cartModal.addToCart(bookId, 1);
-      // Feedback visual
+      await cartModal.addToCartById(bookId, 1);
+
       const originalText = addToCartBtn.textContent;
       addToCartBtn.textContent = "Adicionado!";
       addToCartBtn.style.backgroundColor = "#4CAF50";
@@ -1030,9 +1068,7 @@ if (favoriteButton) {
   console.warn("Botão #favoriteButton não encontrado no DOM");
 }
 
-/* =================== CONTROLE DE QUANTIDADE =================== */
-
-/* =================== MONITORAR ESTADO DE LOGIN =================== */
+// =================== MONITORAR ESTADO DE LOGIN ===================
 function checkLoginStatus() {
   const token = Cookies.get("token");
   const userLink = document.getElementById("user-link");
@@ -1051,21 +1087,22 @@ function checkLoginStatus() {
   }
 }
 
-/* =================== INICIALIZAÇÃO =================== */
-const cartModal = new CartModal();
-const favoritesModal = new FavoritesModal();
+// =================== EVENTO GLOBAL PARA VERIFICAR LOGIN ===================
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("DOM carregado");
 
-/* =================== EVENTO GLOBAL PARA VERIFICAR LOGIN =================== */
-document.addEventListener("DOMContentLoaded", () => {
-  // Carregar detalhes do livro
-  loadBookDetails();
-
-  // Carregar livros em destaques
-  loadFeaturedBooks();
-
-  // Verificar status de login
+  // manter seus passos existentes
   checkLoginStatus();
 
-  // Verificar status de login periodicamente
-  setInterval(checkLoginStatus, 30000); // A cada 30 segundos
+  // <-- ADICIONE AQUI: carregar dados da página do livro se houver id
+  if (bookId) {
+    await loadBookDetails();
+  }
+
+  // carregar destaques e vincular eventos
+  await loadFeaturedBooks();
+  bindFeaturedCardButtons();
+
+  // Atualizar carrinho e favoritos periodicamente
+  setInterval(checkLoginStatus, 30000);
 });
