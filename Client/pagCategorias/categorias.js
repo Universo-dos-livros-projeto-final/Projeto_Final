@@ -200,7 +200,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       bookGridEl.innerHTML = `
         <div class="no-results">
           <p>Nenhum livro encontrado.</p>
-          ${currentSearch ? `<p>Pesquisa: "${decodeURIComponent(urlSearchRaw || currentSearch)}"</p>` : ''}
+          ${
+            currentSearch
+              ? `<p>Pesquisa: "${decodeURIComponent(
+                  urlSearchRaw || currentSearch
+                )}"</p>`
+              : ""
+          }
         </div>
       `;
       return;
@@ -240,27 +246,42 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isFavorite = backendFavorites.includes(book.id.toString());
 
       card.innerHTML = `
-        <div class="relative">
-          <img src="${imgUrl}" alt="${
+    <div class="relative">
+      <img src="${imgUrl}" alt="${
         book.title || "Livro"
       }" class="w-full h-72 object-cover rounded mb-2" />
-          <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button class="bg-white p-1 rounded-full shadow favorite-btn" title="Favoritar">
-              <i class="${
-                isFavorite
-                  ? "ri-heart-fill text-xl text-red-500"
-                  : "ri-heart-line text-xl"
-              }"></i>
-            </button>
-            <button class="bg-white p-1 rounded-full shadow cart-btn hover:text-green-600" title="Adicionar ao carrinho">
-              <i class="ri-shopping-cart-line text-xl"></i>
-            </button>
-          </div>
-        </div>
-        <h3 class="font-semibold text-black">${book.title || ""}</h3>
-        <p class="text-sm text-gray-600">${book.author || ""}</p>
-        <p class="text-indigo-600 font-bold">${price.toFixed(2)}€</p>
-      `;
+      <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button class="bg-white p-1 rounded-full shadow favorite-btn" title="Favoritar">
+          <i class="${
+            isFavorite
+              ? "ri-heart-fill text-xl text-red-500"
+              : "ri-heart-line text-xl"
+          }"></i>
+        </button>
+        <button class="bg-white p-1 rounded-full shadow cart-btn hover:text-green-600" title="Adicionar ao carrinho">
+          <i class="ri-shopping-cart-line text-xl"></i>
+        </button>
+      </div>
+    </div>
+    <h3 class="font-semibold text-black">${book.title || ""}</h3>
+    <p class="text-sm text-gray-600">${book.author || ""}</p>
+    <p class="text-indigo-600 font-bold">${price.toFixed(2)}€</p>
+  `;
+
+      // === evento clique no card para abrir página do livro ===
+      card.addEventListener("click", (e) => {
+        if (
+          e.target.closest("button") ||
+          e.target.closest(".favorite-btn") ||
+          e.target.closest(".cart-btn")
+        ) {
+          return; // não redireciona se clicou nos botões
+        }
+        const bookId = card.dataset.bookId;
+        if (bookId) {
+          window.location.href = `/Client/pagLivro/pagLivro.html?id=${bookId}`;
+        }
+      });
 
       // === evento carrinho ===
       card.querySelector(".cart-btn").addEventListener("click", (e) => {
@@ -336,7 +357,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       search: currentSearch,
       author: selectedAuthor,
       price: selectedPrice,
-      categories: selectedCategories
+      categories: selectedCategories,
     });
 
     const filtered = books.filter((book) => {
@@ -450,7 +471,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Limpar a URL também
     const newUrl = window.location.pathname;
-    window.history.replaceState({}, '', newUrl);
+    window.history.replaceState({}, "", newUrl);
 
     applyFilters();
   });
@@ -480,13 +501,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const categoriesFromUrl = decodeURIComponent(urlCategory)
       .split(",")
       .map((c) => c.trim());
-    
+
     categoriesFromUrl.forEach((catValue) => {
       // Procurar checkbox correspondente (case-insensitive)
       const catCheckbox = Array.from(
         document.querySelectorAll('#categoryList input[type="checkbox"]')
-      ).find(cb => normalize(cb.value) === normalize(catValue));
-      
+      ).find((cb) => normalize(cb.value) === normalize(catValue));
+
       if (catCheckbox) {
         catCheckbox.checked = true;
         console.log("Categoria da URL selecionada:", catValue);
@@ -502,16 +523,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Função para pesquisa de outras páginas (adicione esta função no final)
 function handleSearchFromOtherPages() {
   const searchInputs = document.querySelectorAll(".search__input");
-  
-  searchInputs.forEach(input => {
-    if (input.closest('.search__form')) { // Para inputs em outras páginas
+
+  searchInputs.forEach((input) => {
+    if (input.closest(".search__form")) {
+      // Para inputs em outras páginas
       input.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
           const query = encodeURIComponent(input.value.trim());
           if (query) {
             // Verifica se já estamos na página de categorias
-            if (window.location.pathname.includes('categorias.html')) {
+            if (window.location.pathname.includes("categorias.html")) {
               // Se já estiver na página, apenas atualiza a pesquisa local
               currentSearch = input.value.trim().toLowerCase();
               applyFilters();
