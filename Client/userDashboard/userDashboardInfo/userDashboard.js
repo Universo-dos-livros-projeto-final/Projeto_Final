@@ -450,6 +450,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // logout
+
   document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     e.preventDefault();
 
