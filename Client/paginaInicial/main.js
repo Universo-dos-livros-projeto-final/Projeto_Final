@@ -642,7 +642,7 @@ class CartModal {
       return;
     }
 
-    const bookId = bookCard.dataset.bookId; // CORRETO AQUI
+    const bookId = bookCard.dataset.bookId;
     if (!bookId) {
       alert("Erro: ID do livro não encontrado.");
       return;
