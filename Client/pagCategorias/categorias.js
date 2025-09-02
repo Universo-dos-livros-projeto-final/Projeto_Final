@@ -1,3 +1,7 @@
+/* ======= variáveis globais ======= */
+  let books = [];
+  let currentSearch = "";
+
 /*=============== SEARCH ===============*/
 // Mostrar o campo de busca ao clicar no ícone
 const searchButton = document.getElementById("search-button"),
@@ -118,9 +122,6 @@ sr.reveal(".discount__images", { origin: "right" });
 
 /*=============== BOOKS FETCH & RENDER ===============*/
 document.addEventListener("DOMContentLoaded", async () => {
-  /* ======= variáveis globais ======= */
-  let books = [];
-  let currentSearch = "";
 
   // ler ?search=... da URL (se veio de outra página)
   const urlParams = new URLSearchParams(window.location.search);
@@ -393,12 +394,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // limpa e insere
     authorFilterEl.innerHTML = '<option value="">Todos</option>';
     authors.forEach((authNorm) => {
-      // guardar o valor original exibido mantendo normalização para comparação
-      // buscamos o primeiro livro com esse autor para pegar o nome original
       const original =
         books.find((b) => normalize(b.author) === authNorm)?.author || authNorm;
       const opt = document.createElement("option");
-      opt.value = original; // value usado é o original (será normalizado na comparação)
+      opt.value = original; 
       opt.textContent = original;
       authorFilterEl.appendChild(opt);
     });
@@ -484,18 +483,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadMoreCategoriesBtn.addEventListener("click", renderCategories);
 
   /* ======= inicialização real ======= */
-  // 1) renderiza as primeiras categorias
+  // renderiza as primeiras categorias
   renderCategories();
 
-  // 2) busca os livros e preenche o array global
+  // busca os livros e preenche o array global
   console.log("Carregando livros...");
   books = await fetchBooks();
   console.log(`${books.length} livros carregados`);
 
-  // 3) popula autores
+  // popula autores
   populateAuthors();
 
-  // 4) Processar parâmetros da URL para categorias
+  // Processar parâmetros da URL para categorias
   const urlCategory = urlParams.get("category");
   if (urlCategory) {
     const categoriesFromUrl = decodeURIComponent(urlCategory)
@@ -503,7 +502,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       .map((c) => c.trim());
 
     categoriesFromUrl.forEach((catValue) => {
-      // Procurar checkbox correspondente (case-insensitive)
+      // Procurar checkbox correspondente 
       const catCheckbox = Array.from(
         document.querySelectorAll('#categoryList input[type="checkbox"]')
       ).find((cb) => normalize(cb.value) === normalize(catValue));
@@ -515,24 +514,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // 5) Aplicar todos os filtros (incluindo pesquisa da URL)
+  //  Aplicar todos os filtros 
   console.log("Aplicando filtros iniciais...");
   applyFilters();
 });
 
-// Função para pesquisa de outras páginas (adicione esta função no final)
+// Função para pesquisa de outras páginas
 function handleSearchFromOtherPages() {
   const searchInputs = document.querySelectorAll(".search__input");
 
   searchInputs.forEach((input) => {
     if (input.closest(".search__form")) {
-      // Para inputs em outras páginas
       input.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
           const query = encodeURIComponent(input.value.trim());
           if (query) {
-            // Verifica se já estamos na página de categorias
             if (window.location.pathname.includes("categorias.html")) {
               // Se já estiver na página, apenas atualiza a pesquisa local
               currentSearch = input.value.trim().toLowerCase();
@@ -548,12 +545,11 @@ function handleSearchFromOtherPages() {
   });
 }
 
-// Chama a função quando o DOM estiver carregado
 document.addEventListener("DOMContentLoaded", handleSearchFromOtherPages);
 /*   parte carrinho e favoritos */
 
 // =================== CART MODAL COM AUTENTICAÇÃO ===================
-
+  
 class CartModal {
   constructor() {
     this.cart = [];
@@ -1096,43 +1092,4 @@ function checkLoginStatus() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // 1) buscar livros
-  books = await fetchBooks();
 
-  // 2) popular autores
-  populateAuthors();
-
-  // 3) renderizar categorias
-  renderCategories();
-
-  // 4) marcar categorias da URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlSearch = urlParams.get("search");
-  if (urlSearch) {
-    currentSearch = decodeURIComponent(urlSearch).trim().toLowerCase();
-    if (searchInput) searchInput.value = decodeURIComponent(urlSearch);
-  }
-  const urlCategory = urlParams.get("category");
-  if (urlCategory) {
-    const categoriesFromUrl = decodeURIComponent(urlCategory)
-      .split(",")
-      .map((c) => c.trim().toLowerCase());
-    categoriesFromUrl.forEach((catValue) => {
-      const catCheckbox = document.querySelector(
-        `#categoryList input[value="${catValue}"]`
-      );
-      if (catCheckbox) catCheckbox.checked = true;
-    });
-  }
-
-  // 5) **renderizar livros já filtrados**
-  applyFilters(); // Isso vai chamar renderBooks internamente
-
-  // 6) atualizar favoritos e carrinho
-  favoritesModal.updateFavoriteIcons();
-  checkLoginStatus();
-
-  // 7) verificar login periodicamente
-  setInterval(checkLoginStatus, 30000);
-});
