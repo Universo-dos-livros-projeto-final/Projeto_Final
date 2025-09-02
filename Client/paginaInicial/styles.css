@@ -151,7 +151,7 @@ body.dark-theme {
 }
 
 .main {
-  overflow: hidden; /* For animation ScrollReveal */
+  overflow: hidden; /* Para animation ScrollReveal */
 }
 
 /*=============== HEADER & NAV ===============*/
@@ -198,7 +198,7 @@ body.dark-theme {
   font-size: 1.25rem;
 }
 
-/* Navigation for mobile devices */
+/* Navegacao para mobile devices */
 @media screen and (max-width: 1150px) {
   .nav__menu {
     position: fixed;
@@ -413,7 +413,7 @@ body.dark-theme {
 
 .featured__img {
   width: 150px;
-  height: 200px;
+  height: 220px;
   margin: 0 auto 0.75rem;
   object-fit: cover;
 }
@@ -509,7 +509,7 @@ body.dark-theme {
 .popular__card img,
 .new__card img {
   width: 150px;
-  height: 200px;
+  height: 220px;
   margin: 0 auto 0.75rem;
   object-fit: cover;
 }

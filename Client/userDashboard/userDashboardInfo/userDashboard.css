@@ -10,7 +10,7 @@
 :root {
   /* ===== Colors ===== */
   --primary-color: #d7e2f7;
-  --panel-color: #fff;
+  --panel-color: #ebeeff;
   --text-color: #000;
   --black-light-color: #707070;
   --border-color: #e6e5e5;
@@ -126,7 +126,7 @@ nav .menu-itens {
 }
 
 .menu-itens li a .link-name {
-  font-size: 18px;
+  font-size: 19zpx;
   font-weight: 400;
   color: var(--black-light-color);
   transition: var(--tran-05);

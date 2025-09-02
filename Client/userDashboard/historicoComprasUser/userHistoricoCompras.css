@@ -10,9 +10,10 @@
 :root{
     /* ===== Colors ===== */
     --primary-color: #d7e2f7;
-    --panel-color: #FFF;
+    --panel-color: #ebeeff;
     --text-color: #000;
     --black-light-color: #707070;
+    --black-light-dark-color: #555555;
     --border-color: #e6e5e5;
     --toggle-color: #DDD;
     --box1-color: #4DA3FF;
@@ -41,6 +42,7 @@ body.dark{
     --panel-color: #0b2245;
     --text-color: #FFF;
     --black-light-color: #8d8d8d;
+    --black-light-dark-color: #555555;
     --border-color: #e6e5e5;
     --toggle-color: #DDD;
     --box1-color: #4DA3FF;
@@ -105,15 +107,12 @@ nav.close  li a .link-name {
 }
 
 nav .menu-itens{
-    
     margin-top: 50px;
     height: calc(100% - 90px);
     display:flex;
     flex-direction: column;
     justify-content: space-between;
 }
-
-
 
 .menu-itens li{
     list-style: none;
@@ -138,14 +137,11 @@ nav .menu-itens{
 
 
 .menu-itens li a .link-name{
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 400;
-    color:var(--black-light-color);
+    color:var(--black-light-dark-color-);
     transition: var(--tran-05) ;
 }
-
-
-
 
 .nav-links li a:hover:before{
     position: absolute;
@@ -154,15 +150,13 @@ nav .menu-itens{
     height: 5px;
     width: 5px;
     border-radius:50%;
-    background-color: var(--primary-color);
-
-}
-
-body.dark li a:hover:before{
     background-color: var(--text-color);
 }
 
 
+body.dark li a:hover:before{
+    background-color: var(--text-color);
+}
 
 
 .nav-itens li a:hover i,
@@ -240,10 +234,7 @@ body.dark .switch::before{
 nav.close ~ .principal{
     left:73px;
     width: calc(100% - 73px);
-
 }
-
-
 
 .principal .top{
     position: fixed;
@@ -423,6 +414,8 @@ nav.close ~ .principal .top{
     color: var(--text-color);
 }
 
+
+
 @media (max-width:1000) {
     nav{
         width: 73px;
@@ -550,6 +543,12 @@ nav.close ~ .principal .top{
   border-radius: 12px;
   padding: 12px 16px;
   gap: 12px; 
+}
+
+/* Data no card */
+.history-card .date {
+  font-size: 0.75rem;
+  color: var(--black-light-color); 
 }
 
 .history-card   .image-wrapper {
