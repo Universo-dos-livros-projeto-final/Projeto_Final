@@ -283,6 +283,7 @@ async function loadNewBooks() {
   }
 }
 
+
 /*=============== CARREGAR LIVROS - HOME  ===============*/
 
 async function loadHomeBooks() {
