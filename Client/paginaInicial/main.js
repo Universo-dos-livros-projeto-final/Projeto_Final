@@ -143,23 +143,25 @@ function createBookCard(book, cardClass = "featured__card") {
     book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
 
   return `
-    <article class="${cardClass} swiper-slide" data-book-id="${book.id}">
-      <a href="../pagLivro/pagLivro.html?id=${book.id}" class="${prefix}__link">
-        <img src="${bookImage}" alt="${bookTitle}" class="${prefix}__img" />
-        <h3 class="${prefix}__title">${bookTitle}</h3>
-      </a>
-      <div class="${prefix}__prices">
-        <span class="${prefix}__discount">${bookPrice
+      <article class="${cardClass} swiper-slide" data-book-id="${book.id}">
+        <a href="../pagLivro/pagLivro.html?id=${
+          book.id
+        }" class="${prefix}__link">
+          <img src="${bookImage}" alt="${bookTitle}" class="${prefix}__img" />
+          <h3 class="${prefix}__title">${bookTitle}</h3>
+        </a>
+        <div class="${prefix}__prices">
+          <span class="${prefix}__discount">${bookPrice
     .toFixed(2)
     .replace(".", ",")}€</span>
-      </div>
-      <button type="button" class="button">Adicionar ao Carrinho</button>
-      <div class="${prefix}__actions">
-        <button><i class="ri-search-line"></i></button>
-        <button><i class="ri-heart-line"></i></button>
-      </div>  
-    </article>
-  `;
+        </div>
+        <button type="button" class="button">Adicionar ao Carrinho</button>
+        <div class="${prefix}__actions">
+          <button><i class="ri-search-line"></i></button>
+          <button><i class="ri-heart-line"></i></button>
+        </div>  
+      </article>
+    `;
 }
 
 /*=============== FUNÇÃO PARA REDIRECIONAR PARA PAGINA DO LIVRO ===============*/
@@ -186,18 +188,25 @@ function bindBookCardClicks() {
 async function loadFeaturedBooks() {
   try {
     const booksArray = await fetchBooks();
+
+    // 🔎 Filtrar só os livros de destaque
+    const featuredBooks = booksArray.filter(
+      (book) =>
+        book.genre &&
+        typeof book.genre === "string" &&
+        book.genre.toLowerCase() === "destaque"
+    );
+
     const container = document.getElementById("featured-swiper-wrapper");
-    if (!container) {
-      console.error("Container 'featured-swiper-wrapper' não encontrado");
-      return;
-    }
+    if (!container) return;
     container.innerHTML = "";
-    if (booksArray.length === 0) {
-      container.innerHTML = "<p>Nenhum livro encontrado.</p>";
+
+    if (featuredBooks.length === 0) {
+      container.innerHTML = "<p>Nenhum destaque encontrado.</p>";
       return;
     }
 
-    container.innerHTML = booksArray
+    container.innerHTML = featuredBooks
       .map((book) => createBookCard(book, "featured__card"))
       .join("");
 
@@ -206,11 +215,6 @@ async function loadFeaturedBooks() {
     bindBookCardClicks();
   } catch (error) {
     console.error("Erro ao carregar livros em destaques:", error);
-    const container = document.getElementById("featured-swiper-wrapper");
-    if (container) {
-      container.innerHTML =
-        "<p>Erro ao carregar livros. Tente novamente mais tarde.</p>";
-    }
   }
 }
 
@@ -218,18 +222,25 @@ async function loadFeaturedBooks() {
 async function loadPopularBooks() {
   try {
     const booksArray = await fetchBooks();
+
+    // 🔎 Filtrar só os populares
+    const popularBooks = booksArray.filter(
+      (book) =>
+        book.genre &&
+        typeof book.genre === "string" &&
+        book.genre.toLowerCase() === "popular"
+    );
+
     const container = document.getElementById("popular-swiper-wrapper");
-    if (!container) {
-      console.error("Container 'popular-swiper-wrapper' não encontrado");
-      return;
-    }
+    if (!container) return;
     container.innerHTML = "";
-    if (booksArray.length === 0) {
-      container.innerHTML = "<p>Nenhum livro encontrado.</p>";
+
+    if (popularBooks.length === 0) {
+      container.innerHTML = "<p>Nenhum livro popular encontrado.</p>";
       return;
     }
 
-    container.innerHTML = booksArray
+    container.innerHTML = popularBooks
       .map((book) => createBookCard(book, "popular__card"))
       .join("");
 
@@ -238,11 +249,6 @@ async function loadPopularBooks() {
     bindBookCardClicks();
   } catch (error) {
     console.error("Erro ao carregar livros populares:", error);
-    const container = document.getElementById("popular-swiper-wrapper");
-    if (container) {
-      container.innerHTML =
-        "<p>Erro ao carregar livros. Tente novamente mais tarde.</p>";
-    }
   }
 }
 
@@ -250,18 +256,22 @@ async function loadPopularBooks() {
 async function loadNewBooks() {
   try {
     const booksArray = await fetchBooks();
+
+    // 🔎 Ordenar por ano de publicação (descendente = mais novos primeiro)
+    const newBooks = booksArray
+      .filter((book) => book.publicationYear) // só livros que têm ano definido
+      .sort((a, b) => b.publicationYear - a.publicationYear);
+
     const container = document.getElementById("new-swiper-wrapper");
-    if (!container) {
-      console.error("Container 'new-swiper-wrapper' não encontrado");
-      return;
-    }
+    if (!container) return;
     container.innerHTML = "";
-    if (booksArray.length === 0) {
-      container.innerHTML = "<p>Nenhum livro encontrado.</p>";
+
+    if (newBooks.length === 0) {
+      container.innerHTML = "<p>Nenhum livro novo encontrado.</p>";
       return;
     }
 
-    container.innerHTML = booksArray
+    container.innerHTML = newBooks
       .map((book) => createBookCard(book, "new__card"))
       .join("");
 
@@ -270,11 +280,6 @@ async function loadNewBooks() {
     bindBookCardClicks();
   } catch (error) {
     console.error("Erro ao carregar novos livros:", error);
-    const container = document.getElementById("new-swiper-wrapper");
-    if (container) {
-      container.innerHTML =
-        "<p>Erro ao carregar livros. Tente novamente mais tarde.</p>";
-    }
   }
 }
 
@@ -295,40 +300,40 @@ async function loadHomeBooks() {
       const [firstBook, secondBook, thirdBook] = books;
 
       const firstBookHTML = `
-            <article class="home__article swiper-slide">
-              <img src="${
-                firstBook.bookphoto ||
-                firstBook.image ||
-                "../imagens/imagem-padrao.jpg"
-              }" alt="${
+              <article class="home__article swiper-slide">
+                <img src="${
+                  firstBook.bookphoto ||
+                  firstBook.image ||
+                  "../imagens/imagem-padrao.jpg"
+                }" alt="${
         firstBook.title || "Livro sem título"
       }" class="home__img" />
-            </article>
-          `;
+              </article>
+            `;
 
       const secondBookHTML = `
-            <article class="home__article swiper-slide home__article--center">
-              <img src="${
-                secondBook.bookphoto ||
-                secondBook.image ||
-                "../imagens/imagem-padrao.jpg"
-              }" alt="${
+              <article class="home__article swiper-slide home__article--center">
+                <img src="${
+                  secondBook.bookphoto ||
+                  secondBook.image ||
+                  "../imagens/imagem-padrao.jpg"
+                }" alt="${
         secondBook.title || "Livro sem título"
       }" class="home__img" />
-            </article>
-          `;
+              </article>
+            `;
 
       const thirdBookHTML = `
-            <article class="home__article swiper-slide">
-              <img src="${
-                thirdBook.bookphoto ||
-                thirdBook.image ||
-                "../imagens/imagem-padrao.jpg"
-              }" alt="${
+              <article class="home__article swiper-slide">
+                <img src="${
+                  thirdBook.bookphoto ||
+                  thirdBook.image ||
+                  "../imagens/imagem-padrao.jpg"
+                }" alt="${
         thirdBook.title || "Livro sem título"
       }" class="home__img" />
-            </article>
-          `;
+              </article>
+            `;
 
       container.insertAdjacentHTML("beforeend", firstBookHTML);
       container.insertAdjacentHTML("beforeend", secondBookHTML);
@@ -343,14 +348,14 @@ async function loadHomeBooks() {
 
       defaultBooks.forEach((book, index) => {
         const bookHTML = `
-              <article class="home__article swiper-slide ${
-                index === 1 ? "home__article--center" : ""
-              }">
-                <img src="${book.image}" alt="${
+                <article class="home__article swiper-slide ${
+                  index === 1 ? "home__article--center" : ""
+                }">
+                  <img src="${book.image}" alt="${
           book.title
         }" class="home__img" />
-              </article>
-            `;
+                </article>
+              `;
         container.insertAdjacentHTML("beforeend", bookHTML);
       });
     }
