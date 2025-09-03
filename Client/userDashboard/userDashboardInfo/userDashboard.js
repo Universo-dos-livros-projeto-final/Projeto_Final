@@ -1,7 +1,7 @@
-const body = document.querySelector("body"),
-  modeToggle = body.querySelector(".mode-toggle");
-sidebar = body.querySelector("nav");
-sidebarToggle = body.querySelector(".sidebar-toggle");
+const body = document.querySelector("body");
+const modeToggle = body.querySelector(".mode-toggle");
+const sidebar = body.querySelector("nav");
+const sidebarToggle = body.querySelector(".sidebar-toggle");
 
 const token = Cookies.get("token");
 
@@ -10,35 +10,59 @@ if (!token) {
   alert("Você precisa estar logado.");
   window.location.href = "/paginaLogin/paginaLogin.html";
 }
+/* ========= DARK MODE ========= */
+document.addEventListener('DOMContentLoaded', () => {
+  const bodyEl = document.body;
+  const modeBtn = document.querySelector('.mode-toggle');
+  const icon = modeBtn?.querySelector('i');
 
-// Dark mode e sidebar (mantém localStorage para preferências da UI)
-let getMode = localStorage.getItem("mode");
-if (getMode && getMode === "dark") {
-  body.classList.toggle("dark");
-}
+  const DARK_CLASS_1 = 'dark-theme';
+  const DARK_CLASS_2 = 'dark';
+  const ICON_SUN  = 'ri-sun-line';
+  const ICON_MOON = 'ri-moon-line';
 
-let getStatus = localStorage.getItem("status");
-if (getStatus && getStatus === "close") {
-  sidebar.classList.toggle("close");
-}
+  const savedTheme = localStorage.getItem('selected-theme');
+  const savedIcon  = localStorage.getItem('selected-icon');
 
-modeToggle.addEventListener("click", () => {
-  body.classList.toggle("dark");
-  if (body.classList.contains("dark")) {
-    localStorage.setItem("mode", "dark");
-  } else {
-    localStorage.setItem("mode", "light");
+  const isSavedDark = savedTheme === 'dark';
+  bodyEl.classList.toggle(DARK_CLASS_1, isSavedDark);
+  bodyEl.classList.toggle(DARK_CLASS_2, isSavedDark);
+
+  if (icon) {
+    icon.classList.remove(ICON_SUN, ICON_MOON);
+    icon.classList.add(savedIcon || ICON_MOON);
+  }
+
+  modeBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const willBeDark = !bodyEl.classList.contains(DARK_CLASS_1);
+    bodyEl.classList.toggle(DARK_CLASS_1, willBeDark);
+    bodyEl.classList.toggle(DARK_CLASS_2, willBeDark);
+
+    if (icon) {
+      icon.classList.toggle(ICON_SUN, willBeDark);
+      icon.classList.toggle(ICON_MOON, !willBeDark);
+    }
+
+    localStorage.setItem('selected-theme', willBeDark ? 'dark' : 'light');
+    localStorage.setItem('selected-icon', willBeDark ? ICON_SUN : ICON_MOON);
+  });
+
+  /* ========= SIDEBAR ========= */
+  const sidebar = document.querySelector('nav'); // <-- voltou para nav normal
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+
+  if (sidebar && sidebarToggle) {
+    const savedStatus = localStorage.getItem('status'); // "open" | "close"
+    sidebar.classList.toggle('close', savedStatus === 'close');
+
+    sidebarToggle.addEventListener('click', () => {
+      const isClosed = sidebar.classList.toggle('close');
+      localStorage.setItem('status', isClosed ? 'close' : 'open');
+    });
   }
 });
 
-sidebarToggle.addEventListener("click", () => {
-  sidebar.classList.toggle("close");
-  if (sidebar.classList.contains("close")) {
-    localStorage.setItem("status", "close");
-  } else {
-    localStorage.setItem("status", "open");
-  }
-});
 
 // ======= PERFIL DO USUÁRIO =======
 document.addEventListener("DOMContentLoaded", async () => {
@@ -325,18 +349,25 @@ function renderizarEnderecos() {
       abrirModal();
     });
 
-    // === Excluir ===
-    div.querySelector(".btnExcluir").addEventListener("click", async () => {
-      if (confirm("Deseja excluir este endereço?")) {
-        try {
-          await excluirEndereco(end.id);
-          await loadEnderecos();
-          alert("Endereço excluído com sucesso!");
-        } catch (error) {
-          alert("Erro ao excluir endereço");
-        }
+  // === Excluir ===
+div.querySelector(".btnExcluir").addEventListener("click", async () => {
+  if (confirm("Deseja excluir este endereço?")) {
+    try {
+      await excluirEndereco(end.id);
+
+      const enderecoSalvo = JSON.parse(localStorage.getItem("enderecoSelecionado"));
+      if (enderecoSalvo && enderecoSalvo.id === end.id) {
+        localStorage.removeItem("enderecoSelecionado");
       }
-    });
+
+      await loadEnderecos();
+      alert("Endereço excluído com sucesso!");
+    } catch (error) {
+      alert("Erro ao excluir endereço");
+    }
+  }
+});
+
 
     // === Usar no Pagamento ===
     div.querySelector(".btnUsarPagamento").addEventListener("click", () => {

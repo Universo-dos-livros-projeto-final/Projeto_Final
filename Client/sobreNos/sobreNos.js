@@ -28,6 +28,7 @@ if (searchInput) {
     }
   });
 }
+
 /*=============== User Page ===============*/
 document.addEventListener("DOMContentLoaded", () => {
   const userLink = document.getElementById("user-link");
@@ -70,240 +71,535 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ========== Stripe Elements ==========
-const stripe = Stripe(
-  "pk_test_51RiwxXRpegXRgAZ8mmpsxJTbCjoxZnsA9gdLBdsmF9GR27Q09Zp5F63PqASkoqtdVSTJ7vWIt6lVgCNDeyZ4OIgE00CRYBFHuT"
-);
-const elements = stripe.elements();
-const card = elements.create("card", {
-  style: {
-    base: {
-      fontSize: "16px",
-      color: "#424770",
-      "::placeholder": { color: "#aab7c4" },
-    },
-    invalid: { color: "#9e2146" },
-  },
-});
-card.mount("#card-element");
-
-// ========== Seletores ==========
-const form = document.getElementById("payment-form");
-const mensagem = document.getElementById("mensagem");
-const submitButton = document.getElementById("submit");
-const productList = document.getElementById("product-list");
-const subtotalEl = document.getElementById("subtotal");
-const totalEl = document.getElementById("total");
-
-// ========== Prazo de entrega ==========
-function atualizarPrazoEntrega() {
-  let prazo = document.getElementById("prazo-entrega");
-  if (!prazo) {
-    prazo = document.createElement("p");
-    prazo.id = "prazo-entrega";
-    prazo.className = "text-sm text-green-600 mt-2 font-medium";
-    productList.parentElement.appendChild(prazo);
+/*=============== ADD SHADOW HEADER ===============*/
+const shadowHeader = () => {
+  const header = document.getElementById("header");
+  if (header) {
+    window.scrollY >= 50
+      ? header.classList.add("shadow-header")
+      : header.classList.remove("shadow-header");
   }
-  prazo.textContent = "Entrega prevista: em até 7 dias úteis";
+};
+window.addEventListener("scroll", shadowHeader);
+
+/*=============== HOME SWIPER ===============*/
+let swiperHome = null;
+const homeSwiper = document.querySelector(".home__swiper");
+if (homeSwiper) {
+  swiperHome = new Swiper(".home__swiper", {
+    loop: true,
+    spaceBetween: -24,
+    grabCursor: true,
+    slidesPerView: "auto",
+    centeredSlides: "auto",
+    autoplay: { delay: 3000, disableOnInteraction: false },
+    breakpoints: { 1220: { spaceBetween: -32 } },
+  });
 }
 
-// ========== Atualiza Resumo do Pedido ==========
-async function atualizarCarrinho() {
-  const token = Cookies.get("token");
-  if (!token) return;
+/*===============  SWIPER ===============*/
+let swiperFeatured = null;
+let swiperNew = null;
 
-  try {
-    const res = await fetch("http://localhost:3000/cart", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) throw new Error("Erro ao obter carrinho");
-
-    const cartItems = await res.json();
-    productList.innerHTML = "";
-    let total = 0;
-
-    cartItems.forEach((item) => {
-      const preco = parseFloat(item.book.price);
-      const qtd = item.quantity;
-      const subtotal = preco * qtd;
-      total += subtotal;
-
-      const produto = document.createElement("div");
-      produto.className =
-        "flex items-center space-x-4 p-4 bg-container rounded-lg";
-      produto.innerHTML = `
-      <div class="w-16 h-16 bg-first/10 rounded-lg flex items-center justify-center">
-        <img src="${item.book.bookphoto}" alt="${
-        item.book.title
-      }" class="w-full h-full object-contain rounded" />
-      </div>
-      <div class="flex-1">
-        <h4 class="font-medium text-title">${item.book.title}</h4>
-        <p class="text-sm text-text line-clamp-2">${item.book.description}</p>
-        <div class="flex items-center justify-between mt-2">
-          <span class="text-sm text-text">Qtd: ${qtd}</span>
-          <span class="font-semibold text-title">€${subtotal.toFixed(2)}</span>
-        </div>
-      </div>
-    `;
-      productList.appendChild(produto);
-    });
-
-    subtotalEl.textContent = `€${total.toFixed(2)}`;
-    totalEl.textContent = `€${total.toFixed(2)}`;
-    submitButton.textContent = `Pagar €${total.toFixed(2)}`;
-
-    atualizarPrazoEntrega(); // adiciona o prazo de entrega
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// ========== Criação do Payment Intent ==========
-async function criarIntentDePagamento() {
+/*=============== FETCH LIVROS  ===============*/
+async function fetchBooks() {
   try {
     const token = Cookies.get("token");
-    if (!token) throw new Error("Usuário não autenticado");
-
-    const resCart = await fetch("http://localhost:3000/cart", {
-      headers: { Authorization: `Bearer ${token}` },
+    const headers = {};
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    const response = await fetch("http://localhost:3000/books", {
+      headers,
     });
-    const cartItems = await resCart.json();
-    if (cartItems.length === 0) throw new Error("Carrinho está vazio");
-
-    let total = 0;
-    cartItems.forEach(
-      (item) => (total += parseFloat(item.book.price) * item.quantity)
-    );
-
-    const response = await fetch("http://localhost:3000/createIntent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        total: Math.round(total * 100),
-        nome: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok)
-      throw new Error(data.error || "Erro ao criar Payment Intent");
-
-    return { paymentIntentSecret: data.clientSecret, error: null };
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    const responseText = await response.text();
+    let books;
+    try {
+      books = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error("Erro ao fazer parse do JSON:", parseError);
+      throw new Error("Resposta não é um JSON válido");
+    }
+    if (Array.isArray(books)) return books;
+    if (books && Array.isArray(books.data)) return books.data;
+    if (books && Array.isArray(books.books)) return books.books;
+    throw new Error("Formato inválido de resposta - esperado array de livros");
   } catch (error) {
-    return { paymentIntentSecret: null, error: error.message };
+    console.error("Erro ao carregar livros do backend:", error);
+    throw error;
   }
 }
 
-// ========== Submit Handler ==========
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+/*=============== FUNÇÃO PARA CRIAR CARD DE LIVRO ===============*/
+function createBookCard(book, cardClass = "featured__card") {
+  const prefix = cardClass.split("__")[0]; //
 
-  submitButton.disabled = true;
-  submitButton.innerHTML = `Processando...`;
+  const bookPrice = book.price ? parseFloat(book.price) : 0;
+  const bookTitle = book.title || "Título não disponível";
+  const bookImage =
+    book.bookphoto || book.image || "../imagens/imagem-padrao.jpg";
 
+  return `
+      <article class="${cardClass} swiper-slide" data-book-id="${book.id}">
+        <a href="../pagLivro/pagLivro.html?id=${
+          book.id
+        }" class="${prefix}__link">
+          <img src="${bookImage}" alt="${bookTitle}" class="${prefix}__img" />
+          <h3 class="${prefix}__title">${bookTitle}</h3>
+        </a>
+        <div class="${prefix}__prices">
+          <span class="${prefix}__discount">${bookPrice
+    .toFixed(2)
+    .replace(".", ",")}€</span>
+        </div>
+        <button type="button" class="button">Adicionar ao Carrinho</button>
+        <div class="${prefix}__actions">
+          <button><i class="ri-search-line"></i></button>
+          <button><i class="ri-heart-line"></i></button>
+        </div>  
+      </article>
+    `;
+}
+
+/*=============== FUNÇÃO PARA REDIRECIONAR PARA PAGINA DO LIVRO ===============*/
+
+function bindBookCardClicks() {
+  document.querySelectorAll(".featured__card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      // Se clicar em botão ou ícone, evite redirecionar para não conflitar
+      if (
+        e.target.closest("button") ||
+        e.target.closest(".featured__actions button")
+      ) {
+        return; // não redirecionar pois já tem ação específica
+      }
+      const bookId = card.dataset.bookId;
+      if (bookId) {
+        window.location.href = `/Client/pagLivro/pagLivro.html?id=${bookId}`;
+      }
+    });
+  });
+}
+
+/*=============== CARREGAR LIVROS - DESTAQUES ===============*/
+async function loadFeaturedBooks() {
   try {
-    const { paymentIntentSecret, error: intentError } =
-      await criarIntentDePagamento();
-    if (intentError) throw new Error(intentError);
-    if (!paymentIntentSecret)
-      throw new Error("Erro: clientSecret não foi retornado");
+    const booksArray = await fetchBooks();
 
-    const result = await stripe.confirmCardPayment(paymentIntentSecret, {
-      payment_method: {
-        card,
-        billing_details: {
-          name: document.getElementById("name").value,
-          email: document.getElementById("email").value,
+    // 🔎 Filtrar só os livros de destaque
+    const featuredBooks = booksArray.filter(
+      (book) =>
+        book.genre &&
+        typeof book.genre === "string" &&
+        book.genre.toLowerCase() === "destaque"
+    );
+
+    const container = document.getElementById("featured-swiper-wrapper");
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (featuredBooks.length === 0) {
+      container.innerHTML = "<p>Nenhum destaque encontrado.</p>";
+      return;
+    }
+
+    container.innerHTML = featuredBooks
+      .map((book) => createBookCard(book, "featured__card"))
+      .join("");
+
+    initializeFeaturedSwiper();
+    bindCardButtons(".featured__card");
+    bindBookCardClicks();
+  } catch (error) {
+    console.error("Erro ao carregar livros em destaques:", error);
+  }
+}
+
+/*=============== CARREGAR LIVROS - POPULARES ===============*/
+async function loadPopularBooks() {
+  try {
+    const booksArray = await fetchBooks();
+
+    // 🔎 Filtrar só os populares
+    const popularBooks = booksArray.filter(
+      (book) =>
+        book.genre &&
+        typeof book.genre === "string" &&
+        book.genre.toLowerCase() === "popular"
+    );
+
+    const container = document.getElementById("popular-swiper-wrapper");
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (popularBooks.length === 0) {
+      container.innerHTML = "<p>Nenhum livro popular encontrado.</p>";
+      return;
+    }
+
+    container.innerHTML = popularBooks
+      .map((book) => createBookCard(book, "popular__card"))
+      .join("");
+
+    initializePopularSwiper();
+    bindCardButtons(".popular__card");
+    bindBookCardClicks();
+  } catch (error) {
+    console.error("Erro ao carregar livros populares:", error);
+  }
+}
+
+/*=============== CARREGAR LIVROS - NOVOS LIVROS ===============*/
+async function loadNewBooks() {
+  try {
+    const booksArray = await fetchBooks();
+
+    //  Ordenar por ano de publicação (descendente = mais novos primeiro)
+    const newBooks = booksArray
+      .filter((book) => book.publicationYear) // só livros que têm ano definido
+      .sort((a, b) => b.publicationYear - a.publicationYear);
+
+    const container = document.getElementById("new-swiper-wrapper");
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (newBooks.length === 0) {
+      container.innerHTML = "<p>Nenhum livro novo encontrado.</p>";
+      return;
+    }
+
+    container.innerHTML = newBooks
+      .map((book) => createBookCard(book, "new__card"))
+      .join("");
+
+    initializeNewSwiper();
+    bindCardButtons(".new__card");
+    bindBookCardClicks();
+  } catch (error) {
+    console.error("Erro ao carregar novos livros:", error);
+  }
+}
+
+
+/*=============== CARREGAR LIVROS - HOME  ===============*/
+
+async function loadHomeBooks() {
+  try {
+    const books = await fetchBooks();
+    const container = document.querySelector(".home__swiper .swiper-wrapper");
+    if (!container) {
+      console.error("Container da Home não encontrado");
+      return;
+    }
+    container.innerHTML = "";
+
+    if (books.length >= 3) {
+      // Garantir que sempre há pelo menos 3 livros
+      const [firstBook, secondBook, thirdBook] = books;
+
+      const firstBookHTML = `
+              <article class="home__article swiper-slide">
+                <img src="${
+                  firstBook.bookphoto ||
+                  firstBook.image ||
+                  "../imagens/imagem-padrao.jpg"
+                }" alt="${
+        firstBook.title || "Livro sem título"
+      }" class="home__img" />
+              </article>
+            `;
+
+      const secondBookHTML = `
+              <article class="home__article swiper-slide home__article--center">
+                <img src="${
+                  secondBook.bookphoto ||
+                  secondBook.image ||
+                  "../imagens/imagem-padrao.jpg"
+                }" alt="${
+        secondBook.title || "Livro sem título"
+      }" class="home__img" />
+              </article>
+            `;
+
+      const thirdBookHTML = `
+              <article class="home__article swiper-slide">
+                <img src="${
+                  thirdBook.bookphoto ||
+                  thirdBook.image ||
+                  "../imagens/imagem-padrao.jpg"
+                }" alt="${
+        thirdBook.title || "Livro sem título"
+      }" class="home__img" />
+              </article>
+            `;
+
+      container.insertAdjacentHTML("beforeend", firstBookHTML);
+      container.insertAdjacentHTML("beforeend", secondBookHTML);
+      container.insertAdjacentHTML("beforeend", thirdBookHTML);
+    } else {
+      // Se não houver pelo menos 3 livros, preencher com livros padrão
+      const defaultBooks = [
+        { title: "Livro 1", image: "../imagens/imagem-padrao.jpg" },
+        { title: "Livro 2", image: "../imagens/imagem-padrao.jpg" },
+        { title: "Livro 3", image: "../imagens/imagem-padrao.jpg" },
+      ];
+
+      defaultBooks.forEach((book, index) => {
+        const bookHTML = `
+                <article class="home__article swiper-slide ${
+                  index === 1 ? "home__article--center" : ""
+                }">
+                  <img src="${book.image}" alt="${
+          book.title
+        }" class="home__img" />
+                </article>
+              `;
+        container.insertAdjacentHTML("beforeend", bookHTML);
+      });
+    }
+
+    initializeHomeSwiper();
+  } catch (error) {
+    console.error("Erro ao carregar livros na Home:", error);
+  }
+}
+
+/*=============== INICIALIZAR SWIPER DESTAQUES ===============*/
+function initializeFeaturedSwiper() {
+  if (swiperFeatured && typeof swiperFeatured.destroy === "function") {
+    swiperFeatured.destroy(true, true);
+  }
+
+  const container = document.querySelector(".featured__swiper");
+  const slides = document.querySelectorAll(".featured__card");
+  if (container && slides.length > 0) {
+    swiperFeatured = new Swiper(".featured__swiper", {
+      loop: slides.length > 1,
+      spaceBetween: 16,
+      slidesPerView: "auto",
+      centeredSlides: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: Math.min(3, slides.length),
+          centeredSlides: false,
+        },
+        1150: {
+          slidesPerView: Math.min(3, slides.length),
+          centeredSlides: false,
         },
       },
     });
-    if (result.error) throw new Error(result.error.message);
-
-    const token = Cookies.get("token");
-    if (!token) throw new Error("Usuário não autenticado");
-
-    const resCheckout = await fetch("http://localhost:3000/cart/checkout", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!resCheckout.ok) {
-      const errorData = await resCheckout.json().catch(() => ({}));
-      throw new Error(
-        errorData.message || "Erro ao finalizar compra no servidor"
-      );
-    }
-
-    // Checkout confirmado
-    localStorage.removeItem("cart");
-    await atualizarCarrinho();
-
-    mensagem.textContent = "Compra realizada com sucesso!";
-    mensagem.classList.remove("hidden");
-    mensagem.style.backgroundColor = "#d1fae5";
-    mensagem.style.border = "1px solid #10b981";
-    mensagem.style.color = "#065f46";
-    mensagem.style.padding = "1rem";
-    mensagem.style.borderRadius = "0.5rem";
-    mensagem.style.marginTop = "1rem";
-
-    form.reset();
-    card.clear();
-
-    // Redireciona imediatamente após atualizar o carrinho
-    window.location.href = "/Client/userDashboard/historicoComprasUser/userHistoricoCompras.html";
-  } catch (error) {
-    alert(error.message);
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = `Pagar`;
   }
-});
-
-/* ========== Controle do Tema Dark/Light ========== */
-const themeButton = document.getElementById("theme-button");
-const themeIcon = document.getElementById("theme-icon");
-const darkThemeClass = "dark-theme";
-
-const iconMoon = "ri-moon-line";
-const iconSun = "ri-sun-line";
-
-const savedTheme = localStorage.getItem("selected-theme");
-if (savedTheme === "dark") {
-  document.body.classList.add(darkThemeClass);
-  themeIcon.classList.remove(iconMoon);
-  themeIcon.classList.add(iconSun);
 }
 
-themeButton.addEventListener("click", () => {
-  document.body.classList.toggle(darkThemeClass);
-  const isDark = document.body.classList.contains(darkThemeClass);
+/*=============== INICIALIZAR SWIPER HOME ===============*/
 
-  themeIcon.classList.toggle(iconMoon, !isDark);
-  themeIcon.classList.toggle(iconSun, isDark);
+function initializeHomeSwiper() {
+  if (swiperHome) {
+    swiperHome.destroy(true, true);
+  }
 
-  localStorage.setItem("selected-theme", isDark ? "dark" : "light");
-});
+  const slides = document.querySelectorAll(".home__article");
+  if (slides.length > 0)
+    swiperHome = new Swiper(".home__swiper", {
+      loop: slides.length > 1,
+      grabCursor: true,
+      spaceBetween: 16,
+      slidesPerView: "auto",
+      centeredSlides: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: Math.min(3, slides.length),
+          centeredSlides: true,
+        },
+      },
+    });
+}
 
-/* ========== Botão Pesquisa - Abrir/Fechar ========== */
-document.addEventListener("DOMContentLoaded", function () {
-  const searchButton = document.getElementById("search-button");
-  const searchClose = document.getElementById("search-close");
-  const searchContent = document.getElementById("search-content");
+/*=============== INICIALIZAR SWIPER NOVOS LIVROS ===============*/
 
-  searchButton?.addEventListener("click", () => {
-    searchContent.classList.add("show-search");
+function initializeNewSwiper() {
+  if (swiperNew && typeof swiperNew.destroy === "function") {
+    swiperNew.destroy(true, true);
+  }
+
+  const container = document.querySelector(".new__swiper");
+  const slides = document.querySelectorAll(".new__card");
+
+  if (container && slides.length > 0) {
+    swiperNew = new Swiper(".new__swiper", {
+      loop: slides.length > 1,
+      spaceBetween: 16,
+      slidesPerView: "auto",
+      centeredSlides: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: Math.min(3, slides.length),
+          centeredSlides: false,
+        },
+        1150: {
+          slidesPerView: Math.min(3, slides.length),
+          centeredSlides: false,
+        },
+      },
+    });
+  }
+}
+
+/*=============== INICIALIZAR SWIPER LIVROS POPULARES ===============*/
+
+let swiperPopular = null;
+
+function initializePopularSwiper() {
+  if (swiperPopular && typeof swiperPopular.destroy === "function") {
+    swiperPopular.destroy(true, true);
+  }
+
+  const container = document.querySelector(".popular__swiper");
+  const slides = document.querySelectorAll(".popular__card");
+
+  if (container && slides.length > 0) {
+    swiperPopular = new Swiper(".popular__swiper", {
+      loop: slides.length > 1,
+      spaceBetween: 16,
+      slidesPerView: "auto",
+      centeredSlides: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: Math.min(3, slides.length),
+          centeredSlides: false,
+        },
+        1150: {
+          slidesPerView: Math.min(3, slides.length),
+          centeredSlides: false,
+        },
+      },
+    });
+  }
+}
+
+/*=============== BIND EVENTOS DOS BOTÕES ===============*/
+
+// Botão "Adicionar ao carrinho"
+function bindCardButtons(cardSelector) {
+  document.querySelectorAll(`${cardSelector} .button`).forEach((oldBtn) => {
+    const newBtn = oldBtn.cloneNode(true);
+    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
   });
 
-  searchClose?.addEventListener("click", () => {
-    searchContent.classList.remove("show-search");
+  document.querySelectorAll(`${cardSelector} .button`).forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const card = e.target.closest(cardSelector);
+      if (card) cartModal.addToCart(card);
+    });
   });
+
+  // Botão "Favoritar"
+  document
+    .querySelectorAll(`${cardSelector} .featured__actions button:nth-child(2)`)
+    .forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const card = e.target.closest(cardSelector);
+        if (card) {
+          const heartIcon = button.querySelector("i");
+          if (heartIcon && heartIcon.classList.contains("ri-heart-fill")) {
+            favoritesModal.removeFromFavorites(card.dataset.bookId);
+          } else {
+            favoritesModal.addToFavorites(card);
+          }
+        }
+      });
+    });
+}
+
+/*=============== INICIALIZAÇÃO PRINCIPAL ===============*/
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM carregado, iniciando carregamento dos livros...");
+
+  setTimeout(() => {
+    Promise.all([
+      loadFeaturedBooks(),
+      loadPopularBooks(),
+      loadNewBooks(),
+      loadHomeBooks(),
+    ])
+      .then(() => {
+        console.log("Todos os livros foram carregados com sucesso!");
+      })
+      .catch((error) => {
+        console.error("Erro ao carregar alguns livros:", error);
+      });
+  }, 100);
 });
 
-/*   parte carrinho e favoritos */
+/*=============== SCROLL REVEAL ANIMATION ===============*/
+if (typeof ScrollReveal !== "undefined") {
+  const sr = ScrollReveal({
+    origin: "top",
+    distance: "60px",
+    duration: 2500,
+    delay: 400,
+  });
+
+  sr.reveal(".home__data, .featured__container, .new__container, .footer");
+  sr.reveal(".home__images", { delay: 600 });
+  sr.reveal(".services__card", { interval: 100 });
+  sr.reveal(".discount__data", { origin: "left" });
+  sr.reveal(".discount__images", { origin: "right" });
+}
+
+/*=============== DARK LIGHT THEME ===============*/
+// Alterna entre tema claro e escuro, guardando preferência no localStorage
+const themeButton = document.getElementById("theme-button");
+const darkTheme = "dark-theme";
+const iconTheme = "ri-sun-line";
+
+if (themeButton) {
+  const selectedTheme = localStorage.getItem("selected-theme");
+  const selectedIcon = localStorage.getItem("selected-icon");
+  const getCurrentTheme = () =>
+    document.body.classList.contains(darkTheme) ? "dark" : "light";
+  const getCurrentIcon = () =>
+    themeButton.classList.contains(iconTheme) ? "ri-moon-line" : "ri-sun-line";
+
+  if (selectedTheme) {
+    document.body.classList[selectedTheme === "dark" ? "add" : "remove"](
+      darkTheme
+    );
+    themeButton.classList[selectedIcon === "ri-moon-line" ? "add" : "remove"](
+      iconTheme
+    );
+  }
+
+  themeButton.addEventListener("click", () => {
+    document.body.classList.toggle(darkTheme);
+    themeButton.classList.toggle(iconTheme);
+    localStorage.setItem("selected-theme", getCurrentTheme());
+    localStorage.setItem("selected-icon", getCurrentIcon());
+  });
+}
+
+
 
 // =================== CART MODAL COM AUTENTICAÇÃO ===================
 
@@ -352,7 +648,7 @@ class CartModal {
       return;
     }
 
-    const bookId = bookCard.dataset.bookId; // CORRETO AQUI
+    const bookId = bookCard.dataset.bookId;
     if (!bookId) {
       alert("Erro: ID do livro não encontrado.");
       return;
@@ -836,7 +1132,10 @@ function bindFeaturedCardButtons() {
     button.addEventListener("click", (e) => {
       const card = e.target.closest(".featured__card");
       if (card) {
-        cartModal.addToCart(card);
+        const bookId = card.dataset.bookId;
+        if (bookId) {
+          cartModal.addToCart(card);
+        }
       }
     });
   });
@@ -888,33 +1187,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Verificar status de login periodicamente
   setInterval(checkLoginStatus, 30000); // A cada 30 segundos
 });
-
-// ========== Mostrar Endereço Selecionado ==========
-document.addEventListener("DOMContentLoaded", () => {
-  const endereco = JSON.parse(localStorage.getItem("enderecoSelecionado"));
-  const enderecoDetalhes = document.getElementById("endereco-detalhes");
-  const cardEndereco = document.getElementById("endereco-selecionado");
-
-  if (endereco) {
-
-    cardEndereco.classList.remove("hidden");
-    enderecoDetalhes.innerHTML = `
-      <div class="space-y-1">
-        <p><strong>Rua:</strong> ${endereco.street || ""}</p>
-        <p><strong>Número:</strong> ${endereco.number || ""}</p>
-        <p><strong>Código Postal:</strong> ${endereco.zipcode || ""}</p>
-        <p><strong>Freguesia:</strong> ${endereco.parish || ""}</p>
-        <p><strong>Concelho:</strong> ${endereco.county || ""}</p>
-        <p><strong>Estado:</strong> ${endereco.state || ""}</p>
-        <p><strong>País:</strong> ${endereco.country || ""}</p>
-      </div>
-    `;
-  } else {
-    cardEndereco.classList.remove("hidden");
-    enderecoDetalhes.innerHTML = `
-      <p class="text-red-500">Nenhum endereço selecionado. Volte à sua conta para escolher um endereço.</p>
-    `;
-  }
-});
-
-document.addEventListener("DOMContentLoaded", atualizarCarrinho);
