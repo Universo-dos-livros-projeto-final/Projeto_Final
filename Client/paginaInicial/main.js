@@ -184,18 +184,21 @@ function bindBookCardClicks() {
   });
 }
 
-/*=============== CARREGAR LIVROS - DESTAQUES ===============*/
+// Função para embaralhar 
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+/*=============== CARREGAR LIVROS - DESTAQUES  ===============*/
 async function loadFeaturedBooks() {
   try {
     const booksArray = await fetchBooks();
-
-    // 🔎 Filtrar só os livros de destaque
-    const featuredBooks = booksArray.filter(
-      (book) =>
-        book.genre &&
-        typeof book.genre === "string" &&
-        book.genre.toLowerCase() === "destaque"
-    );
+    const featuredBooks = shuffleArray(booksArray); // ordem diferente
 
     const container = document.getElementById("featured-swiper-wrapper");
     if (!container) return;
@@ -214,22 +217,16 @@ async function loadFeaturedBooks() {
     bindCardButtons(".featured__card");
     bindBookCardClicks();
   } catch (error) {
-    console.error("Erro ao carregar livros em destaques:", error);
+    console.error("Erro ao carregar destaques:", error);
   }
 }
 
 /*=============== CARREGAR LIVROS - POPULARES ===============*/
+
 async function loadPopularBooks() {
   try {
     const booksArray = await fetchBooks();
-
-    // 🔎 Filtrar só os populares
-    const popularBooks = booksArray.filter(
-      (book) =>
-        book.genre &&
-        typeof book.genre === "string" &&
-        book.genre.toLowerCase() === "popular"
-    );
+    const popularBooks = shuffleArray(booksArray); // ordem diferente
 
     const container = document.getElementById("popular-swiper-wrapper");
     if (!container) return;
@@ -248,7 +245,7 @@ async function loadPopularBooks() {
     bindCardButtons(".popular__card");
     bindBookCardClicks();
   } catch (error) {
-    console.error("Erro ao carregar livros populares:", error);
+    console.error("Erro ao carregar populares:", error);
   }
 }
 
@@ -256,11 +253,7 @@ async function loadPopularBooks() {
 async function loadNewBooks() {
   try {
     const booksArray = await fetchBooks();
-
-    // 🔎 Ordenar por ano de publicação (descendente = mais novos primeiro)
-    const newBooks = booksArray
-      .filter((book) => book.publicationYear) // só livros que têm ano definido
-      .sort((a, b) => b.publicationYear - a.publicationYear);
+    const newBooks = shuffleArray(booksArray); // ordem diferente
 
     const container = document.getElementById("new-swiper-wrapper");
     if (!container) return;
@@ -279,10 +272,9 @@ async function loadNewBooks() {
     bindCardButtons(".new__card");
     bindBookCardClicks();
   } catch (error) {
-    console.error("Erro ao carregar novos livros:", error);
+    console.error("Erro ao carregar novos:", error);
   }
 }
-
 
 /*=============== CARREGAR LIVROS - HOME  ===============*/
 
