@@ -149,148 +149,171 @@
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- RESUMO DO PEDIDO -->
-        <div class="space-y-6">
-          <div
-            class="bg-white rounded-xl shadow-sm border border-border overflow-hidden"
-          >
-            <div class="bg-container px-6 py-4 border-b border-border">
-              <h3 class="text-lg font-semibold text-title">Resumo do Pedido</h3>
-            </div>
-            <div class="p-6">
-              <div id="product-list" class="space-y-4">
-                <!-- Itens do carrinho aparecerão aqui dinamicamente -->
-              </div>
-              <div
-                class="mt-6 pt-6 border-t border-border space-y-2 text-sm text-dark-text"
-              >
-                <div class="flex justify-between">
-                  <span>Subtotal</span><span id="subtotal">€0,00</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Impostos</span><span>€0,00</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Frete</span><span class="text-green-600">Grátis</span>
-                </div>
-                <div
-                  class="flex justify-between text-lg font-semibold pt-2 border-t border-border text-dark-text"
-                >
-                  <span>Total</span
-                  ><span id="total" class="text-first">€0,00</span>
-                </div>
-              </div>
-            </div>
-          </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- COLUNA DA ESQUERDA -->
+    <div class="space-y-6">
+      <!-- RESUMO DO PEDIDO -->
+      <div
+        class="bg-white rounded-xl shadow-sm border border-border overflow-hidden"
+      >
+        <div class="bg-container px-6 py-4 border-b border-border">
+          <h3 class="text-lg font-semibold text-title">Resumo do Pedido</h3>
         </div>
-        <!-- FORMULÁRIO DE PAGAMENTO -->
-        <div class="space-y-6">
+        <div class="p-6">
+          <div id="product-list" class="space-y-4">
+            <!-- Itens do carrinho -->
+          </div>
           <div
-            class="bg-white rounded-xl shadow-sm border border-border overflow-hidden"
+            class="mt-6 pt-6 border-t border-border space-y-2 text-sm text-dark-text"
           >
-            <div class="bg-container px-6 py-6 text-center text-white">
-              <div
-                class="w-16 h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center"
-              >
-                <svg
-                  class="w-8 h-8 text-first"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8c1.104 0 2-.896 2-2s-.896-2-2-2-2 .896-2 2 .896 2 2 2zm0 2c-1.104 0-2 .896-2 2v6h4v-6c0-1.104-.896-2-2-2z"
-                  />
-                </svg>
-              </div>
-              <h2 class="text-2xl text-title font-bold mb-1">
-                Finalizar Pagamento
-              </h2>
-              <p class="text-text text-sm">
-                Preencha os dados para concluir sua compra
-              </p>
+            <div class="flex justify-between">
+              <span>Subtotal</span><span id="subtotal">€0,00</span>
             </div>
-            <div class="px-6 py-8">
-              <form id="payment-form" class="space-y-4">
-                <div>
-                  <label
-                    for="name"
-                    class="block text-sm font-medium text-dark-text"
-                    >Nome Completo</label
-                  >
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    class="mt-1 block w-full rounded-md border border-border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-first focus:border-first sm:text-sm"
-                    placeholder="Seu nome"
-                  />
-                </div>
-                <div>
-                  <label
-                    for="email"
-                    class="block text-sm font-medium text-dark-text"
-                    >Email</label
-                  >
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    class="mt-1 block w-full rounded-md border border-border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-first focus:border-first sm:text-sm"
-                    placeholder="voce@email.com"
-                  />
-                </div>
-                <div>
-                  <label
-                    for="card-element"
-                    class="block text-sm font-medium text-dark-text"
-                    >Cartão de Crédito</label
-                  >
-                  <div id="card-element" class="StripeElement mt-1"></div>
-                </div>
-                <button
-                  id="submit"
-                  type="submit"
-                  class="w-full bg-first hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-sm transition"
-                >
-                  Pagar
-                </button>
-              </form>
-              <!-- Mensagem de sucesso -->
-              <div
-                id="mensagem"
-                class="hidden bg-accent-50 border border-accent-200 rounded-lg p-4 mt-4"
-              >
-                <div class="flex items-center space-x-2">
-                  <svg
-                    class="w-5 h-5 text-accent-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                  <span class="text-accent-800 font-medium"
-                    >Pagamento realizado com sucesso!</span
-                  >
-                </div>
-              </div>
+            <div class="flex justify-between">
+              <span>Impostos</span><span>€0,00</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Frete</span><span class="text-green-600">Grátis</span>
+            </div>
+            <div
+              class="flex justify-between text-lg font-semibold pt-2 border-t border-border text-dark-text"
+            >
+              <span>Total</span
+              ><span id="total" class="text-first">€0,00</span>
             </div>
           </div>
         </div>
       </div>
-    </main>
+
+      <!-- ENDEREÇO DE ENTREGA -->
+      <div
+        id="endereco-selecionado"
+        class="bg-white rounded-xl shadow-sm border border-border overflow-hidden hidden"
+      >
+        <div
+          class="bg-container px-6 py-4 border-b border-border flex items-center gap-2"
+        >
+          <i class="uil uil-map-marker text-first text-lg"></i>
+          <h3 class="text-lg font-semibold text-title">Endereço de Entrega</h3>
+        </div>
+        <div class="p-6">
+          <div id="endereco-detalhes" class="text-sm text-dark-text space-y-1">
+            <!-- Endereço será preenchido via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUNA DA DIREITA -->
+    <div class="space-y-6">
+      <!-- FORMULÁRIO DE PAGAMENTO -->
+      <div
+        class="bg-white rounded-xl shadow-sm border border-border overflow-hidden"
+      >
+        <div class="bg-container px-6 py-6 text-center text-white">
+          <div
+            class="w-16 h-16 bg-white rounded-full mx-auto mb-4 flex items-center justify-center"
+          >
+            <svg
+              class="w-8 h-8 text-first"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8c1.104 0 2-.896 2-2s-.896-2-2-2-2 .896-2 2 .896 2 2 2zm0 2c-1.104 0-2 .896-2 2v6h4v-6c0-1.104-.896-2-2-2z"
+              />
+            </svg>
+          </div>
+          <h2 class="text-2xl text-title font-bold mb-1">
+            Finalizar Pagamento
+          </h2>
+          <p class="text-text text-sm">
+            Preencha os dados para concluir sua compra
+          </p>
+        </div>
+        <div class="px-6 py-8">
+          <form id="payment-form" class="space-y-4">
+            <div>
+              <label
+                for="name"
+                class="block text-sm font-medium text-dark-text"
+                >Nome Completo</label
+              >
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                class="mt-1 block w-full rounded-md border border-border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-first focus:border-first sm:text-sm"
+                placeholder="Seu nome"
+              />
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-medium text-dark-text"
+                >Email</label
+              >
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                class="mt-1 block w-full rounded-md border border-border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-first focus:border-first sm:text-sm"
+                placeholder="voce@email.com"
+              />
+            </div>
+            <div>
+              <label
+                for="card-element"
+                class="block text-sm font-medium text-dark-text"
+                >Cartão de Crédito</label
+              >
+              <div id="card-element" class="StripeElement mt-1"></div>
+            </div>
+            <button
+              id="submit"
+              type="submit"
+              class="w-full bg-first hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-sm transition"
+            >
+              Pagar
+            </button>
+          </form>
+
+          <!-- Mensagem de sucesso -->
+          <div
+            id="mensagem"
+            class="hidden bg-accent-50 border border-accent-200 rounded-lg p-4 mt-4"
+          >
+            <div class="flex items-center space-x-2">
+              <svg
+                class="w-5 h-5 text-accent-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span class="text-accent-800 font-medium"
+                >Pagamento realizado com sucesso!</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
     <!--==================== FOOTER ====================-->
     <footer class="bg-body px-4 pb-4 pt-8 sm:py-8 text-center shadow-md">
       <div class="footer-content flex flex-wrap justify-around mb-6">

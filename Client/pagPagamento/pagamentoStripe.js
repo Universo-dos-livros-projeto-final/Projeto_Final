@@ -254,7 +254,7 @@ form.addEventListener("submit", async (e) => {
     card.clear();
 
     // Redireciona imediatamente após atualizar o carrinho
-    window.location.href = "/Client/paginaInicial/index.html";
+    window.location.href = "/Client/userDashboard/historicoComprasUser/userHistoricoCompras.html";
   } catch (error) {
     alert(error.message);
   } finally {
@@ -888,5 +888,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // Verificar status de login periodicamente
   setInterval(checkLoginStatus, 30000); // A cada 30 segundos
 });
+
+// ========== Mostrar Endereço Selecionado ==========
+document.addEventListener("DOMContentLoaded", () => {
+  const enderecoSelecionado = localStorage.getItem("enderecoSelecionado");
+  const enderecoBox = document.getElementById("endereco-selecionado");
+  const enderecoDetalhes = document.getElementById("endereco-detalhes");
+
+  if (enderecoSelecionado) {
+    const end = JSON.parse(enderecoSelecionado);
+
+    enderecoDetalhes.innerHTML = `
+      <p><strong>Rua:</strong> ${end.street || ""}, ${end.number || ""}</p>
+      <p><strong>Código Postal:</strong> ${end.zipcode || ""}</p>
+      <p><strong>Freguesia:</strong> ${end.parish || ""}</p>
+      <p><strong>Concelho:</strong> ${end.county || ""}</p>
+      <p><strong>Estado:</strong> ${end.state || ""}</p>
+      <p><strong>País:</strong> ${end.country || ""}</p>
+    `;
+
+    enderecoBox.classList.remove("hidden");
+  }
+});
+
+document.addEventListener("DOMContentLoaded", atualizarCarrinho);
+
 
 document.addEventListener("DOMContentLoaded", atualizarCarrinho);

@@ -259,81 +259,95 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.target === modal) fecharModal();
   });
 
-  function renderizarEnderecos() {
-    container.innerHTML = "";
-    enderecos.forEach((end) => {
-      const div = document.createElement("div");
-      div.className =
-        "endereco-card group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 mb-4";
+function renderizarEnderecos() {
+  container.innerHTML = "";
+  enderecos.forEach((end) => {
+    const div = document.createElement("div");
+    div.className =
+      "endereco-card group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 mb-4";
 
-      div.innerHTML = `
-        <div class="flex justify-between items-start mb-4">
-          <div class="flex items-center gap-4">
-            <div class="p-3 bg-blue-100 rounded-xl group-hover:bg-blue-200 transition-colors">
-              <i class="uil uil-map-marker text-blue-600 text-lg"></i>
-            </div>
-            <div>
-              <h3 class="font-semibold text-gray-800 text-lg">Endereço</h3>
-              <p class="text-sm text-gray-500">${end.parish || ""} ${
-        end.county ? "• " + end.county : ""
-      }</p>
-            </div>
+    div.innerHTML = `
+      <div class="flex justify-between items-start mb-4">
+        <div class="flex items-center gap-4">
+          <div class="p-3 bg-blue-100 rounded-xl group-hover:bg-blue-200 transition-colors">
+            <i class="uil uil-map-marker text-blue-600 text-lg"></i>
           </div>
-          <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <button class="btnEditar p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 hover:scale-110" title="Editar">
-              <i class="uil uil-edit text-lg"></i>
-            </button>
-            <button class="btnExcluir p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 hover:scale-110" title="Excluir">
-              <i class="uil uil-trash-alt text-lg"></i>
-            </button>
+          <div>
+            <h3 class="font-semibold text-gray-800 text-lg">Endereço</h3>
+            <p class="text-sm text-gray-500">${end.parish || ""} ${
+      end.county ? "• " + end.county : ""
+    }</p>
           </div>
         </div>
-        
-        <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-4"></div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div class="space-y-2">
-            <p><strong>Endereço:</strong> ${end.street || ""}</p>
-            <p><strong>Número:</strong> ${end.number || ""}</p>
-            <p><strong>Código Postal:</strong> ${end.zipcode || ""}</p>
-            <p><strong>Freguesia:</strong> ${end.parish || ""}</p>
-          </div>
-          <div class="space-y-2">
-            <p><strong>Concelho:</strong> ${end.county || ""}</p>
-            <p><strong>Estado:</strong> ${end.state || ""}</p>
-            <p><strong>País:</strong> ${end.country || ""}</p>
-          </div>
+        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <button class="btnEditar p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 hover:scale-110" title="Editar">
+            <i class="uil uil-edit text-lg"></i>
+          </button>
+          <button class="btnExcluir p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 hover:scale-110" title="Excluir">
+            <i class="uil uil-trash-alt text-lg"></i>
+          </button>
         </div>
-      `;
+      </div>
+      
+      <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-4"></div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
+        <div class="space-y-2">
+          <p><strong>Endereço:</strong> ${end.street || ""}</p>
+          <p><strong>Número:</strong> ${end.number || ""}</p>
+          <p><strong>Código Postal:</strong> ${end.zipcode || ""}</p>
+          <p><strong>Freguesia:</strong> ${end.parish || ""}</p>
+        </div>
+        <div class="space-y-2">
+          <p><strong>Concelho:</strong> ${end.county || ""}</p>
+          <p><strong>Estado:</strong> ${end.state || ""}</p>
+          <p><strong>País:</strong> ${end.country || ""}</p>
+        </div>
+      </div>
 
-      div.querySelector(".btnEditar").addEventListener("click", () => {
-        modalTitulo.textContent = "Editar Endereço";
-        editandoId = end.id;
-        document.getElementById("inputEndereco1").value = end.street || "";
-        document.getElementById("inputNumero").value = end.number || "";
-        document.getElementById("inputCodigoPostal").value = end.zipcode || "";
-        document.getElementById("inputFreguesia").value = end.parish || "";
-        document.getElementById("inputConcelho").value = end.county || "";
-        document.getElementById("inputEstado").value = end.state || "";
-        document.getElementById("inputPais").value = end.country || "";
-        abrirModal();
-      });
+      <!-- Botão Usar no Pagamento -->
+      <button class="btnUsarPagamento px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transform hover:scale-105 transition duration-200 shadow-md">
+        <i class="uil uil-check-circle mr-2"></i> Usar no Pagamento
+      </button>
+    `;
 
-      div.querySelector(".btnExcluir").addEventListener("click", async () => {
-        if (confirm("Deseja excluir este endereço?")) {
-          try {
-            await excluirEndereco(end.id);
-            await loadEnderecos();
-            alert("Endereço excluído com sucesso!");
-          } catch (error) {
-            alert("Erro ao excluir endereço");
-          }
-        }
-      });
-
-      container.appendChild(div);
+    // === Editar ===
+    div.querySelector(".btnEditar").addEventListener("click", () => {
+      modalTitulo.textContent = "Editar Endereço";
+      editandoId = end.id;
+      document.getElementById("inputEndereco1").value = end.street || "";
+      document.getElementById("inputNumero").value = end.number || "";
+      document.getElementById("inputCodigoPostal").value = end.zipcode || "";
+      document.getElementById("inputFreguesia").value = end.parish || "";
+      document.getElementById("inputConcelho").value = end.county || "";
+      document.getElementById("inputEstado").value = end.state || "";
+      document.getElementById("inputPais").value = end.country || "";
+      abrirModal();
     });
-  }
+
+    // === Excluir ===
+    div.querySelector(".btnExcluir").addEventListener("click", async () => {
+      if (confirm("Deseja excluir este endereço?")) {
+        try {
+          await excluirEndereco(end.id);
+          await loadEnderecos();
+          alert("Endereço excluído com sucesso!");
+        } catch (error) {
+          alert("Erro ao excluir endereço");
+        }
+      }
+    });
+
+    // === Usar no Pagamento ===
+    div.querySelector(".btnUsarPagamento").addEventListener("click", () => {
+      localStorage.setItem("enderecoSelecionado", JSON.stringify(end));
+      alert("Endereço salvo! Ele será usado no checkout.");
+    });
+
+    container.appendChild(div);
+  });
+}
+
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
