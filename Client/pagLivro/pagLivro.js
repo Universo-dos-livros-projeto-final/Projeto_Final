@@ -357,6 +357,35 @@ function initializeFeaturedSwiper() {
   }
 }
 
+// =================== EVENTO DE FAVORITOS ===================
+const featuredContainer = document.querySelector(".featured__swiper");
+if (featuredContainer) {
+  featuredContainer.addEventListener("click", (e) => {
+    const heartBtn = e.target.closest(".featured__actions button:nth-child(2)");
+    if (!heartBtn) return; // clicou em outro lugar
+
+    e.preventDefault();
+
+    const card = heartBtn.closest(".featured__card");
+    if (!card) return;
+
+    const token = Cookies.get("token");
+    if (!token) {
+      alert("Você precisa estar logado para favoritar um livro.");
+      window.location.href = "/Client/PaginaLogin/paginaLogin.html";
+      return;
+    }
+
+    const heartIcon = heartBtn.querySelector("i");
+
+    if (heartIcon.classList.contains("ri-heart-fill")) {
+      favoritesModal.removeFromFavorites(card.dataset.bookId);
+    } else {
+      favoritesModal.addToFavorites(card);
+    }
+  });
+}
+
 /*=============== BIND EVENTOS DOS BOTÕES ===============*/
 function bindCardButtons(cardSelector) {
   // Botões de adicionar ao carrinho
@@ -368,19 +397,6 @@ function bindCardButtons(cardSelector) {
       }
     });
   });
-
-  // Botões de favoritar (geralmente o segundo botão dentro de .featured__actions)
-  document
-    .querySelectorAll(`${cardSelector} .featured__actions button:nth-child(2)`)
-    .forEach((button) => {
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-        const card = e.target.closest(cardSelector);
-        if (card && typeof favoritesModal !== "undefined") {
-          favoritesModal.addToFavorites(card);
-        }
-      });
-    });
 }
 
 /*=============== INICIALIZAÇÃO PRINCIPAL ===============*/
@@ -972,26 +988,6 @@ function bindFeaturedCardButtons() {
       }
     });
   });
-
-  // Botões de favoritar
-  document
-    .querySelectorAll(".featured__actions button:nth-child(2)")
-    .forEach((button) => {
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-        const card = e.target.closest(".featured__card");
-        if (card) {
-          const heartIcon = button.querySelector("i");
-          if (heartIcon && heartIcon.classList.contains("ri-heart-fill")) {
-            // Se já está favoritado, remover
-            favoritesModal.removeFromFavorites(card.dataset.bookId);
-          } else {
-            // Se não está favoritado, adicionar
-            favoritesModal.addToFavorites(card);
-          }
-        }
-      });
-    });
 }
 
 /* =================== BIND EVENTOS DOS BOTÕES NA PAGINA =================== */
