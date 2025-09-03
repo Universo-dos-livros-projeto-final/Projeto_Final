@@ -205,6 +205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
       return;
     }
+    
 
     console.log(`Renderizando ${filteredBooks.length} livros filtrados`);
     const slice = filteredBooks.slice(0, 20);
