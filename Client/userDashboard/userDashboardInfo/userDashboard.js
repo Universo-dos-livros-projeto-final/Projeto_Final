@@ -11,20 +11,20 @@ if (!token) {
   window.location.href = "/paginaLogin/paginaLogin.html";
 }
 /* ========= DARK MODE ========= */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   const bodyEl = document.body;
-  const modeBtn = document.querySelector('.mode-toggle');
-  const icon = modeBtn?.querySelector('i');
+  const modeBtn = document.querySelector(".mode-toggle");
+  const icon = modeBtn?.querySelector("i");
 
-  const DARK_CLASS_1 = 'dark-theme';
-  const DARK_CLASS_2 = 'dark';
-  const ICON_SUN  = 'ri-sun-line';
-  const ICON_MOON = 'ri-moon-line';
+  const DARK_CLASS_1 = "dark-theme";
+  const DARK_CLASS_2 = "dark";
+  const ICON_SUN = "ri-sun-line";
+  const ICON_MOON = "ri-moon-line";
 
-  const savedTheme = localStorage.getItem('selected-theme');
-  const savedIcon  = localStorage.getItem('selected-icon');
+  const savedTheme = localStorage.getItem("selected-theme");
+  const savedIcon = localStorage.getItem("selected-icon");
 
-  const isSavedDark = savedTheme === 'dark';
+  const isSavedDark = savedTheme === "dark";
   bodyEl.classList.toggle(DARK_CLASS_1, isSavedDark);
   bodyEl.classList.toggle(DARK_CLASS_2, isSavedDark);
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     icon.classList.add(savedIcon || ICON_MOON);
   }
 
-  modeBtn?.addEventListener('click', (e) => {
+  modeBtn?.addEventListener("click", (e) => {
     e.preventDefault();
     const willBeDark = !bodyEl.classList.contains(DARK_CLASS_1);
     bodyEl.classList.toggle(DARK_CLASS_1, willBeDark);
@@ -44,25 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
       icon.classList.toggle(ICON_MOON, !willBeDark);
     }
 
-    localStorage.setItem('selected-theme', willBeDark ? 'dark' : 'light');
-    localStorage.setItem('selected-icon', willBeDark ? ICON_SUN : ICON_MOON);
+    localStorage.setItem("selected-theme", willBeDark ? "dark" : "light");
+    localStorage.setItem("selected-icon", willBeDark ? ICON_SUN : ICON_MOON);
   });
 
   /* ========= SIDEBAR ========= */
-  const sidebar = document.querySelector('nav'); // <-- voltou para nav normal
-  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  const sidebar = document.querySelector("nav"); // <-- voltou para nav normal
+  const sidebarToggle = document.querySelector(".sidebar-toggle");
 
   if (sidebar && sidebarToggle) {
-    const savedStatus = localStorage.getItem('status'); // "open" | "close"
-    sidebar.classList.toggle('close', savedStatus === 'close');
+    const savedStatus = localStorage.getItem("status"); // "open" | "close"
+    sidebar.classList.toggle("close", savedStatus === "close");
 
-    sidebarToggle.addEventListener('click', () => {
-      const isClosed = sidebar.classList.toggle('close');
-      localStorage.setItem('status', isClosed ? 'close' : 'open');
+    sidebarToggle.addEventListener("click", () => {
+      const isClosed = sidebar.classList.toggle("close");
+      localStorage.setItem("status", isClosed ? "close" : "open");
     });
   }
 });
-
 
 // ======= PERFIL DO USUÁRIO =======
 document.addEventListener("DOMContentLoaded", async () => {
@@ -283,14 +282,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.target === modal) fecharModal();
   });
 
-function renderizarEnderecos() {
-  container.innerHTML = "";
-  enderecos.forEach((end) => {
-    const div = document.createElement("div");
-    div.className =
-      "endereco-card group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 mb-4";
+  function renderizarEnderecos() {
+    container.innerHTML = "";
+    enderecos.forEach((end) => {
+      const div = document.createElement("div");
+      div.className =
+        "endereco-card group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 mb-4";
 
-    div.innerHTML = `
+      div.innerHTML = `
       <div class="flex justify-between items-start mb-4">
         <div class="flex items-center gap-4">
           <div class="p-3 bg-blue-100 rounded-xl group-hover:bg-blue-200 transition-colors">
@@ -299,8 +298,8 @@ function renderizarEnderecos() {
           <div>
             <h3 class="font-semibold text-gray-800 text-lg">Endereço</h3>
             <p class="text-sm text-gray-500">${end.parish || ""} ${
-      end.county ? "• " + end.county : ""
-    }</p>
+        end.county ? "• " + end.county : ""
+      }</p>
           </div>
         </div>
         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -335,50 +334,50 @@ function renderizarEnderecos() {
       </button>
     `;
 
-    // === Editar ===
-    div.querySelector(".btnEditar").addEventListener("click", () => {
-      modalTitulo.textContent = "Editar Endereço";
-      editandoId = end.id;
-      document.getElementById("inputEndereco1").value = end.street || "";
-      document.getElementById("inputNumero").value = end.number || "";
-      document.getElementById("inputCodigoPostal").value = end.zipcode || "";
-      document.getElementById("inputFreguesia").value = end.parish || "";
-      document.getElementById("inputConcelho").value = end.county || "";
-      document.getElementById("inputEstado").value = end.state || "";
-      document.getElementById("inputPais").value = end.country || "";
-      abrirModal();
+      // === Editar ===
+      div.querySelector(".btnEditar").addEventListener("click", () => {
+        modalTitulo.textContent = "Editar Endereço";
+        editandoId = end.id;
+        document.getElementById("inputEndereco1").value = end.street || "";
+        document.getElementById("inputNumero").value = end.number || "";
+        document.getElementById("inputCodigoPostal").value = end.zipcode || "";
+        document.getElementById("inputFreguesia").value = end.parish || "";
+        document.getElementById("inputConcelho").value = end.county || "";
+        document.getElementById("inputEstado").value = end.state || "";
+        document.getElementById("inputPais").value = end.country || "";
+        abrirModal();
+      });
+
+      // === Excluir ===
+      div.querySelector(".btnExcluir").addEventListener("click", async () => {
+        if (confirm("Deseja excluir este endereço?")) {
+          try {
+            await excluirEndereco(end.id);
+
+            const enderecoSalvo = JSON.parse(
+              localStorage.getItem("enderecoSelecionado")
+            );
+            if (enderecoSalvo && enderecoSalvo.id === end.id) {
+              localStorage.removeItem("enderecoSelecionado");
+            }
+
+            await loadEnderecos();
+            alert("Endereço excluído com sucesso!");
+          } catch (error) {
+            alert("Erro ao excluir endereço");
+          }
+        }
+      });
+
+      // === Usar no Pagamento ===
+      div.querySelector(".btnUsarPagamento").addEventListener("click", () => {
+        localStorage.setItem("enderecoSelecionado", JSON.stringify(end));
+        alert("Endereço salvo! Ele será usado no checkout.");
+      });
+
+      container.appendChild(div);
     });
-
-  // === Excluir ===
-div.querySelector(".btnExcluir").addEventListener("click", async () => {
-  if (confirm("Deseja excluir este endereço?")) {
-    try {
-      await excluirEndereco(end.id);
-
-      const enderecoSalvo = JSON.parse(localStorage.getItem("enderecoSelecionado"));
-      if (enderecoSalvo && enderecoSalvo.id === end.id) {
-        localStorage.removeItem("enderecoSelecionado");
-      }
-
-      await loadEnderecos();
-      alert("Endereço excluído com sucesso!");
-    } catch (error) {
-      alert("Erro ao excluir endereço");
-    }
   }
-});
-
-
-    // === Usar no Pagamento ===
-    div.querySelector(".btnUsarPagamento").addEventListener("click", () => {
-      localStorage.setItem("enderecoSelecionado", JSON.stringify(end));
-      alert("Endereço salvo! Ele será usado no checkout.");
-    });
-
-    container.appendChild(div);
-  });
-}
-
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -467,20 +466,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const url = inputUrl.value.trim();
     if (url) {
       try {
-        const res = await fetch("http://localhost:3000/user", {
+        const res = await fetch("http://localhost:3000/user/photo-url", {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ profilephoto: url }),
+          body: JSON.stringify({ photoUrl: url }),
         });
 
         if (!res.ok) throw new Error("Erro ao atualizar foto");
 
-        // Atualiza as imagens
-        if (profileImageHeader) profileImageHeader.src = url;
-        if (profileImageMain) profileImageMain.src = url;
+        const data = await res.json();
+
+        // Atualiza as imagens e evita cache antigo
+        const newUrl = `${data.profilephoto}?t=${Date.now()}`;
+        if (profileImageHeader) profileImageHeader.src = newUrl;
+        if (profileImageMain) profileImageMain.src = newUrl;
 
         // Fechar modal
         modalOverlay.classList.add("hidden");
