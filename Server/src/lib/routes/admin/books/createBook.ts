@@ -13,7 +13,7 @@ export async function createBook(app: FastifyInstance) {
         publicationYear: z.number(),
         genre: z.string(),
         isbn: z.string(),
-        price: z.number().int(), 
+        price: z.number(), 
         description: z.string(), 
         bookphoto: z.string().optional(), 
         supplierId: z.string().optional(),
