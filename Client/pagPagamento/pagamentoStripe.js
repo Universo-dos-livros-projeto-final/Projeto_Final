@@ -95,6 +95,18 @@ const productList = document.getElementById("product-list");
 const subtotalEl = document.getElementById("subtotal");
 const totalEl = document.getElementById("total");
 
+// ========== Prazo de entrega ==========
+function atualizarPrazoEntrega() {
+  let prazo = document.getElementById("prazo-entrega");
+  if (!prazo) {
+    prazo = document.createElement("p");
+    prazo.id = "prazo-entrega";
+    prazo.className = "text-sm text-green-600 mt-2 font-medium";
+    productList.parentElement.appendChild(prazo);
+  }
+  prazo.textContent = "Entrega prevista: em até 7 dias úteis";
+}
+
 // ========== Atualiza Resumo do Pedido ==========
 async function atualizarCarrinho() {
   const token = Cookies.get("token");
@@ -140,6 +152,8 @@ async function atualizarCarrinho() {
     subtotalEl.textContent = `€${total.toFixed(2)}`;
     totalEl.textContent = `€${total.toFixed(2)}`;
     submitButton.textContent = `Pagar €${total.toFixed(2)}`;
+
+    atualizarPrazoEntrega(); // adiciona o prazo de entrega
   } catch (error) {
     console.error(error);
   }
@@ -177,73 +191,22 @@ async function criarIntentDePagamento() {
     if (!response.ok)
       throw new Error(data.error || "Erro ao criar Payment Intent");
 
-    console.log("Client Secret:", data.clientSecret);
-
     return { paymentIntentSecret: data.clientSecret, error: null };
   } catch (error) {
     return { paymentIntentSecret: null, error: error.message };
   }
 }
 
-// No submit handler
+// ========== Submit Handler ==========
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   submitButton.disabled = true;
-
-  const { paymentIntentSecret, error } = await criarIntentDePagamento();
-
-  if (error) {
-    alert(error);
-    submitButton.disabled = false;
-    return;
-  }
-
-  if (!paymentIntentSecret) {
-    alert("Erro: clientSecret não foi retornado");
-    submitButton.disabled = false;
-    return;
-  }
-
-  const result = await stripe.confirmCardPayment(paymentIntentSecret, {
-    payment_method: {
-      card,
-      billing_details: {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-      },
-    },
-  });
-
-  if (result.error) {
-    alert(result.error.message);
-    submitButton.disabled = false;
-  } else {
-    // sucesso
-    mensagem.classList.remove("hidden");
-    form.reset();
-    card.clear();
-    submitButton.disabled = false;
-  }
-});
-
-// ========== Envio do Formulário ==========
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  submitButton.disabled = true;
-  submitButton.innerHTML = `
-      <span class="flex items-center justify-center space-x-2">
-        <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-        </svg>
-        <span>Processando...</span>
-      </span>
-    `;
+  submitButton.innerHTML = `Processando...`;
 
   try {
     const { paymentIntentSecret, error: intentError } =
       await criarIntentDePagamento();
-
     if (intentError) throw new Error(intentError);
     if (!paymentIntentSecret)
       throw new Error("Erro: clientSecret não foi retornado");
@@ -257,7 +220,6 @@ form.addEventListener("submit", async (e) => {
         },
       },
     });
-
     if (result.error) throw new Error(result.error.message);
 
     const token = Cookies.get("token");
@@ -269,26 +231,30 @@ form.addEventListener("submit", async (e) => {
     });
 
     if (!resCheckout.ok) {
-      const errorData = await resCheckout.json();
-      throw new Error(errorData.message || "Erro ao finalizar compra");
+      const errorData = await resCheckout.json().catch(() => ({}));
+      throw new Error(
+        errorData.message || "Erro ao finalizar compra no servidor"
+      );
     }
 
-    const checkoutData = await resCheckout.json();
-
+    // Checkout confirmado
     localStorage.removeItem("cart");
+    await atualizarCarrinho();
 
-    mensagem.textContent =
-      checkoutData.message || "Compra finalizada com sucesso!";
+    mensagem.textContent = "Compra realizada com sucesso!";
     mensagem.classList.remove("hidden");
+    mensagem.style.backgroundColor = "#d1fae5";
+    mensagem.style.border = "1px solid #10b981";
+    mensagem.style.color = "#065f46";
+    mensagem.style.padding = "1rem";
+    mensagem.style.borderRadius = "0.5rem";
+    mensagem.style.marginTop = "1rem";
 
     form.reset();
     card.clear();
 
-    await atualizarCarrinho();
-
-    setTimeout(() => {
-      window.location.href = "/Client/paginaInicial/index.html";
-    }, 3000);
+    // Redireciona imediatamente após atualizar o carrinho
+    window.location.href = "/Client/paginaInicial/index.html";
   } catch (error) {
     alert(error.message);
   } finally {
