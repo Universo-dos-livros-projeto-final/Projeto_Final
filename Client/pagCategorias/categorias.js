@@ -1,6 +1,6 @@
 /* ======= variáveis globais ======= */
-  let books = [];
-  let currentSearch = "";
+let books = [];
+let currentSearch = "";
 
 /*=============== SEARCH ===============*/
 // Mostrar o campo de busca ao clicar no ícone
@@ -122,7 +122,6 @@ sr.reveal(".discount__images", { origin: "right" });
 
 /*=============== BOOKS FETCH & RENDER ===============*/
 document.addEventListener("DOMContentLoaded", async () => {
-
   // ler ?search=... da URL (se veio de outra página)
   const urlParams = new URLSearchParams(window.location.search);
   const urlSearchRaw = urlParams.get("search");
@@ -201,13 +200,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       bookGridEl.innerHTML = `
         <div class="no-results">
           <p>Nenhum livro encontrado.</p>
-          ${
-            currentSearch
-              ? `<p>Pesquisa: "${decodeURIComponent(
-                  urlSearchRaw || currentSearch
-                )}"</p>`
-              : ""
-          }
+          ${currentSearch ? `<p>Pesquisa: "${currentSearch}"</p>` : ""}
         </div>
       `;
       return;
@@ -397,7 +390,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const original =
         books.find((b) => normalize(b.author) === authNorm)?.author || authNorm;
       const opt = document.createElement("option");
-      opt.value = original; 
+      opt.value = original;
       opt.textContent = original;
       authorFilterEl.appendChild(opt);
     });
@@ -502,7 +495,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       .map((c) => c.trim());
 
     categoriesFromUrl.forEach((catValue) => {
-      // Procurar checkbox correspondente 
+      // Procurar checkbox correspondente
       const catCheckbox = Array.from(
         document.querySelectorAll('#categoryList input[type="checkbox"]')
       ).find((cb) => normalize(cb.value) === normalize(catValue));
@@ -514,7 +507,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  //  Aplicar todos os filtros 
+  //  Aplicar todos os filtros
   console.log("Aplicando filtros iniciais...");
   applyFilters();
 });
@@ -545,11 +538,10 @@ function handleSearchFromOtherPages() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", handleSearchFromOtherPages);
 /*   parte carrinho e favoritos */
 
 // =================== CART MODAL COM AUTENTICAÇÃO ===================
-  
+
 class CartModal {
   constructor() {
     this.cart = [];
@@ -1092,4 +1084,4 @@ function checkLoginStatus() {
   }
 }
 
-
+document.addEventListener("DOMContentLoaded", handleSearchFromOtherPages);
