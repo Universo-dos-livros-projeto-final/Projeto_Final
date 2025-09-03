@@ -91,12 +91,43 @@ async function carregarPerfilUsuario() {
   }
 }
 
+// ===================== FUNÇÃO PARA CALCULAR 7 DIAS ÚTEIS =====================
+function calcularPrazoEntrega(dataCompra) {
+  let prazo = new Date(dataCompra);
+  let diasUteis = 0;
+
+  while (diasUteis < 7) {
+    prazo.setDate(prazo.getDate() + 1);
+    const diaSemana = prazo.getDay(); // 0 = domingo, 6 = sábado
+    if (diaSemana !== 0 && diaSemana !== 6) {
+      diasUteis++;
+    }
+  }
+  return prazo;
+}
+
 // ===================== HISTÓRICO DE COMPRAS =====================
 function renderCards(data) {
   const grid = document.getElementById("historyGrid");
   grid.innerHTML = "";
 
+  const hoje = new Date();
+
   data.forEach((sale) => {
+    const dataCompra = new Date(sale.soldAt);
+    const prazoEntrega = calcularPrazoEntrega(dataCompra);
+
+    let statusEntrega;
+    if (hoje >= prazoEntrega) {
+      statusEntrega = `<span class="status entregue">Entregue</span>`;
+    } else {
+      statusEntrega = `<span class="status previsto">Entrega prevista até ${prazoEntrega.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })}</span>`;
+    }
+
     const card = document.createElement("div");
     card.classList.add("history-card");
     card.innerHTML = `
@@ -108,17 +139,15 @@ function renderCards(data) {
           <h3>${sale.title}</h3>
           <div class="info-right">
             <span class="price">Preço: € ${sale.price.toFixed(2)}</span>
-            <span class="date">${new Date(sale.soldAt).toLocaleDateString(
-              "pt-BR",
-              {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              }
-            )}</span>
+            <span class="date">${dataCompra.toLocaleDateString("pt-BR", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            })}</span>
           </div>
         </div>
         <p class="author">Autor: ${sale.author}</p>
+        <p class="prazo">${statusEntrega}</p>
       </div>
     `;
     grid.appendChild(card);

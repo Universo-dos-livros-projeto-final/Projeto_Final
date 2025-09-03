@@ -39,6 +39,68 @@
         </div>
       </nav>
     </header>
+    <!-- Barra de Pesquisa -->
+        <div class="nav__actions">
+          <i class="ri-search-line search-button" id="search-button"></i>
+          <!-- Usuario -->
+          <a href="#" class="login" id="user-link">
+            <i class="ri-user-line login-button"></i>
+          </a>
+
+          <!-- Carrinho -->
+          <i class="ri-shopping-cart-line" id="carrinho"></i>
+          <div id="cart-modal" class="cart-modal">
+            <div class="cart-modal-content">
+              <div class="cart-modal-header">
+                <h2>Carrinho</h2>
+                <button class="cart-modal-close">&times;</button>
+              </div>
+
+              <div class="cart-items-container" id="cart-items"></div>
+
+              <div class="cart-summary">
+                <div class="cart-total-row">
+                  <span>Total</span>
+                  <span id="cart-total">R$ 0,00</span>
+                </div>
+                <button class="cart-finalize-button">Finalizar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Favoritos -->
+          <i class="ri-heart-line" id="favoritos"></i>
+          <div id="favorites-modal" class="favorites-modal">
+            <div class="favorites-modal-content">
+              <div class="favorites-modal-header">
+                <h2>Favoritos</h2>
+                <button class="favorites-modal-close">&times;</button>
+              </div>
+
+              <div class="favorites-items-container" id="favorites-items"></div>
+            </div>
+          </div>
+
+          <!-- Dark Mode -->
+          <i class="ri-moon-line change-theme" id="theme-button"></i>
+        </div>
+      </nav>
+    </header>
+
+    <!--==================== SEARCH ====================-->
+    <div class="search" id="search-content">
+      <form action="" class="search__form">
+        <i class="ri-search-line search__icon"></i>
+        <input
+          type="search"
+          placeholder="Buscar Livros e a autores..."
+          class="search__input"
+        />
+      </form>
+
+      <i class="ri-close-line search__close" id="search-close"></i>
+    </div>
+
 
     <!--==================== SOBRE NÓS ====================-->
     <main class="main">

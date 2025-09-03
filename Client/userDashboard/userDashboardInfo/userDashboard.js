@@ -49,11 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========= SIDEBAR ========= */
-  const sidebar = document.querySelector('nav'); // <-- voltou para nav normal
+  const sidebar = document.querySelector('nav'); 
   const sidebarToggle = document.querySelector('.sidebar-toggle');
 
   if (sidebar && sidebarToggle) {
-    const savedStatus = localStorage.getItem('status'); // "open" | "close"
+    const savedStatus = localStorage.getItem('status'); 
     sidebar.classList.toggle('close', savedStatus === 'close');
 
     sidebarToggle.addEventListener('click', () => {
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const inputEmail = document.getElementById("inputEmail");
   const inputSenha = document.getElementById("inputSenha");
 
-  // 🚀 Carrega dados do backend ao abrir a página
+  // Carrega dados do backend ao abrir a página
   await loadUserProfile();
 
   async function loadUserProfile() {
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // 🗂️ Abrir modal
+  // Abrir modal
   openBtn.addEventListener("click", () => {
     inputNome.value = displayNome.innerText;
     inputSobrenome.value = displaySobrenome.innerText;
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     modalOverlay.classList.add("hidden");
   });
 
-  // 💾 Salvar dados no backend
+  //  Salvar dados no backend
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -152,10 +152,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       displayNome.innerText = dataToSend.firstname;
       displaySobrenome.innerText = dataToSend.lastname;
       displayEmail.innerText = dataToSend.email;
-      displaySenha.innerText = "••••••••"; // Mantém os pontos
+      displaySenha.innerText = "••••••••"; 
 
       modalOverlay.classList.add("hidden");
-      inputSenha.value = ""; // Limpa o campo senha
+      inputSenha.value = ""; 
       alert("Perfil atualizado com sucesso!");
     } catch (error) {
       console.error(error);
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // 🖱️ Fechar clicando fora do modal
+  //  Fechar clicando fora do modal
   modalOverlay.addEventListener("click", (e) => {
     if (e.target === modalOverlay) {
       modalOverlay.classList.add("hidden");
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("enderecosContainer");
   const modalTitulo = document.getElementById("modalEnderecoTitulo");
 
-  // Carrega os endereços do backend
+ 
   await loadEnderecos();
 
   async function loadEnderecos() {
@@ -285,6 +285,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function renderizarEnderecos() {
   container.innerHTML = "";
+
+  const selecionado = JSON.parse(localStorage.getItem("enderecoSelecionado"));
+
   enderecos.forEach((end) => {
     const div = document.createElement("div");
     div.className =
@@ -335,6 +338,16 @@ function renderizarEnderecos() {
       </button>
     `;
 
+    const btnUsar = div.querySelector(".btnUsarPagamento");
+
+    // Se já estiver salvo no localStorage, marca como selecionado
+    if (selecionado && selecionado.id === end.id) {
+      btnUsar.textContent = "Endereço selecionado ";
+      btnUsar.classList.remove("bg-green-600");
+      btnUsar.classList.add("bg-green-500");
+      btnUsar.disabled = true;
+    }
+
     // === Editar ===
     div.querySelector(".btnEditar").addEventListener("click", () => {
       modalTitulo.textContent = "Editar Endereço";
@@ -349,30 +362,42 @@ function renderizarEnderecos() {
       abrirModal();
     });
 
-  // === Excluir ===
-div.querySelector(".btnExcluir").addEventListener("click", async () => {
-  if (confirm("Deseja excluir este endereço?")) {
-    try {
-      await excluirEndereco(end.id);
+    // === Excluir ===
+    div.querySelector(".btnExcluir").addEventListener("click", async () => {
+      if (confirm("Deseja excluir este endereço?")) {
+        try {
+          await excluirEndereco(end.id);
 
-      const enderecoSalvo = JSON.parse(localStorage.getItem("enderecoSelecionado"));
-      if (enderecoSalvo && enderecoSalvo.id === end.id) {
-        localStorage.removeItem("enderecoSelecionado");
+          const enderecoSalvo = JSON.parse(localStorage.getItem("enderecoSelecionado"));
+          if (enderecoSalvo && enderecoSalvo.id === end.id) {
+            localStorage.removeItem("enderecoSelecionado");
+          }
+
+          await loadEnderecos();
+          alert("Endereço excluído com sucesso!");
+        } catch (error) {
+          alert("Erro ao excluir endereço");
+        }
       }
-
-      await loadEnderecos();
-      alert("Endereço excluído com sucesso!");
-    } catch (error) {
-      alert("Erro ao excluir endereço");
-    }
-  }
-});
-
+    });
 
     // === Usar no Pagamento ===
-    div.querySelector(".btnUsarPagamento").addEventListener("click", () => {
+    btnUsar.addEventListener("click", () => {
       localStorage.setItem("enderecoSelecionado", JSON.stringify(end));
-      alert("Endereço salvo! Ele será usado no checkout.");
+
+      
+      document.querySelectorAll(".btnUsarPagamento").forEach((b) => {
+        b.textContent = "Usar no Pagamento";
+        b.disabled = false;
+        b.classList.remove("bg-green-500");
+        b.classList.add("bg-green-600");
+      });
+
+      
+      btnUsar.textContent = "Endereço selecionado ";
+      btnUsar.classList.remove("bg-green-600");
+      btnUsar.classList.add("bg-green-500");
+      btnUsar.disabled = true;
     });
 
     container.appendChild(div);

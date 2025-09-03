@@ -95,6 +95,21 @@ const productList = document.getElementById("product-list");
 const subtotalEl = document.getElementById("subtotal");
 const totalEl = document.getElementById("total");
 
+
+function calcularPrazoEntrega(diasUteis) {
+  let data = new Date();
+  let adicionados = 0;
+
+  while (adicionados < diasUteis) {
+    data.setDate(data.getDate() + 1);
+    const diaSemana = data.getDay();
+    if (diaSemana !== 0 && diaSemana !== 6) {
+      adicionados++;
+    }
+  }
+  return data;
+}
+
 // ========== Prazo de entrega ==========
 function atualizarPrazoEntrega() {
   let prazo = document.getElementById("prazo-entrega");
@@ -104,7 +119,12 @@ function atualizarPrazoEntrega() {
     prazo.className = "text-sm text-green-600 mt-2 font-medium";
     productList.parentElement.appendChild(prazo);
   }
-  prazo.textContent = "Entrega prevista: em até 7 dias úteis";
+
+  const dataEntrega = calcularPrazoEntrega(7);
+  const opcoes = { day: "2-digit", month: "2-digit", year: "numeric" };
+  const dataFormatada = dataEntrega.toLocaleDateString("pt-BR", opcoes);
+
+  prazo.textContent = `Entrega prevista até ${dataFormatada}`;
 }
 
 // ========== Atualiza Resumo do Pedido ==========
@@ -153,11 +173,12 @@ async function atualizarCarrinho() {
     totalEl.textContent = `€${total.toFixed(2)}`;
     submitButton.textContent = `Pagar €${total.toFixed(2)}`;
 
-    atualizarPrazoEntrega(); // adiciona o prazo de entrega
+    atualizarPrazoEntrega(); 
   } catch (error) {
     console.error(error);
   }
 }
+
 
 // ========== Criação do Payment Intent ==========
 async function criarIntentDePagamento() {
@@ -303,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-/*   parte carrinho e favoritos */
+
 
 // =================== CART MODAL COM AUTENTICAÇÃO ===================
 
@@ -341,7 +362,7 @@ class CartModal {
 
   toggleCart() {
     this.cartModal.classList.toggle("show");
-    this.loadCartFromServer(); // Recarregar sempre que abrir
+    this.loadCartFromServer(); 
   }
 
   async addToCart(bookCard) {
@@ -352,7 +373,7 @@ class CartModal {
       return;
     }
 
-    const bookId = bookCard.dataset.bookId; // CORRETO AQUI
+    const bookId = bookCard.dataset.bookId; 
     if (!bookId) {
       alert("Erro: ID do livro não encontrado.");
       return;
@@ -485,7 +506,7 @@ class CartModal {
       this.cartItemsContainer.appendChild(cartItemElement);
     });
 
-    // Atualiza total após renderizar todos os itens
+    
     this.updateCartTotal();
   }
 
@@ -699,7 +720,6 @@ class FavoritesModal {
 
       const favoriteItems = await response.json();
 
-      // Transformar dados do servidor para o formato esperado pelo frontend
       this.favorites = favoriteItems.map((item) => ({
         id: item.id,
         bookId: item.bookId,

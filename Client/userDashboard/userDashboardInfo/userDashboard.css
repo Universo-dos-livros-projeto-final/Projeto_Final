@@ -126,7 +126,7 @@ nav .menu-itens {
 }
 
 .menu-itens li a .link-name {
-  font-size: 19zpx;
+  font-size: 19px;
   font-weight: 400;
   color: var(--black-light-color);
   transition: var(--tran-05);

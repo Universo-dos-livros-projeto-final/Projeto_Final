@@ -344,7 +344,7 @@ body.dark-theme {
   scale: 0.8;
 }
 
-/* Swiper class */
+
 .swiper-slide-active,
 .swiper-slide-duplicate-active {
   scale: 1;
@@ -469,7 +469,7 @@ body.dark-theme {
   right: 1.5rem;
 }
 
-/* Swiper class */
+
 .swiper-button-prev::after,
 .swiper-button-next::after {
   content: "";
@@ -505,7 +505,7 @@ body.dark-theme {
   background-color: var(--body-color);
 }
 
-/* Imagem */
+
 .popular__card img,
 .new__card img {
   width: 150px;
@@ -514,7 +514,7 @@ body.dark-theme {
   object-fit: cover;
 }
 
-/* Título */
+
 .popular__card h3,
 .new__card h3 {
   font-size: var(--h2-font-size);
@@ -523,7 +523,7 @@ body.dark-theme {
   color: var(--title-color);
 }
 
-/* Preços */
+
 .popular__card .featured__prices,
 .new__card .featured__prices {
   display: flex;
@@ -538,13 +538,13 @@ body.dark-theme {
   font-weight: var(--font-semi-bold);
 }
 
-/* Botão principal */
+
 .popular__card > button.button,
 .new__card > button.button {
   cursor: pointer;
 }
 
-/* Ações (ícones) */
+
 .popular__card .featured__actions,
 .new__card .featured__actions {
   display: inline-flex;
@@ -569,6 +569,34 @@ body.dark-theme {
   color: var(--first-color);
   cursor: pointer;
   padding: 0;
+}
+/* ================= AJUSTE DE ALINHAMENTO ================= */
+
+.featured__title,
+.popular__card h3,
+.new__card h3 {
+  font-size: var(--h2-font-size);
+  margin-bottom: 0.5rem;
+  font-family: cursive;
+  color: var(--title-color);
+
+ 
+  min-height: 3.5rem;         
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.featured__card,
+.popular__card,
+.new__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /*=============== DISCOUNT ===============*/

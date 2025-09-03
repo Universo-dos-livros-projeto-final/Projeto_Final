@@ -657,3 +657,25 @@ nav.close ~ .principal .top{
 .filter-container button:hover {
     background: #2c82e0;
 }
+
+/* ===================== STATUS DE ENTREGA ===================== */
+.status {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status.entregue {
+  background-color: #d1fae5; 
+  color: #065f46; 
+  border: 1px solid #10b981; 
+}
+
+.status.previsto {
+  background-color: #e0f2fe; 
+  color: #1e40af; 
+  border: 1px solid #3b82f6; 
+}
