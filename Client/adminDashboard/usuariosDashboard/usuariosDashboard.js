@@ -70,7 +70,8 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     alert("Falha ao sair da conta. Tente novamente.");
   }
 });
-// Carrega usuários
+
+// ===================== CARREGA USUÁRIOS =====================
 async function loadUsers() {
   if (!token) {
     alert("Token não encontrado. Faça login novamente.");
@@ -120,7 +121,7 @@ async function loadUsers() {
   }
 }
 
-// Lógica dos botões de ação
+// ===================== BOTÕES DE AÇÃO =====================
 function attachActionButtonsEvents() {
   document.querySelectorAll(".action-btn").forEach((button) => {
     button.onclick = async function () {
@@ -132,7 +133,7 @@ function attachActionButtonsEvents() {
         this.classList.contains("btn-block") ||
         this.classList.contains("btn-unblock")
       ) {
-        // Bloquear ou desbloquear usuário via backend
+        // Bloquear ou desbloquear usuário
         const block = this.classList.contains("btn-block");
 
         try {
@@ -187,36 +188,36 @@ function attachActionButtonsEvents() {
   });
 }
 
-// Checkbox "Selecionar Todos"
+// ===================== SELECIONAR TODOS =====================
 document.getElementById("selectAll")?.addEventListener("change", function () {
   const checkboxes = document.querySelectorAll(".user-checkbox");
   checkboxes.forEach((cb) => (cb.checked = this.checked));
 });
 
-// Botão Buscar Usuário por ID
-document.getElementById("searchBtn")?.addEventListener("click", async () => {
-  const searchInput = document.getElementById("searchInput")?.value.trim();
-  if (!searchInput) {
-    alert("Digite um ID para buscar.");
-    return;
-  }
-  if (!token) {
-    alert("Token não encontrado.");
-    return;
-  }
-  try {
-    const res = await fetch(`http://localhost:3000/admin/user/${searchInput}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) throw new Error("Usuário não encontrado.");
-    const user = await res.json();
-    alert(`Usuário encontrado:\nNome: ${user.name}\nEmail: ${user.email}`);
-  } catch (error) {
-    alert(error.message);
-  }
+// ===================== FILTRAR POR NOME (FRONTEND) =====================
+document.getElementById("searchBtn")?.addEventListener("click", () => {
+  const searchInput = document
+    .getElementById("searchInput")
+    ?.value.trim()
+    .toLowerCase();
+  const rows = userTableBody.querySelectorAll("tr");
+
+  rows.forEach((row) => {
+    const nameCell = row.querySelector("td:nth-child(4)"); // coluna do nome
+    if (!nameCell) return;
+
+    const name = nameCell.textContent.toLowerCase();
+
+    // Mostra ou esconde a linha dependendo da busca
+    if (!searchInput || name.includes(searchInput)) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
 });
 
-// Botão Deletar Selecionados
+// ===================== DELETAR SELECIONADOS =====================
 document
   .getElementById("deleteSelectedBtn")
   ?.addEventListener("click", async () => {
@@ -246,7 +247,7 @@ document
     }
   });
 
-// Inicializa
+// ===================== INICIALIZA =====================
 window.addEventListener("load", () => {
   loadUsers();
 });
