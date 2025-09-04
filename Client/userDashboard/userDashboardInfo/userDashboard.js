@@ -375,12 +375,28 @@ function renderizarEnderecos() {
           }
         }
       });
+    // === Usar no Pagamento ===
+    div.querySelector(".btnUsarPagamento").addEventListener("click", (e) => {
+  // Salva o endereço selecionado no localStorage
+  localStorage.setItem("enderecoSelecionado", JSON.stringify(end));
 
-      // === Usar no Pagamento ===
-      div.querySelector(".btnUsarPagamento").addEventListener("click", () => {
-        localStorage.setItem("enderecoSelecionado", JSON.stringify(end));
-        alert("Endereço salvo! Ele será usado no checkout.");
-      });
+  // Primeiro, reseta todos os botões "Usar no Pagamento"
+  document.querySelectorAll(".btnUsarPagamento").forEach((btn) => {
+    btn.innerHTML = `<i class="uil uil-check-circle mr-2"></i> Usar no Pagamento`;
+    btn.disabled = false;
+    btn.classList.remove("bg-green-500", "cursor-not-allowed");
+    btn.classList.add("bg-green-600", "hover:bg-green-700");
+  });
+
+  //estiliza apenas o botão clicado
+  const btn = e.currentTarget;
+  btn.innerHTML = `<i class="uil uil-check-circle mr-2"></i> Endereço Selecionado`;
+  btn.disabled = true;
+  btn.classList.remove("bg-green-600", "hover:bg-green-700");
+  btn.classList.add("bg-green-500", "cursor-not-allowed");
+});
+
+
 
       container.appendChild(div);
     });
