@@ -17,7 +17,7 @@ export async function updateBook(app: FastifyInstance) {
         publicationYear: z.number().optional(),
         genre: z.string().optional(),
         isbn: z.string().optional(),
-        price: z.number().int().optional(), 
+        price: z.number().optional(), 
         description: z.string().optional(), 
         bookphoto: z.string().optional(),   
         supplierId: z.string().optional(),
