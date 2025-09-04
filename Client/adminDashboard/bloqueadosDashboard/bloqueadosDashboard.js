@@ -3,19 +3,12 @@ const body = document.querySelector("body"),
   sidebar = body.querySelector("nav"),
   sidebarToggle = body.querySelector(".sidebar-toggle");
 
-// Aplica modo salvo (claro/escuro)
 let getMode = localStorage.getItem("mode");
-if (getMode && getMode === "dark") {
-  body.classList.add("dark");
-}
+if (getMode && getMode === "dark") body.classList.add("dark");
 
-// Aplica status da sidebar salva (aberta/fechada)
 let getStatus = localStorage.getItem("status");
-if (getStatus && getStatus === "close") {
-  sidebar.classList.add("close");
-}
+if (getStatus && getStatus === "close") sidebar.classList.add("close");
 
-// Alterna modo claro/escuro e salva preferência
 modeToggle?.addEventListener("click", () => {
   body.classList.toggle("dark");
   localStorage.setItem(
@@ -24,7 +17,6 @@ modeToggle?.addEventListener("click", () => {
   );
 });
 
-// Alterna abrir/fechar sidebar e salva estado
 sidebarToggle?.addEventListener("click", () => {
   sidebar.classList.toggle("close");
   localStorage.setItem(
@@ -35,12 +27,13 @@ sidebarToggle?.addEventListener("click", () => {
 
 const token = Cookies?.get("token");
 const userTableBody = document.getElementById("userTableBody");
+const searchInput = document.getElementById("searchInput");
+
+let allUsers = []; // Guardar todos os usuários carregados
 
 // ===================== LOGOUT =====================
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   e.preventDefault();
-
-  const token = Cookies.get("token");
 
   if (!token) {
     alert("Você já está desconectado.");
@@ -51,18 +44,13 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   try {
     const res = await fetch("http://localhost:3000/logout", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
       credentials: "include",
     });
 
-    if (!res.ok) {
-      throw new Error("Erro ao fazer logout");
-    }
+    if (!res.ok) throw new Error("Erro ao fazer logout");
 
     Cookies.remove("token");
-
     window.location.href = "/Client/paginaInicial/index.html";
   } catch (error) {
     console.error("Erro no logout:", error);
@@ -70,7 +58,7 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
   }
 });
 
-// Carrega usuários bloqueados
+// ===================== CARREGAR USUÁRIOS =====================
 async function loadUsers() {
   if (!token) {
     alert("Token não encontrado. Faça login novamente.");
@@ -87,35 +75,51 @@ async function loadUsers() {
       throw new Error(errMsg || "Erro ao carregar usuários bloqueados");
     }
 
-    const users = await res.json();
-    userTableBody.innerHTML = "";
-
-    users.forEach((user, index) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td><input type="checkbox" class="user-checkbox" data-userid="${
-          user.id
-        }"></td>
-        <td>${index + 1}</td>
-        <td class="user-id">${user.id}</td>
-        <td>${user.firstname}</td>
-        <td>${user.email}</td>
-        <td><span class="status-badge status-blocked">Bloqueado</span></td>
-        <td>
-          <button class="action-btn btn-unblock">Desbloquear</button>
-          <button class="action-btn btn-delete">Deletar</button>
-        </td>
-      `;
-      userTableBody.appendChild(tr);
-    });
-
-    attachActionButtonsEvents();
+    allUsers = await res.json(); // salva todos para filtragem
+    renderUsers(allUsers);
   } catch (error) {
     alert("Erro: " + error.message);
   }
 }
 
-// Eventos dos botões
+// ===================== RENDERIZAR USUÁRIOS =====================
+function renderUsers(users) {
+  userTableBody.innerHTML = "";
+
+  users.forEach((user, index) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input type="checkbox" class="user-checkbox" data-userid="${
+        user.id
+      }"></td>
+      <td>${index + 1}</td>
+      <td class="user-id">${user.id}</td>
+      <td>${user.firstname}</td>
+      <td>${user.email}</td>
+      <td><span class="status-badge status-blocked">Bloqueado</span></td>
+      <td>
+        <button class="action-btn btn-unblock">Desbloquear</button>
+        <button class="action-btn btn-delete">Deletar</button>
+      </td>
+    `;
+    userTableBody.appendChild(tr);
+  });
+
+  attachActionButtonsEvents();
+}
+
+// ===================== FILTRAGEM FRONTEND =====================
+searchInput?.addEventListener("input", () => {
+  const term = searchInput.value.toLowerCase();
+  const filtered = allUsers.filter(
+    (u) =>
+      u.firstname.toLowerCase().includes(term) ||
+      u.email.toLowerCase().includes(term)
+  );
+  renderUsers(filtered);
+});
+
+// ===================== EVENTOS DOS BOTÕES =====================
 function attachActionButtonsEvents() {
   document.querySelectorAll(".action-btn").forEach((button) => {
     button.onclick = async function () {
@@ -123,7 +127,6 @@ function attachActionButtonsEvents() {
       const userId = row.querySelector('input[type="checkbox"]').dataset.userid;
 
       if (this.classList.contains("btn-unblock")) {
-        // Desbloquear usuário via PATCH /admin/user/:id/block com block: false
         try {
           const res = await fetch(
             `http://localhost:3000/admin/user/${userId}/block`,
@@ -137,12 +140,11 @@ function attachActionButtonsEvents() {
             }
           );
           if (!res.ok) throw new Error("Erro ao desbloquear usuário");
-          row.remove(); // remove da tabela
+          row.remove();
         } catch (err) {
           alert("Erro ao desbloquear usuário.");
         }
       } else if (this.classList.contains("btn-delete")) {
-        // Deletar usuário
         if (!confirm("Deseja realmente deletar este usuário?")) return;
         try {
           const res = await fetch(
@@ -167,13 +169,13 @@ function attachActionButtonsEvents() {
   });
 }
 
-// Checkbox "Selecionar Todos"
+// ===================== SELECIONAR TODOS =====================
 document.getElementById("selectAll")?.addEventListener("change", function () {
   const checkboxes = document.querySelectorAll(".user-checkbox");
   checkboxes.forEach((cb) => (cb.checked = this.checked));
 });
 
-// Botão Deletar Selecionados
+// ===================== DELETAR SELECIONADOS =====================
 document
   .getElementById("deleteSelectedBtn")
   ?.addEventListener("click", async () => {
@@ -204,7 +206,7 @@ document
     }
   });
 
-// Carregar na abertura da página
+// ===================== INICIAR =====================
 window.addEventListener("load", () => {
   loadUsers();
 });
